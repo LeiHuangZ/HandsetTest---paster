@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.handheld.huang.handsettest.activity.MacTestActivity">
+
+    <TextView
+        android:id="@+id/mac_tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:text="MAC测试："/>
+
+    <ImageView
+        android:id="@+id/mac_img_show"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/start_mac_test"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/imei_tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:text="IMEI测试："/>
+
+    <ImageView
+        android:id="@+id/imei_img_show"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/start_imei_test"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/board_tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:text="主板校准："/>
+
+    <ImageView
+        android:id="@+id/result_img_ok"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/display_test"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/check_ok_unselected"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/result_img_cross"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/display_test"
+        android:scaleType="fitCenter"
+        android:src="@drawable/check_cross_unselected"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/result_tv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y10"
+        android:background="@drawable/btn_bg"
+        android:padding="@dimen/x15"
+        android:text="@string/finish"
+        android:textColor="@color/nextColor"
+        android:textSize="42sp"
+        android:textStyle="bold" />
+</LinearLayout>

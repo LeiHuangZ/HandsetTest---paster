@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.handheld.huang.handsettest.activity.TestConclusionActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/test_conclusion"
+        android:gravity="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@color/textColor"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/test_conclusion_lrcv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/btn_spotify"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y35"
+        android:layout_marginBottom="@dimen/y6"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#7ab800"
+        fancy:fb_focusColor="#9bd823"
+        fancy:fb_radius="5dp"
+        fancy:fb_text="@string/finish"
+        fancy:fb_textColor="#FFFFFF"
+        fancy:fb_textSize="28sp" />
+
+</LinearLayout>

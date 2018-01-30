@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.handheld.huang.handsettest.activity.FacadeTestActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mac_toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/facade_test"/>
+
+    <TextView
+        android:id="@+id/facade_tv_tips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/start_facade_test"
+        android:textSize="42sp"
+        android:gravity="center"/>
+
+    <include layout="@layout/layout_result_confirm"/>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    tools:context="com.handheld.huang.handsettest.activity.CommunicationTestActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/communication_toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/wifi_test"/>
+
+    <LinearLayout
+        android:id="@+id/communication_ll_enter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y20"
+        android:background="#55ACEE"
+        android:gravity="center">
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/communication_btn_test"
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_focusColor="#5474b8"
+            fancy:fb_fontIconResource="&#xf1eb;"
+            fancy:fb_fontIconSize="35dp"
+            fancy:fb_ghost="true"
+            fancy:fb_iconPaddingRight="@dimen/x40"
+            fancy:fb_text="@string/start_wifi_test"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="@dimen/x18"/>
+    </LinearLayout>
+
+    <include
+        layout="@layout/layout_result_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

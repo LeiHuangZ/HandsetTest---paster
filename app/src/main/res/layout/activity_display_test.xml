@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.handheld.huang.handsettest.activity.DisplayTestActivity"
+    android:background="@drawable/bg">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/display_test"/>
+
+    <TextView
+        android:id="@+id/display_tv_tips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:text="@string/start_display_test"
+        android:textColor="@color/textColor"/>
+
+    <ImageView
+        android:id="@+id/display_img_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:visibility="gone"/>
+
+    <include layout="@layout/layout_result_confirm"/>
+
+</android.support.constraint.ConstraintLayout>

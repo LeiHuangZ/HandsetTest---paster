@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/test_result_name"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x108"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:textSize="20sp"
+    android:paddingTop="@dimen/y5"
+    android:gravity="center">
+
+</TextView>

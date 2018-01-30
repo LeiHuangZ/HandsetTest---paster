@@ -1,0 +1,175 @@
+<resources>
+    <string name="app_name">HandsetTest</string>
+
+    <string name="all_test">整机测试</string>
+
+    <string name="display_test">屏幕测试</string>
+    <string name="start_display_test">点击屏幕开始屏幕测试</string>
+    <string name="display_test_confirm">确认屏幕测试结果</string>
+
+    <string name="touch_test">触摸测试</string>
+    <string name="start_touch_test">点击屏幕开始触摸测试</string>
+    <string name="touch_test_confirm">确认触摸测试结果</string>
+
+    <string name="led_test">屏幕背光测试</string>
+    <string name="led_test_confirm">确认背光测试结果</string>
+
+    <string name="key_test">键盘测试</string>
+    <string name="key_test_confirm">确认键盘测试结果</string>
+
+    <string name="camera_test">相机测试</string>
+    <string name="start_camera_test">点击此处开始相机测试</string>
+    <string name="camera_test_confirm">确认相机测试结果</string>
+
+    <string name="idread_test">身份证读取测试</string>
+    <string name="idread_test_confirm">确认身份证读取测试结果</string>
+
+    <string name="call_test">通话测试</string>
+    <string name="start_call_test">点击此处开始通话测试</string>
+    <string name="call_test_confirm">确认通话测试结果</string>
+
+    <string name="sd_test">存储卡测试</string>
+    <string name="start_sd_test">点击此处开始SD卡测试</string>
+    <string name="sd_test_confirm">确认存储卡测试结果</string>
+
+    <string name="speaker_test">喇叭测试</string>
+    <string name="start_speaker_test">点击此处开始喇叭测试</string>
+    <string name="speaker_test_confirm">确认喇叭测试结果</string>
+
+    <string name="mac_imei_board_test">设备MAC,IMEI,主板校准状态测试</string>
+
+    <string name="mac_test">MAC测试</string>
+    <string name="start_mac_test">点击此处显示本机MAC</string>
+    <string name="mac_test_confirm">确认MAC测试结果</string>
+
+    <string name="imei_test">IMEI测试</string>
+    <string name="start_imei_test">点击此处显示本机IMEI</string>
+    <string name="board_test">主板测试</string>
+
+    <string name="wifi_test">WiFi测试</string>
+    <string name="start_wifi_test">点击此处开始WiFi测试</string>
+    <string name="wifi_test_confirm">确认WiFi测试结果</string>
+
+    <string name="mic_test">Mic测试</string>
+    <string name="start_mic_test">点击此处开始Mic测试</string>
+    <string name="mic_test_confirm">确认Mic测试结果</string>
+
+    <string name="gps_test">GPS测试</string>
+    <string name="start_gps_test">开始GPS测试</string>
+    <string name="gps_test_confirm">确认GPS测试结果</string>
+
+    <string name="bluetooth_test">蓝牙测试</string>
+    <string name="start_bluetooth_test">点击此处开始蓝牙测试</string>
+    <string name="bluetooth_test_confirm">确认蓝牙测试结果</string>
+
+    <string name="next">下一步</string>
+    <string name="finish">完成</string>
+
+    <string name="recording">正在录音</string>
+    <string name="playing">正在播放</string>
+
+    <string name="indicator_test">指示灯测试, 请插入USB充电进行测试</string>
+    <string name="indicator">指示灯测试</string>
+    <string name="blue_on">打开蓝灯</string>
+    <string name="blue_off">关闭蓝灯</string>
+    <string name="red_on">打开红灯</string>
+    <string name="red_off">关闭红灯</string>
+    <string name="red_no">该机型红灯不可控，通过USB插拔可测试红灯</string>
+    <string name="indicator_test_confirm">确认指示灯测试结果</string>
+
+    <string name="electricity_test">开关机电流测试</string>
+    <string name="onElectricity_test">开机电流测试</string>
+    <string name="offElectricity_test">关机电流测试</string>
+    <string name="onElectricity_test_confirm">开机电流测试结果</string>
+    <string name="offElectricity_test_confirm">关机电流测试结果</string>
+
+    <string name="facade_test">外观测试</string>
+    <string name="start_facade_test">开始外观测试</string>
+    <string name="back_screw_test">请检查背面螺丝</string>
+    <string name="back_screw">背面螺丝</string>
+    <string name="back_screw_test_result">背面螺丝检查结果</string>
+    <string name="head_screw_test">请检查头部螺丝</string>
+    <string name="head_screw">头部螺丝</string>
+    <string name="head_screw_test_result">头部螺丝检查结果</string>
+    <string name="bottom_screw_test">请检查底部螺丝</string>
+    <string name="bottom_screw">底部螺丝</string>
+    <string name="bottom_screw_test_result">底部螺丝检查结果</string>
+    <string name="lens_logo_test">请检查镜片logo</string>
+    <string name="lens_logo">镜片logo</string>
+    <string name="lens_logo_test_result">镜片logo检查结果</string>
+    <string name="lens_hatches_test">请检查镜片前舱盖</string>
+    <string name="lens_hatches">镜片前舱盖</string>
+    <string name="lens_hatches_test_result">镜片前舱盖检查结果</string>
+    <string name="spire_test">请检查腕带</string>
+    <string name="spire">腕带</string>
+    <string name="spire_test_result">腕带检查结果</string>
+    <string name="shell_test">请检查壳体</string>
+    <string name="shell">壳体</string>
+    <string name="shell_test_result">壳体检查结果</string>
+
+    <string name="test_conclusion">测试结果</string>
+
+    <string name="nan">男</string>
+    <string name="nv">女</string>
+
+    <string name="case1">汉</string>
+    <string name="case2">蒙古</string>
+    <string name="case3">回</string>
+    <string name="case4">藏</string>
+    <string name="case5">维吾尔</string>
+    <string name="case6">苗</string>
+    <string name="case7">彝</string>
+    <string name="case8">壮</string>
+    <string name="case9">布依</string>
+    <string name="case10">朝鲜</string>
+    <string name="case11">满</string>
+    <string name="case12">侗</string>
+    <string name="case13">瑶</string>
+    <string name="case14">白</string>
+    <string name="case15">土家</string>
+    <string name="case16">哈尼</string>
+    <string name="case17">哈萨克</string>
+    <string name="case18">傣</string>
+    <string name="case19">黎</string>
+    <string name="case20">傈傈</string>
+    <string name="case21">佤</string>
+    <string name="case22">畲</string>
+    <string name="case23">高山</string>
+    <string name="case24">拉祜</string>
+    <string name="case25">水</string>
+    <string name="case26">东乡</string>
+    <string name="case27">纳西</string>
+    <string name="case28">景颇</string>
+    <string name="case29">柯尔克孜</string>
+    <string name="case30">土</string>
+    <string name="case31">达斡尔</string>
+    <string name="case32">仫佬</string>
+    <string name="case33">羌</string>
+    <string name="case34">布朗族</string>
+    <string name="case35">撒拉</string>
+    <string name="case36">毛南</string>
+    <string name="case37">仡佬</string>
+    <string name="case38">锡伯</string>
+    <string name="case39">阿昌</string>
+    <string name="case40">普米</string>
+    <string name="case41">塔吉克</string>
+    <string name="case42">怒</string>
+    <string name="case43">乌兹别克</string>
+    <string name="case44">俄罗斯</string>
+    <string name="case45">鄂温克</string>
+    <string name="case46">德昂</string>
+    <string name="case47">保安</string>
+    <string name="case48">裕固</string>
+    <string name="case49">京</string>
+    <string name="case50">塔塔尔</string>
+    <string name="case51">独龙</string>
+    <string name="case52">鄂伦春</string>
+    <string name="case53">赫哲</string>
+    <string name="case54">门巴</string>
+    <string name="case55">珞巴</string>
+    <string name="case56">基诺</string>
+    <string name="default_min_zu">解析出错</string>
+    <string name="find">发现身份证!</string>
+    <string name="get">正在读取....</string>
+    <string name="get_success">读取身份证信息成功!</string>
+</resources>

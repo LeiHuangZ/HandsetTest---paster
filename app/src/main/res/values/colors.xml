@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="textColor">#EAB400</color>
+    <color name="nextColor">#14FF16</color>
+
+    <color name="call_test_color">#3B5998</color>
+    <color name="sd_test_color">#648F00</color>
+    <color name="speaker_test_color">#FF5F69</color>
+
+    <color name="mic_test_color">#31729B</color>
+</resources>

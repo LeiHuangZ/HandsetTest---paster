@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.handheld.huang.handsettest.activity.IndicatorTestActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/indicator_test"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/indicator_btn_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/y10"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:paddingTop="@dimen/y10"
+        fancy:fb_iconPaddingRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#7ab800"
+        fancy:fb_focusColor="#9bd823"
+        fancy:fb_fontIconResource="&#xf0eb;"
+        fancy:fb_fontIconSize="30sp"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="30dp"
+        fancy:fb_text="@string/blue_on"
+        fancy:fb_textColor="#0080FF"
+        fancy:fb_textSize="23sp"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/indicator_btn_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/y10"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        fancy:fb_iconPaddingRight="@dimen/x20"
+        android:paddingTop="@dimen/y10"
+        android:layout_marginTop="@dimen/y30"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#7ab800"
+        fancy:fb_focusColor="#9bd823"
+        fancy:fb_fontIconResource="&#xf0eb;"
+        fancy:fb_fontIconSize="30sp"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="30dp"
+        fancy:fb_text="@string/red_on"
+        fancy:fb_textColor="#DD4B39"
+        fancy:fb_textSize="23sp"/>
+
+    <include layout="@layout/layout_result_confirm"
+        android:visibility="visible"/>
+
+</LinearLayout>

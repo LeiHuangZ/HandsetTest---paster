@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.handheld.huang.handsettest.activity.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FF5F69"
+        android:gravity="center">
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/main_btn_gps_test"
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_focusColor="#5474b8"
+            fancy:fb_fontIconResource="&#xf041;"
+            fancy:fb_fontIconSize="35dp"
+            fancy:fb_ghost="true"
+            fancy:fb_iconPaddingRight="@dimen/x40"
+            fancy:fb_text="@string/start_gps_test"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="@dimen/x18"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#55ACEE"
+        android:gravity="center">
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/main_btn_mac_test"
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_focusColor="#5474b8"
+            fancy:fb_fontIconResource="&#xf02a;"
+            fancy:fb_fontIconSize="35dp"
+            fancy:fb_ghost="true"
+            fancy:fb_iconPaddingRight="@dimen/x40"
+            fancy:fb_text="@string/mac_imei_board_test"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="@dimen/x18"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#323E48"
+        android:gravity="center">
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/main_btn_all_test"
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="2dp"
+            fancy:fb_focusColor="#5474b8"
+            fancy:fb_fontIconResource="&#xf17b;"
+            fancy:fb_fontIconSize="35dp"
+            fancy:fb_ghost="true"
+            fancy:fb_iconPaddingRight="@dimen/x40"
+            fancy:fb_text="@string/all_test"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="@dimen/x18"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.handheld.huang.handsettest.activity.LedTestActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/led_test"/>
+
+    <SeekBar
+        android:id="@+id/led_sb_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255"
+        android:paddingTop="100dp"
+        android:secondaryProgress="0"/>
+
+    <include layout="@layout/layout_result_confirm"/>
+</android.support.constraint.ConstraintLayout>
