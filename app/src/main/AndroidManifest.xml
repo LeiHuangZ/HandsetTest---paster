@@ -33,8 +33,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <data android:host="authactivity"
-                    android:scheme="com.android.example"/>
+                <!--<data android:host="authactivity"
+                    android:scheme="com.android.example"/>-->
             </intent-filter>
 
         </activity>

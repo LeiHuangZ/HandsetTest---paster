@@ -216,14 +216,14 @@ public class BasicTestActivity extends AppCompatActivity {
      * SD卡测试
      */
     private void sdCheck() {
-        ArrayList<StorageBean> storageBeanArrayList = StorageUtils.getStorageData(BasicTestActivity.this);
-        int size = storageBeanArrayList.size();
-//        List<String> pathList = getExtSDCardPathList();
-        Log.e(TAG, "sdCheck, pathList.size() >>>>>> " + storageBeanArrayList.size());
-        String path = storageBeanArrayList.get(1).getPath();
-        Log.e(TAG, "sdCheck, secondaryStoragePath >>>>>> " + path);
-//        Log.e(TAG, "sdCheck, secondaryStoragePath >>>>>> " + secondary_storage );
         try {
+            ArrayList<StorageBean> storageBeanArrayList = StorageUtils.getStorageData(BasicTestActivity.this);
+            int size = storageBeanArrayList.size();
+//        List<String> pathList = getExtSDCardPathList();
+            Log.e(TAG, "sdCheck, pathList.size() >>>>>> " + storageBeanArrayList.size());
+            String path = storageBeanArrayList.get(1).getPath();
+            Log.e(TAG, "sdCheck, secondaryStoragePath >>>>>> " + path);
+//        Log.e(TAG, "sdCheck, secondaryStoragePath >>>>>> " + secondary_storage );
             File sdFile = new File(path);
             File[] files = sdFile.listFiles();
             Log.i(TAG, "sdCheck: " + files.length);

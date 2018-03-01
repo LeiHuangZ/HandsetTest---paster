@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         int permsRequestCode = 200;
         String[] perms = {"android.permission.INTERNET", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.WRITE_SETTINGS", "android.permission.CHANGE_WIFI_STATE", "android.permission.ACCESS_WIFI_STATE", "android.permission.READ_PHONE_STATE", "android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-        requestPermissions(perms, permsRequestCode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int checkSelfPermission = checkSelfPermission("android.permission.READ_PHONE_STATE");
             if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
