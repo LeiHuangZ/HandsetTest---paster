@@ -93,7 +93,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result(getResources().getString(R.string.board_test), mSpUtils.getBoardCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.mic_test), mSpUtils.getMicCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.bluetooth_test), mSpUtils.getBluetoothCheckResult()));
-//                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
+                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.indicator), mSpUtils.getIndocatorCheckResult()));
 //                mList.add(new Result("Usb测试", mSpUtils.getUsbCheckResult()));
 //                mList.add(new Result("底座测试", mSpUtils.getChargerCheckResult()));
@@ -207,12 +207,12 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }else {
                         str = str.concat("未通过\n");
                     }
-//                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
-//                    if (mSpUtils.getGpsCheckResult() == 0) {
-//                        str = str.concat("通过\n");
-//                    }else {
-//                        str = str.concat("未通过\n");
-//                    }
+                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
+                    if (mSpUtils.getGpsCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    }else {
+                        str = str.concat("未通过\n");
+                    }
                     str = str.concat(getResources().getString(R.string.bluetooth_test) + "：   ");
                     if (mSpUtils.getBluetoothCheckResult() == 0) {
                         str = str.concat("通过\n");
