@@ -91,8 +91,10 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result(getResources().getString(R.string.board_test), mSpUtils.getBoardCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.mic_test), mSpUtils.getMicCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.bluetooth_test), mSpUtils.getBluetoothCheckResult()));
-                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
+//                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.indicator), mSpUtils.getIndocatorCheckResult()));
+//                mList.add(new Result("Usb测试", mSpUtils.getUsbCheckResult()));
+//                mList.add(new Result("底座测试", mSpUtils.getChargerCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.onElectricity_test), mSpUtils.getOnElectricityCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.offElectricity_test), mSpUtils.getOffElectricityCheckResult()));
 
@@ -203,24 +205,24 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }else {
                         str = str.concat("未通过\n");
                     }
-                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
-                    if (mSpUtils.getGpsCheckResult() == 0) {
-                        str = str.concat("通过\n");
-                    }else {
-                        str = str.concat("未通过\n");
-                    }
+//                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
+//                    if (mSpUtils.getGpsCheckResult() == 0) {
+//                        str = str.concat("通过\n");
+//                    }else {
+//                        str = str.concat("未通过\n");
+//                    }
                     str = str.concat(getResources().getString(R.string.bluetooth_test) + "：   ");
                     if (mSpUtils.getBluetoothCheckResult() == 0) {
                         str = str.concat("通过\n");
                     }else {
                         str = str.concat("未通过\n");
                     }
-//                    str = str.concat(getResources().getString(R.string.indicator) + "： ");
-//                    if (mSpUtils.getIndocatorCheckResult() == 0) {
-//                        str = str.concat("通过\n");
-//                    }else {
-//                        str = str.concat("未通过\n");
-//                    }
+                    str = str.concat(getResources().getString(R.string.indicator) + "： ");
+                    if (mSpUtils.getIndocatorCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    }else {
+                        str = str.concat("未通过\n");
+                    }
                     str = str.concat(getResources().getString(R.string.onElectricity_test) + "： ");
                     if (mSpUtils.getOnElectricityCheckResult() == 0) {
                         str = str.concat("通过\n");
@@ -233,6 +235,18 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }else {
                         str = str.concat("未通过\n");
                     }
+//                    str = str.concat("Usb测试： ");
+//                    if (mSpUtils.getUsbCheckResult() == 0) {
+//                        str = str.concat("通过\n");
+//                    }else {
+//                        str = str.concat("未通过\n");
+//                    }
+//                    str = str.concat("底座测试  ");
+//                    if (mSpUtils.getChargerCheckResult() == 0) {
+//                        str = str.concat("通过\n");
+//                    }else {
+//                        str = str.concat("未通过\n");
+//                    }
                     fw.flush();
                     fw.write(str);
                     fw.close();

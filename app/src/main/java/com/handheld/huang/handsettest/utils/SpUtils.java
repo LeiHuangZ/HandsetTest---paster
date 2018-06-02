@@ -197,6 +197,24 @@ public class SpUtils {
         return mPreferences.getInt("OffElectricityCheckResult", 1);
     }
 
+    /** 存储USB测试结果 */
+    public void saveUsbCheckResult(int result){
+        mPreferences.edit().putInt("saveUsbCheckResult", result).apply();
+    }
+    /** 获取USB测试结果 */
+    public int getUsbCheckResult(){
+        return mPreferences.getInt("saveUsbCheckResult", 1);
+    }
+
+    /** 存储底座测试结果 */
+    public void saveChargerCheckResult(int result){
+        mPreferences.edit().putInt("saveChargerCheckResult", result).apply();
+    }
+    /** 获取底座测试结果 */
+    public int getChargerCheckResult(){
+        return mPreferences.getInt("saveChargerCheckResult", 1);
+    }
+
     /** 背面螺丝 */
     public void saveBackScrewCheckResult(int result){
         mPreferences.edit().putInt("BackScrewCheckResult", result).apply();

@@ -4,20 +4,18 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -33,56 +31,62 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <!--<data android:host="authactivity"
-                    android:scheme="com.android.example"/>-->
+                <!--
+                    <data android:host="authactivity"
+                    android:scheme="com.android.example"/>
+                -->
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.DisplayTestActivity" />
+        <activity android:name=".activity.TouchTestActivity" />
+        <activity android:name=".activity.LedTestActivity" />
+        <activity android:name=".activity.KeyTestActivity" />
+        <activity android:name=".activity.BasicTestActivity" />
+        <activity android:name=".activity.MacTestActivity" />
+        <activity android:name=".activity.ImeiTestActivity" />
+        <activity android:name=".activity.CommunicationTestActivity" />
+        <activity android:name=".activity.IndicatorTestActivity" >
 
         </activity>
-
-        <activity android:name=".activity.DisplayTestActivity"/>
-        <activity android:name=".activity.TouchTestActivity"/>
-        <activity android:name=".activity.LedTestActivity"/>
-        <activity android:name=".activity.KeyTestActivity"/>
-        <activity android:name=".activity.BasicTestActivity">
-        </activity>
-        <activity android:name=".activity.MacTestActivity"/>
-        <activity android:name=".activity.ImeiTestActivity"/>
-        <activity android:name=".activity.CommunicationTestActivity"/>
-        <activity android:name=".activity.IndicatorTestActivity"/>
-        <activity android:name=".activity.ElectricityTestActivity"/>
-        <activity android:name=".activity.GpsTestActivity"/>
-        <activity android:name=".activity.TestConclusionActivity"/>
-        <activity android:name=".activity.identification.handheld.instance.IDReadActivity"/>
+        <activity android:name=".activity.ElectricityTestActivity" />
+        <activity android:name=".activity.GpsTestActivity" />
+        <activity android:name=".activity.TestConclusionActivity" />
+        <activity android:name=".activity.identification.handheld.instance.IDReadActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.handheld.huang.handsettest.fileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="com.hand.huang.ht.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
 
         <receiver
             android:name=".MyReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
+
                 <data
                     android:host="99999"
                     android:scheme="android_secret_code" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".EmBootupReceiver"
+        <receiver
+            android:name=".EmBootupReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.UsbActivity" />
+        <activity android:name=".activity.ChargerActivity" />
+        <activity android:name=".activity.FacadeTestActivity"></activity>
     </application>
 
 </manifest>

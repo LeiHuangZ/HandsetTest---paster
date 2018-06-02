@@ -87,6 +87,14 @@ public class BasicTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_basic_test);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        testFlag = intent.getIntExtra("testFlag", 0);
+        if (testFlag == 1){
+            mBasicToolbarTitle.setTitle(getString(R.string.call_test));
+            mBasicBtnTest.setText(getString(R.string.start_call_test));
+            mBasicBtnTest.setIconResource("\uf095");
+        }
+
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
@@ -150,6 +158,11 @@ public class BasicTestActivity extends AppCompatActivity {
 
                     mResultImgCross.setClickable(true);
                     mResultImgOk.setClickable(true);
+//                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+//                    intent.addFlags(0);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.animator.activity_start_rigth, 0);
+//                    finish();
                 } else if (testFlag == 1) {
                     mSpUtils.saveCallCheckResult(checkResult);
                     Log.i(TAG, "CallCheckResult: " + mSpUtils.getCallCheckResult());
@@ -161,6 +174,11 @@ public class BasicTestActivity extends AppCompatActivity {
                     mBasicBtnTest.setIconResource("\uf02f");
                     mBasicToolbarTitle.setTitle(R.string.sd_test);
                     testFlag = 2;
+//                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+//                    intent.putExtra("testFlag", 1);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.animator.activity_start_rigth, 0);
+//                    finish();
                 } else if (testFlag == sdFlag) {
                     mSpUtils.saveSdCheckResult(checkResult);
                     Log.i(TAG, "SdCheckResult: " + mSpUtils.getSdCheckResult());
@@ -203,7 +221,7 @@ public class BasicTestActivity extends AppCompatActivity {
         mBasicBtnTest.setClickable(true);
     }
 
-    /***
+    /**
      * 在每一项测试结果确认后，重置结果确认界面，以准备下一次结果确认
      */
     private void resetCheck() {

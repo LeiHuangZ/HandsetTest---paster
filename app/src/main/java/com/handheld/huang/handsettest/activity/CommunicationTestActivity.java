@@ -70,6 +70,14 @@ public class CommunicationTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_communication_test);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        testFlag = intent.getIntExtra("testFlag", 0);
+        if (testFlag == 1){
+            mCommunicationToolbarTitle.setTitle(getString(R.string.mic_test));
+            mCommunicationBtnTest.setText(getString(R.string.start_mic_test));
+            mCommunicationBtnTest.setIconResource("\uf130");
+        }
+
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
@@ -119,7 +127,7 @@ public class CommunicationTestActivity extends AppCompatActivity {
                     mCommunicationLlEnter.setVisibility(View.VISIBLE);
                     mCommunicationLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.mic_test_color));
                     mCommunicationBtnTest.setText(getResources().getString(R.string.start_mic_test));
-                    mCommunicationBtnTest.setIconResource("\uf130");
+                    mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationToolbarTitle.setTitle(R.string.mic_test);
                     testFlag = 1;
                 } else if (testFlag == 1) {
@@ -133,6 +141,11 @@ public class CommunicationTestActivity extends AppCompatActivity {
                     mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationToolbarTitle.setTitle(R.string.bluetooth_test);
                     testFlag = 3;
+//                    Intent intent = new Intent(CommunicationTestActivity.this, BasicTestActivity.class);
+//                    intent.putExtra("testFlag", 0);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.animator.activity_start_rigth, 0);
+//                    finish();
                 } else if (testFlag == bluetoothFlag) {
                     mSpUtils.saveBluetoothCheckResult(checkResult);
                     Log.i(TAG, "BluetoothCheckResult: " + mSpUtils.getBluetoothCheckResult());

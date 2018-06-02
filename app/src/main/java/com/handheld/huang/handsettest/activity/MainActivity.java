@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -47,19 +48,9 @@ public class MainActivity extends AppCompatActivity {
         new SpUtils(this).clearAll();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onStart() {
-        int permsRequestCode = 200;
-        String[] perms = {"android.permission.INTERNET", "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION", "android.permission.WRITE_SETTINGS", "android.permission.CHANGE_WIFI_STATE", "android.permission.ACCESS_WIFI_STATE", "android.permission.READ_PHONE_STATE", "android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int checkSelfPermission = checkSelfPermission("android.permission.READ_PHONE_STATE");
-            if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(perms, permsRequestCode);
-            }else {
-                checkGpsTest();
-            }
-        }
+        checkGpsTest();
         super.onStart();
     }
 
@@ -84,14 +75,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void checkGpsTest(){
+        Log.i(TAG, "checkGpsTest！！！！");
         /*
          * 判断GPSTest软件是否已经安装
          */
         try {
             mPackageInfo = getPackageManager().getPackageInfo(
                     "com.chartcross.gpstest", 0);
+            Log.i(TAG, "checkGpsTest！！！！");
         } catch (PackageManager.NameNotFoundException e) {
             mPackageInfo = null;
             e.printStackTrace();
@@ -213,18 +205,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
-
-    /**
-     * 7.0权限申请回掉
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        /*
-         * 权限申请结束后，进行GPSTest软件是否安装的判断
-         */
-        if (requestCode == 200){
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

@@ -83,6 +83,7 @@
     <string name="onElectricity_test_confirm">开机电流测试结果</string>
     <string name="offElectricity_test_confirm">关机电流测试结果</string>
 
+
     <string name="facade_test">外观测试</string>
     <string name="start_facade_test">开始外观测试</string>
     <string name="back_screw_test">请检查背面螺丝</string>
