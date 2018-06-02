@@ -106,14 +106,13 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     if (!isBlueOn) {
                         if (mScreenHeight == screen901) {
                             //901蓝指示灯亮
-                            mSerialPort.setGPIOhigh(15);
                             mSerialPort.setGPIOhigh(64);
                         } else if (mScreenHeight == screenC5000) {
                             //C5000蓝指示灯亮
                             mSerialPort.setGPIOhigh(64);
                         } else if (mScreenHeight == screen70101 || mScreenHeight == screen70102 || mScreenHeight == screen70103 || mScreenHeight == screen70104 || mScreenHeight == screen70105) {
                             //701蓝指示灯亮
-                            mSerialPort.setGPIOhigh(46);
+                            mSerialPort.setGPIOhigh(64);
                         }
                         mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_off));
                         mIndicatorBtnBlue.setIconResource("\uf05e");
@@ -121,15 +120,13 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     } else {
                         if (mScreenHeight == screen901) {
                             //901蓝指示灯亮
-                            mSerialPort.setGPIOlow(15);
                             mSerialPort.setGPIOlow(64);
-
                         } else if (mScreenHeight == screenC5000) {
                             //C5000蓝指示灯亮
                             mSerialPort.setGPIOlow(64);
                         } else if (mScreenHeight == screen70101 || mScreenHeight == screen70102 || mScreenHeight == screen70103 || mScreenHeight == screen70104 || mScreenHeight == screen70105) {
                             //701蓝指示灯亮
-                            mSerialPort.setGPIOlow(46);
+                            mSerialPort.setGPIOlow(64);
                         }
                         isBlueOn = false;
                         mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_on));

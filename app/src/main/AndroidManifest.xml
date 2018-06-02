@@ -26,16 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/FulScreenTheme">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <!--
-                    <data android:host="authactivity"
-                    android:scheme="com.android.example"/>
-                -->
-            </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
         <activity android:name=".activity.TouchTestActivity" />
@@ -46,6 +36,16 @@
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
         <activity android:name=".activity.IndicatorTestActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <!--
+                    <data android:host="authactivity"
+                    android:scheme="com.android.example"/>
+                -->
+            </intent-filter>
 
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
