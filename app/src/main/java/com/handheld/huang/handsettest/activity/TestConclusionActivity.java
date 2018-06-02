@@ -1,6 +1,8 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -250,6 +252,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                     fw.flush();
                     fw.write(str);
                     fw.close();
+                    notifySystemToScan(savePath + "/zsb.txt");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -257,6 +260,15 @@ public class TestConclusionActivity extends AppCompatActivity {
         });
 
         finish();
+    }
+
+    public void notifySystemToScan(String filePath) {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(filePath);
+
+        Uri uri = Uri.fromFile(file);
+        intent.setData(uri);
+        this.getApplication().sendBroadcast(intent);
     }
 
     private static class ConclusionHandler extends Handler {

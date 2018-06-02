@@ -26,16 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/FulScreenTheme">
         <activity android:name=".activity.MainActivity">
-        </activity>
-        <activity android:name=".activity.DisplayTestActivity" />
-        <activity android:name=".activity.TouchTestActivity" />
-        <activity android:name=".activity.LedTestActivity" />
-        <activity android:name=".activity.KeyTestActivity" />
-        <activity android:name=".activity.BasicTestActivity" />
-        <activity android:name=".activity.MacTestActivity" />
-        <activity android:name=".activity.ImeiTestActivity" />
-        <activity android:name=".activity.CommunicationTestActivity" />
-        <activity android:name=".activity.IndicatorTestActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +36,16 @@
                     android:scheme="com.android.example"/>
                 -->
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.DisplayTestActivity" />
+        <activity android:name=".activity.TouchTestActivity" />
+        <activity android:name=".activity.LedTestActivity" />
+        <activity android:name=".activity.KeyTestActivity" />
+        <activity android:name=".activity.BasicTestActivity" />
+        <activity android:name=".activity.MacTestActivity" />
+        <activity android:name=".activity.ImeiTestActivity" />
+        <activity android:name=".activity.CommunicationTestActivity" />
+        <activity android:name=".activity.IndicatorTestActivity" >
 
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
