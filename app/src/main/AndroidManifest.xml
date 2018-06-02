@@ -46,7 +46,6 @@
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
         <activity android:name=".activity.IndicatorTestActivity" >
-
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
         <activity android:name=".activity.GpsTestActivity" />

@@ -82,7 +82,7 @@ public class KeyTestActivity extends AppCompatActivity {
             case R.id.result_tv_next:
                 mSpUtils.saveKeyCheckResult(checkResult);
                 Log.i(TAG, "KeyCheckResult: " + mSpUtils.getKeyCheckResult());
-                startActivity(new Intent(KeyTestActivity.this, BasicTestActivity.class));
+                startActivity(new Intent(KeyTestActivity.this, IndicatorTestActivity.class));
                 overridePendingTransition(R.animator.activity_start_rigth,0);
                 finish();
                 break;

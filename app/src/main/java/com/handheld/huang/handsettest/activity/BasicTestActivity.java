@@ -93,6 +93,12 @@ public class BasicTestActivity extends AppCompatActivity {
             mBasicToolbarTitle.setTitle(getString(R.string.call_test));
             mBasicBtnTest.setText(getString(R.string.start_call_test));
             mBasicBtnTest.setIconResource("\uf095");
+        }else if (testFlag == 3){
+            mBasicToolbarTitle.setTitle(getString(R.string.speaker_test));
+            mBasicBtnTest.setText(getString(R.string.start_speaker_test));
+            mBasicBtnTest.setIconResource("\uf028");
+            mResultLlConfirm.setVisibility(View.VISIBLE);
+            mResultTvQuestion.setText(R.string.speaker_test_confirm);
         }
 
         mSpUtils = new SpUtils(this);
@@ -150,35 +156,35 @@ public class BasicTestActivity extends AppCompatActivity {
                     mResultLlConfirm.setVisibility(View.GONE);
                     resetCheck();
                     mBasicLlEnter.setVisibility(View.VISIBLE);
-                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.call_test_color));
-                    mBasicBtnTest.setText(getResources().getString(R.string.start_call_test));
-                    mBasicBtnTest.setIconResource("\uf095");
-                    mBasicToolbarTitle.setTitle(R.string.call_test);
-                    testFlag = 1;
-
-                    mResultImgCross.setClickable(true);
-                    mResultImgOk.setClickable(true);
-//                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
-//                    intent.addFlags(0);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.animator.activity_start_rigth, 0);
-//                    finish();
+//                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.call_test_color));
+//                    mBasicBtnTest.setText(getResources().getString(R.string.start_call_test));
+//                    mBasicBtnTest.setIconResource("\uf095");
+//                    mBasicToolbarTitle.setTitle(R.string.call_test);
+//                    testFlag = 1;
+//
+//                    mResultImgCross.setClickable(true);
+//                    mResultImgOk.setClickable(true);
+                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+                    intent.putExtra("testFlag", 1);
+                    startActivity(intent);
+                    overridePendingTransition(R.animator.activity_start_rigth, 0);
+                    finish();
                 } else if (testFlag == 1) {
                     mSpUtils.saveCallCheckResult(checkResult);
                     Log.i(TAG, "CallCheckResult: " + mSpUtils.getCallCheckResult());
                     mResultLlConfirm.setVisibility(View.GONE);
                     resetCheck();
-                    mBasicLlEnter.setVisibility(View.VISIBLE);
-                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
-                    mBasicBtnTest.setText(getResources().getString(R.string.start_sd_test));
-                    mBasicBtnTest.setIconResource("\uf02f");
-                    mBasicToolbarTitle.setTitle(R.string.sd_test);
-                    testFlag = 2;
-//                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+//                    mBasicLlEnter.setVisibility(View.VISIBLE);
+//                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
+//                    mBasicBtnTest.setText(getResources().getString(R.string.start_sd_test));
+//                    mBasicBtnTest.setIconResource("\uf02f");
+//                    mBasicToolbarTitle.setTitle(R.string.sd_test);
+//                    testFlag = 2;
+                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
 //                    intent.putExtra("testFlag", 1);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.animator.activity_start_rigth, 0);
-//                    finish();
+                    startActivity(intent);
+                    overridePendingTransition(R.animator.activity_start_rigth, 0);
+                    finish();
                 } else if (testFlag == sdFlag) {
                     mSpUtils.saveSdCheckResult(checkResult);
                     Log.i(TAG, "SdCheckResult: " + mSpUtils.getSdCheckResult());
@@ -195,7 +201,7 @@ public class BasicTestActivity extends AppCompatActivity {
                 } else if (testFlag == speakerFlag) {
                     mSpUtils.saveSpeakerCheckResult(checkResult);
                     Log.i(TAG, "SpeakerCheckResult: " + mSpUtils.getSpeakerCheckResult());
-                    startActivity(new Intent(BasicTestActivity.this, CommunicationTestActivity.class));
+                    startActivity(new Intent(BasicTestActivity.this, KeyTestActivity.class));
                     overridePendingTransition(R.animator.activity_start_rigth, 0);
                     finish();
                 }

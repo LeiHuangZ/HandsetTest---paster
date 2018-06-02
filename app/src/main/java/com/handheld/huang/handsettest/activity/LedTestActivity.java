@@ -120,7 +120,10 @@ public class LedTestActivity extends AppCompatActivity {
             case R.id.result_tv_next:
                 mSpUtils.saveLedCheckResult(checkResult);
                 Log.i(TAG, "LedCheckResult: " + mSpUtils.getLedCheckResult());
-                startActivity(new Intent(LedTestActivity.this, KeyTestActivity.class));
+                Intent intent = new Intent(LedTestActivity.this, BasicTestActivity.class);
+                intent.putExtra("testFlag", 3);
+                startActivity(intent);
+
                 overridePendingTransition(R.animator.activity_start_rigth,0);
                 finish();
                 break;
