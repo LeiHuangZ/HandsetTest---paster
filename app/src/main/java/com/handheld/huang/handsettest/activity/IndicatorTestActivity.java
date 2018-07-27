@@ -47,7 +47,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
     LinearLayout mResultLlConfirm;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    private int checkResult;
+    private int checkResult = 1;
     private SpUtils mSpUtils;
     private int mScreenHeight;
 
@@ -68,7 +68,10 @@ public class IndicatorTestActivity extends AppCompatActivity {
         mRelease = Build.VERSION.RELEASE;
 
         mSerialPort = new SerialPort();
+        //除非进行了测试，否则不允许勾选测试结果，更不能进入下一步
         mResultTvNext.setClickable(false);
+        mResultImgCross.setClickable(false);
+        mResultImgOk.setClickable(false);
         mResultTvQuestion.setText(getResources().getString(R.string.indicator_test_confirm));
     }
 
@@ -77,6 +80,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
 
     @OnClick({R.id.indicator_btn_blue, R.id.indicator_btn_red, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
     public void onViewClicked(View view) {
+        //点击进行了测试，允许进行测试结果选择
+        mResultImgCross.setClickable(true);
+        mResultImgOk.setClickable(true);
         int screen901 = 800;
         int screenC5000 = 1280;
         int screen70101 = 720;

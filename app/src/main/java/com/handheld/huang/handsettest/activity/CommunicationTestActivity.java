@@ -39,7 +39,7 @@ public class CommunicationTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     /**
      * 用以标识测试功能，0 --> wifi；1 --> mic，2 --> gps，3 --> 蓝牙
      */
@@ -83,6 +83,8 @@ public class CommunicationTestActivity extends AppCompatActivity {
         mUtil.initAudio();
 
         mResultTvNext.setClickable(false);
+        //自动进入测试
+        onViewClicked(mCommunicationBtnTest);
     }
 
     @Override
@@ -130,6 +132,8 @@ public class CommunicationTestActivity extends AppCompatActivity {
                     mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationToolbarTitle.setTitle(R.string.mic_test);
                     testFlag = 1;
+                    //自动进入测试
+                    onViewClicked(mCommunicationBtnTest);
                 } else if (testFlag == 1) {
                     mSpUtils.saveMicCheckResult(checkResult);
                     Log.i(TAG, "MicCheckResult: " + mSpUtils.getMicCheckResult());
@@ -146,6 +150,8 @@ public class CommunicationTestActivity extends AppCompatActivity {
 //                    startActivity(intent);
 //                    overridePendingTransition(R.animator.activity_start_rigth, 0);
 //                    finish();
+                    //自动进入测试
+                    onViewClicked(mCommunicationBtnTest);
                 } else if (testFlag == bluetoothFlag) {
                     mSpUtils.saveBluetoothCheckResult(checkResult);
                     Log.i(TAG, "BluetoothCheckResult: " + mSpUtils.getBluetoothCheckResult());

@@ -35,8 +35,8 @@ public class ElectricityTestActivity extends AppCompatActivity {
     @BindView(R.id.result_tv_next)
     TextView mResultTvNext;
 
-    private int onCheckResult;
-    private int offCheckResult;
+    private int onCheckResult = 1;
+    private int offCheckResult = 1;
     private SpUtils mSpUtils;
 
     @Override

@@ -30,7 +30,7 @@ public class TouchTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     @BindView(R.id.result_img_ok)
     ImageView mResultImgOk;
     @BindView(R.id.result_img_cross)
@@ -59,6 +59,7 @@ public class TouchTestActivity extends AppCompatActivity {
                 mResultLlConfirm.setVisibility(View.VISIBLE);
             }
         });
+        onViewClicked(mTouchTvTips);
     }
 
     @OnClick({R.id.touch_tv_tips, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})

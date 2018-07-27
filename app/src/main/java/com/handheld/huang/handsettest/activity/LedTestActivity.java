@@ -44,7 +44,7 @@ public class LedTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     private SpUtils mSpUtils;
 
 

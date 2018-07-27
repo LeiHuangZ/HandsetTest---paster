@@ -65,7 +65,7 @@ public class BasicTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     /**
      * 用以标识测试功能，0 --> 相机；1 --> 通话，2 --> 存储卡，3 --> 喇叭
      */
@@ -98,6 +98,9 @@ public class BasicTestActivity extends AppCompatActivity {
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
+
+        //自动进入测试
+        onViewClicked(mBasicBtnTest);
     }
 
     @Override
@@ -127,6 +130,8 @@ public class BasicTestActivity extends AppCompatActivity {
                     sdCheck();
                     mBasicBtnTest.setClickable(false);
                 } else if (testFlag == speakerFlag) {
+                    mResultImgOk.setClickable(true);
+                    mResultImgCross.setClickable(true);
                     speakerCheck();
                 }
 
@@ -163,6 +168,8 @@ public class BasicTestActivity extends AppCompatActivity {
 //                    startActivity(intent);
 //                    overridePendingTransition(R.animator.activity_start_rigth, 0);
 //                    finish();
+                    //自动进入测试
+                    onViewClicked(mBasicBtnTest);
                 } else if (testFlag == 1) {
                     mSpUtils.saveCallCheckResult(checkResult);
                     Log.i(TAG, "CallCheckResult: " + mSpUtils.getCallCheckResult());
@@ -179,19 +186,23 @@ public class BasicTestActivity extends AppCompatActivity {
 //                    startActivity(intent);
 //                    overridePendingTransition(R.animator.activity_start_rigth, 0);
 //                    finish();
+                    //自动进入测试
+                    onViewClicked(mBasicBtnTest);
                 } else if (testFlag == sdFlag) {
                     mSpUtils.saveSdCheckResult(checkResult);
                     Log.i(TAG, "SdCheckResult: " + mSpUtils.getSdCheckResult());
-                    mResultLlConfirm.setVisibility(View.GONE);
                     resetCheck();
                     mBasicLlEnter.setVisibility(View.VISIBLE);
                     mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.speaker_test_color));
                     mBasicBtnTest.setText(getResources().getString(R.string.start_speaker_test));
                     mBasicBtnTest.setIconResource("\uf028");
+                    mBasicBtnTest.setClickable(true);
                     mBasicToolbarTitle.setTitle(R.string.speaker_test);
                     mResultLlConfirm.setVisibility(View.VISIBLE);
                     mResultTvQuestion.setText(R.string.speaker_test_confirm);
                     testFlag = 3;
+                    //自动进入测试
+                    onViewClicked(mBasicBtnTest);
                 } else if (testFlag == speakerFlag) {
                     mSpUtils.saveSpeakerCheckResult(checkResult);
                     Log.i(TAG, "SpeakerCheckResult: " + mSpUtils.getSpeakerCheckResult());
@@ -211,10 +222,12 @@ public class BasicTestActivity extends AppCompatActivity {
         if (requestCode == 0) {
             mBasicLlEnter.setVisibility(View.GONE);
             mResultLlConfirm.setVisibility(View.VISIBLE);
+            mResultTvNext.setClickable(false);
             mResultTvQuestion.setText(R.string.camera_test_confirm);
         } else if (requestCode == 1) {
             Log.i(TAG, "onActivityResult: ");
             mBasicLlEnter.setVisibility(View.GONE);
+            mResultTvNext.setClickable(false);
             mResultLlConfirm.setVisibility(View.VISIBLE);
             mResultTvQuestion.setText(R.string.call_test_confirm);
         }
@@ -246,22 +259,38 @@ public class BasicTestActivity extends AppCompatActivity {
             File[] files = sdFile.listFiles();
             Log.i(TAG, "sdCheck: " + files.length);
             showToast("存储卡读写正常！");
+            mResultImgCross.setClickable(false);
+            mResultImgOk.setClickable(false);
+            mResultTvNext.setClickable(false);
+            mBasicLlEnter.setVisibility(View.GONE);
+            mResultTvNext.setClickable(false);
+            mResultLlConfirm.setVisibility(View.VISIBLE);
+            mResultTvQuestion.setText(R.string.sd_test_confirm);
             checkResult = 0;
+            onViewClicked(mResultImgOk);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "sdCheck, ERROR >>>>>> " + e.getMessage());
 
             showToast("存储卡读写异常！");
+            mResultImgCross.setClickable(false);
+            mResultImgOk.setClickable(false);
+            mBasicLlEnter.setVisibility(View.GONE);
+            mResultTvNext.setClickable(false);
+            mResultLlConfirm.setVisibility(View.VISIBLE);
+            mResultTvQuestion.setText(R.string.sd_test_confirm);
             checkResult = 1;
-        } finally {
-            //延时发送消息,留时间给SD卡测试结果展示
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mHandler.sendEmptyMessage(0);
-                }
-            }, 2000);
+            onViewClicked(mResultImgCross);
         }
+        /*finally &{
+            //延时发送消息,留时间给SD卡测试结果展示
+            &mHandler&postDelayed(new &Runnable() {
+                @Override
+                &public void &run() {
+                    &mHandler&sendEmpty&Message(0);
+                }
+            &}& 2000);
+        }*/
     }
 
     /**

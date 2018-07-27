@@ -48,7 +48,7 @@ public class DisplayTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     @BindView(R.id.result_img_ok)
     ImageView mResultImgOk;
     @BindView(R.id.result_img_cross)
@@ -67,7 +67,7 @@ public class DisplayTestActivity extends AppCompatActivity {
 
         //初始化SP存储工具类，存储检测结果
         mSpUtils = new SpUtils(this);
-
+        onViewClicked(mDisplayTvTips);
     }
 
     /**

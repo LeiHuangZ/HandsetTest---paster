@@ -47,6 +47,8 @@ public class GpsTestActivity extends AppCompatActivity {
 
         mFinishTvNext.setClickable(false);
         mSpUtils = new SpUtils(this);
+
+        onViewClicked(mGpsBtnTest);
     }
 
 

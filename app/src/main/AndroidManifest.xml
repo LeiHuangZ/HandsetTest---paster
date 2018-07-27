@@ -31,10 +31,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <!--
                     <data android:host="authactivity"
                     android:scheme="com.android.example"/>
-                -->
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
@@ -86,7 +84,7 @@
 
         <activity android:name=".activity.UsbActivity" />
         <activity android:name=".activity.ChargerActivity" />
-        <activity android:name=".activity.FacadeTestActivity"></activity>
+        <activity android:name=".activity.FacadeTestActivity"/>
     </application>
 
 </manifest>
