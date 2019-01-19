@@ -3,6 +3,7 @@ package com.handheld.huang.handsettest.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -128,8 +129,14 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }
                     FileWriter fw = new FileWriter(savePath + "/zsb.txt");
                     String str;
+                    str = "Flash序列号：    ";
+                    if (mSpUtils.getFlashCheckResult() == 0){
+                        str = str.concat(Build.SERIAL + "\n");
+                    }else {
+                        str = str.concat("无序列号\n");
+                    }
 
-                    str = getResources().getString(R.string.display_test) + "：   ";
+                    str = str.concat(getResources().getString(R.string.display_test) + "：   ");
                     if (mSpUtils.getDisplayCheckResult() == 0) {
                         str = str.concat("通过\n");
                     }else {

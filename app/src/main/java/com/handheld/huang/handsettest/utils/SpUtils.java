@@ -115,7 +115,14 @@ public class SpUtils {
     public int getImeiCheckResult(){
         return mPreferences.getInt("ImeiCheckResult", 1);
     }
-
+    /**存储flash序列号*/
+    public void saveFlashCheckResult(int result){
+        mPreferences.edit().putInt("ImeiCheckResult", result).apply();
+    }
+    /**获取flash序列号*/
+    public int getFlashCheckResult(){
+        return mPreferences.getInt("ImeiCheckResult", 1);
+    }
     /** 存储主板校准测试结果 */
     public void saveBoardCheckResult(int result){
         mPreferences.edit().putInt("BoardCheckResult", result).apply();

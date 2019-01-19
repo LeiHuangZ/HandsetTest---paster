@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -60,13 +60,15 @@ public class MacTestActivity extends AppCompatActivity {
     TextView mImeiTvResult;
     @BindView(R.id.board_tv_result)
     TextView mBoardTvResult;
+    @BindView(R.id.flash_tv_result)
+    TextView mFlashTvResult;
     private Util mUtil;
     private Toast mToast;
     private SpUtils mSpUtils;
     String originMac = "20:08:ed:05:03:65";
     String originImei = "860527010207000";
     /**
-     * 0 --> Mac, 1 --> Imei, 2 --> Board
+     * 0 --> Mac, 1 --> Imei, 2 --> Board, 3 ---> FlashNumber
      */
     private int saveFlag = 0;
     private final int flagMacSuccess = 10010;
@@ -75,6 +77,8 @@ public class MacTestActivity extends AppCompatActivity {
     private final int flagImeiFail = 10021;
     private final int flagBoardSuccess = 10030;
     private final int flagBoardFail = 10031;
+    private final int flagFlashSuccess = 10040;
+    private final int flagFlashFail = 10041;
 
     private TimerTask mTask = new TimerTask() {
         @Override
@@ -101,7 +105,7 @@ public class MacTestActivity extends AppCompatActivity {
                     message.what = flagMacSuccess;
                     mHandler.sendMessage(message);
                 }
-                Thread.sleep(300);
+                Thread.sleep(1000);
 
                 String imei = MobileInfoUtil.getIMEI(MacTestActivity.this);
                 Log.i(TAG, "imei : " + imei);
@@ -116,13 +120,13 @@ public class MacTestActivity extends AppCompatActivity {
                     message.what = flagImeiSuccess;
                     mHandler.sendMessage(message);
                 }
-                Thread.sleep(300);
+                Thread.sleep(1000);
 
                 saveFlag = 2;
                 String sn = MobileInfoUtil.get("gsm.serial");
-                if (sn.equals("") || sn == null){
+                if (sn.equals("") || sn == null) {
                     mHandler.sendEmptyMessage(flagBoardFail);
-                }else {
+                } else {
                     StringBuilder s = new StringBuilder("");
                     s.append(sn.charAt(60));
                     s.append(sn.charAt(61));
@@ -133,6 +137,18 @@ public class MacTestActivity extends AppCompatActivity {
                     } else {
                         mHandler.sendEmptyMessage(flagBoardFail);
                     }
+                }
+                Thread.sleep(1000);
+
+                saveFlag = 3;
+                String flashnum = Build.SERIAL;
+                if (flashnum.equals("") || flashnum == null) {
+                    mHandler.sendEmptyMessage(flagFlashFail);
+                } else {
+                    Message message = new Message();
+                    message.what = flagFlashSuccess;
+                    message.obj = flashnum;
+                    mHandler.sendMessage(message);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -154,7 +170,6 @@ public class MacTestActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             MacTestActivity macTestActivity = mWeakReference.get();
-            Bitmap image = (Bitmap) msg.obj;
             int what = msg.what;
             if (what == macTestActivity.flagMacFail) {
                 macTestActivity.showToast("原始MAC地址，MAC测试不通过！");
@@ -166,6 +181,7 @@ public class MacTestActivity extends AppCompatActivity {
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagMacSuccess) {
+                Bitmap image = (Bitmap) msg.obj;
                 macTestActivity.showToast("MAC检测通过！");
                 Spannable span = new SpannableString("PASS！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -177,6 +193,7 @@ public class MacTestActivity extends AppCompatActivity {
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagImeiSuccess) {
+                Bitmap image = (Bitmap) msg.obj;
                 macTestActivity.showToast("IMEI检测通过！");
                 macTestActivity.mImeiImgShow.setVisibility(View.VISIBLE);
                 macTestActivity.mImeiImgShow.setImageBitmap(image);
@@ -206,7 +223,7 @@ public class MacTestActivity extends AppCompatActivity {
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
-                macTestActivity.mProgressDialog.dismiss();
+                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagBoardFail) {
                 macTestActivity.showToast("机器主板未校准！");
                 macTestActivity.mUtil.playAudio(2);
@@ -215,6 +232,28 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mBoardTvResult.append(span);
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
+                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+            } else if (what == macTestActivity.flagFlashFail) {
+                macTestActivity.showToast("未获取到Flash序列号！");
+                macTestActivity.mUtil.playAudio(2);
+                Spannable span = new SpannableString("无Flash序列号！");
+                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                macTestActivity.mFlashTvResult.append(span);
+                macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
+                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.mProgressDialog.dismiss();
+            } else if (what == macTestActivity.flagFlashSuccess) {
+                CharSequence flashNum = (CharSequence)msg.obj;
+                Spannable span = new SpannableString( flashNum);
+                span.setSpan(new AbsoluteSizeSpan(70), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
+                macTestActivity.mFlashTvResult.append(span);
+                macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
                 macTestActivity.mProgressDialog.dismiss();
@@ -276,6 +315,8 @@ public class MacTestActivity extends AppCompatActivity {
                     mSpUtils.saveImeiCheckResult(checkResult);
                 } else if (saveFlag == 2) {
                     mSpUtils.saveBoardCheckResult(checkResult);
+                }else if (saveFlag == 3){
+                    mSpUtils.saveFlashCheckResult(checkResult);
                     finish();
                 }
                 break;

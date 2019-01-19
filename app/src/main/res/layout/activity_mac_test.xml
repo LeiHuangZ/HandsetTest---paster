@@ -46,6 +46,14 @@
         android:textSize="20sp"
         android:text="主板校准："/>
 
+    <TextView
+        android:id="@+id/flash_tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:text="Flash序列号："/>
+
     <ImageView
         android:id="@+id/result_img_ok"
         android:layout_width="0dp"
