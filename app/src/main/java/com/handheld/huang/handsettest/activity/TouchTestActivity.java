@@ -59,6 +59,9 @@ public class TouchTestActivity extends AppCompatActivity {
                 mResultLlConfirm.setVisibility(View.VISIBLE);
             }
         });
+
+        // 自动进入触摸测试
+        onViewClicked(mTouchTvTips);
     }
 
     @OnClick({R.id.touch_tv_tips, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})

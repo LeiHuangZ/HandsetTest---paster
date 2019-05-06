@@ -47,6 +47,8 @@ public class GpsTestActivity extends AppCompatActivity {
 
         mFinishTvNext.setClickable(false);
         mSpUtils = new SpUtils(this);
+
+        onViewClicked(mGpsBtnTest);
     }
 
 
@@ -90,10 +92,5 @@ public class GpsTestActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-    }
-
-
-    @OnClick(R.id.gps_btn_test)
-    public void onViewClicked() {
     }
 }

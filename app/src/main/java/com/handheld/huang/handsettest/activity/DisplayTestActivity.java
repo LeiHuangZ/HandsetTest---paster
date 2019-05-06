@@ -68,6 +68,8 @@ public class DisplayTestActivity extends AppCompatActivity {
         //初始化SP存储工具类，存储检测结果
         mSpUtils = new SpUtils(this);
 
+        // 自动进入屏幕测试
+        onViewClicked(mDisplayTvTips);
     }
 
     /**

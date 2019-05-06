@@ -104,6 +104,9 @@ public class BasicTestActivity extends AppCompatActivity {
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
+
+        // 自动进入测试
+        onViewClicked(mBasicBtnTest);
     }
 
     @Override
