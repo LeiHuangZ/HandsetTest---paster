@@ -24,6 +24,8 @@
     <string name="idread_test">身份证读取测试</string>
     <string name="idread_test_confirm">确认身份证读取测试结果</string>
 
+    <string name="dbm_test">手机信号测试</string>
+
     <string name="call_test">通话测试</string>
     <string name="start_call_test">点击此处开始通话测试</string>
     <string name="call_test_confirm">确认通话测试结果</string>

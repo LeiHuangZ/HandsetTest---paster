@@ -204,7 +204,7 @@ public class BasicTestActivity extends AppCompatActivity {
                 } else if (testFlag == speakerFlag) {
                     mSpUtils.saveSpeakerCheckResult(checkResult);
                     Log.i(TAG, "SpeakerCheckResult: " + mSpUtils.getSpeakerCheckResult());
-                    startActivity(new Intent(BasicTestActivity.this, KeyTestActivity.class));
+                    startActivity(new Intent(BasicTestActivity.this, DbmActivity.class));
                     overridePendingTransition(R.animator.activity_start_rigth, 0);
                     finish();
                 }

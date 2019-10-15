@@ -71,6 +71,36 @@ public class SpUtils {
         return mPreferences.getInt("CameraCheckResult", 1);
     }
 
+    /** 存储移动数据网络信号强度 */
+    public void saveGsmDbm(int result){
+        mPreferences.edit().putInt("GsmDbmValue", result).apply();
+    }
+
+    /** 获取WiFi信号强度 */
+    public int getWiFiDbm(){
+        return mPreferences.getInt("WifiDbmValue", 0);
+    }
+
+    /** 存储WiFi信号强度 */
+    public void saveWiFiDbm(int result){
+        mPreferences.edit().putInt("WifiDbmValue", result).apply();
+    }
+
+    /** 获取移动数据网络信号强度 */
+    public int getGsmDbm(){
+        return mPreferences.getInt("GsmDbmValue", 0);
+    }
+
+    /** 存储蜂窝信号强度测试结果 */
+    public void saveDbmCheckResult(int result){
+        mPreferences.edit().putInt("DbmCheckResult", result).apply();
+    }
+
+    /** 获取蜂窝信号强度测试结果 */
+    public int getDbmCheckResult(){
+        return mPreferences.getInt("DbmCheckResult", 1);
+    }
+
     /** 存储通话测试结果 */
     public void saveCallCheckResult(int result){
         mPreferences.edit().putInt("CallCheckResult", result).apply();

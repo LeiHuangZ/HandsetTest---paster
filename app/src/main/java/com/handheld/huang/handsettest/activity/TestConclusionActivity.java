@@ -98,6 +98,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result(getResources().getString(R.string.indicator), mSpUtils.getIndocatorCheckResult()));
                 mList.add(new Result("Usb测试", mSpUtils.getUsbCheckResult()));
                 mList.add(new Result("底座测试", mSpUtils.getChargerCheckResult()));
+                mList.add(new Result("网络信号强度测试", mSpUtils.getDbmCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.onElectricity_test), mSpUtils.getOnElectricityCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.offElectricity_test), mSpUtils.getOffElectricityCheckResult()));
 
@@ -255,6 +256,28 @@ public class TestConclusionActivity extends AppCompatActivity {
                         str = str.concat("通过\n");
                     }else {
                         str = str.concat("未通过\n");
+                    }
+                    str = str.concat("网络强度测试  ");
+                    if (mSpUtils.getDbmCheckResult() == 0) {
+                        str = str.concat("通过  ");
+                        str = str.concat("信号值:");
+                        str = str.concat("移动网络 ");
+                        str = str.concat(String.valueOf(mSpUtils.getGsmDbm()));
+                        str = str.concat("dBm  ");
+                        str = str.concat("WiFi ");
+                        str = str.concat(String.valueOf(mSpUtils.getWiFiDbm()));
+                        str = str.concat("dBm");
+                        str = str.concat("\n");
+                    }else {
+                        str = str.concat("未通过 ");
+                        str = str.concat("信号值:");
+                        str = str.concat("移动网络 ");
+                        str = str.concat(String.valueOf(mSpUtils.getGsmDbm()));
+                        str = str.concat("dBm  ");
+                        str = str.concat("WiFi ");
+                        str = str.concat(String.valueOf(mSpUtils.getWiFiDbm()));
+                        str = str.concat("dBm");
+                        str = str.concat("\n");
                     }
                     fw.flush();
                     fw.write(str);
