@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -119,7 +120,13 @@ public class MacTestActivity extends AppCompatActivity {
                 Thread.sleep(300);
 
                 saveFlag = 2;
-                String sn = MobileInfoUtil.get("gsm.serial");
+                String sn = "";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    sn = MobileInfoUtil.get("vendor.gsm.serial");
+                } else {
+                    sn = MobileInfoUtil.get("gsm.serial");
+                }
+                Log.e(TAG, "run, gsm.barcode " + sn);
                 if (sn.equals("") || sn == null){
                     mHandler.sendEmptyMessage(flagBoardFail);
                 }else {
