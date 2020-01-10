@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Point;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +16,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.utils.SpUtils;
+import com.handheld.huang.handsettest.utils.UsbTils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +57,14 @@ public class IndicatorTestActivity extends AppCompatActivity {
     private SerialPort mSerialPort;
     private String mRelease;
 
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.e(TAG, "onReceive, action:" + action);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +81,55 @@ public class IndicatorTestActivity extends AppCompatActivity {
         mSerialPort = new SerialPort();
         mResultTvNext.setClickable(false);
         mResultTvQuestion.setText(getResources().getString(R.string.indicator_test_confirm));
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onStart() {
+        updateButtonStat();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        //  BX6000退出页面时恢复正常充电灯状态
+        if (Build.VERSION.SDK_INT == 28) {
+            BatteryManager manager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+            if (manager != null) {
+                int intProperty = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+                if (intProperty >= 90){
+                    boolean redOn = UsbTils.getGpioState(78);
+                    if (redOn){
+                        mSerialPort.setGPIOlow(160);
+                    }
+                    boolean blueOn = UsbTils.getGpioState(57);
+                    if (!blueOn) {
+                        mSerialPort.setGPIOhigh(57);
+                    }
+                } else {
+                    boolean redOn = UsbTils.getGpioState(78);
+                    if (!redOn){
+                        mSerialPort.setGPIOhigh(160);
+                    }
+                    boolean blueOn = UsbTils.getGpioState(57);
+                    if (blueOn) {
+                        mSerialPort.setGPIOlow(57);
+                    }
+                }
+            }
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
     boolean isBlueOn = false;
@@ -91,7 +151,10 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_blue:
                 if (!isBlueOn) {
                     // 蓝灯亮
-                    if (mScreenHeight == screen901) {
+                    if (Build.VERSION.SDK_INT == 28){
+                        // BX6000蓝灯
+                        mSerialPort.setGPIOhigh(57);
+                    } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
                             mSerialPort.setGPIOhigh(64);
@@ -114,7 +177,10 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isBlueOn = true;
                 } else {
                     //蓝灯灭
-                    if (mScreenHeight == screen901) {
+                    if (Build.VERSION.SDK_INT == 28){
+                        // BX6000蓝灯
+                        mSerialPort.setGPIOlow(57);
+                    } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
                             mSerialPort.setGPIOlow(64);
@@ -141,7 +207,12 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_red:
                 if (!isRedOn) {
                     //红灯亮
-                    if (mScreenHeight == screen901) {
+                    if (Build.VERSION.SDK_INT == 28){
+                        // BX6000蓝灯
+                        mSerialPort.setGPIOhigh(160);
+                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
+                        mIndicatorBtnRed.setIconResource("\uf05e");
+                    } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
                             mSerialPort.setGPIOhigh(9);
@@ -170,7 +241,12 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isRedOn = true;
                 } else {
                     //红灯灭
-                    if (mScreenHeight == screen901) {
+                    if (Build.VERSION.SDK_INT == 28){
+                        // BX6000蓝灯
+                        mSerialPort.setGPIOlow(160);
+                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
+                        mIndicatorBtnRed.setIconResource("\uf0eb");
+                    } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
                             mSerialPort.setGPIOlow(9);
@@ -226,5 +302,28 @@ public class IndicatorTestActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    private void updateButtonStat(){
+        //  BX6000进入页面时判断红蓝灯状态，57为蓝灯（控制为57），78为红灯（控制为160）
+        if (Build.VERSION.SDK_INT == 28) {
+            isBlueOn = UsbTils.getGpioState(57);
+            isRedOn = UsbTils.getGpioState(78);
+            Toast.makeText(this, "蓝灯：" + isBlueOn + ", " + "红灯：" + isRedOn, Toast.LENGTH_SHORT).show();
+            if (!isRedOn) {
+                mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
+                mIndicatorBtnRed.setIconResource("\uf0eb");
+            } else {
+                mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
+                mIndicatorBtnRed.setIconResource("\uf05e");
+            }
+            if (!isBlueOn){
+                mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_on));
+                mIndicatorBtnBlue.setIconResource("\uf0eb");
+            } else {
+                mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_off));
+                mIndicatorBtnBlue.setIconResource("\uf05e");
+            }
+        }
     }
 }

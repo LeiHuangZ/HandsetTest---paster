@@ -123,7 +123,7 @@ public class MacTestActivity extends AppCompatActivity {
                 Thread.sleep(1000);
 
                 saveFlag = 2;
-                String sn = MobileInfoUtil.get("gsm.serial");
+                String sn = MobileInfoUtil.get("vendor.gsm.serial");
                 if (sn.equals("") || sn == null) {
                     mHandler.sendEmptyMessage(flagBoardFail);
                 } else {
