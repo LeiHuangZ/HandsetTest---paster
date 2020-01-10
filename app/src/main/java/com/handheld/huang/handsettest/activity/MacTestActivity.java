@@ -123,7 +123,13 @@ public class MacTestActivity extends AppCompatActivity {
                 Thread.sleep(1000);
 
                 saveFlag = 2;
-                String sn = MobileInfoUtil.get("vendor.gsm.serial");
+                String sn = "";
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    sn = MobileInfoUtil.get("vendor.gsm.serial");
+                } else {
+                    sn = MobileInfoUtil.get("gsm.serial");
+                }
+                Log.e(TAG, "run, gsm.barcode " + sn);
                 if (sn.equals("") || sn == null) {
                     mHandler.sendEmptyMessage(flagBoardFail);
                 } else {
