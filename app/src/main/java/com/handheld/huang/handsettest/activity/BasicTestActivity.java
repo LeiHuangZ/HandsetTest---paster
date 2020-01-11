@@ -81,6 +81,8 @@ public class BasicTestActivity extends AppCompatActivity {
     private Toast mToast;
     private Util mUtil;
 
+    private boolean mCameraErrorFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +119,7 @@ public class BasicTestActivity extends AppCompatActivity {
                     try {
                         startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
                     } catch (Exception e) {
+                        mCameraErrorFlag = true;
                         Toast.makeText(this, "设备相机连接异常，请检查硬件！", Toast.LENGTH_SHORT).show();
                         onViewClicked(mResultImgCross);
                         mResultImgCross.setClickable(false);
@@ -222,8 +225,10 @@ public class BasicTestActivity extends AppCompatActivity {
         if (requestCode == 0) {
             mBasicLlEnter.setVisibility(View.GONE);
             mResultLlConfirm.setVisibility(View.VISIBLE);
-            mResultTvNext.setClickable(false);
             mResultTvQuestion.setText(R.string.camera_test_confirm);
+            if (!mCameraErrorFlag) {
+                mResultTvNext.setClickable(false);
+            }
         } else if (requestCode == 1) {
             Log.i(TAG, "onActivityResult: ");
             mBasicLlEnter.setVisibility(View.GONE);
