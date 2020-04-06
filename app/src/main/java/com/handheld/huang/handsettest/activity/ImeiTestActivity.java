@@ -1,11 +1,12 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.utils.CodeUtil;
@@ -51,6 +54,7 @@ public class ImeiTestActivity extends AppCompatActivity {
     private Util mUtil;
     private Toast mToast;
     private SpUtils mSpUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +72,12 @@ public class ImeiTestActivity extends AppCompatActivity {
     }
 
     String originImei = "860527010207000";
+
     @OnClick({R.id.imei_btn_test, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.imei_btn_test:
-                String imei = getIMEI();
+                String imei = getImei();
                 Log.i(TAG, "imei : " + imei);
                 if (imei == null || originImei.equals(imei)) {
                     showToast("原始IMEI地址，IMEI测试不通过！");
@@ -122,11 +127,18 @@ public class ImeiTestActivity extends AppCompatActivity {
 
     /**
      * 获取IMEI号
-     *
      */
-    private String getIMEI() {
+    @SuppressLint({"MissingPermission", "HardwareIds"})
+    private String getImei() {
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        return tm.getDeviceId();
+        if (tm != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return tm.getImei();
+            } else {
+                return tm.getDeviceId();
+            }
+        }
+        return originImei;
     }
 
     /**

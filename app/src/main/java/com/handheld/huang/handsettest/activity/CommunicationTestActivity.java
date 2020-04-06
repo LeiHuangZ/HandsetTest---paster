@@ -8,9 +8,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handheld.huang.handsettest.R;
-import com.handheld.huang.handsettest.activity.identification.handheld.instance.IDReadActivity;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.Util;
 
@@ -72,17 +71,25 @@ public class CommunicationTestActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         testFlag = intent.getIntExtra("testFlag", 0);
-        if (testFlag == 1){
-            mCommunicationToolbarTitle.setTitle(getString(R.string.mic_test));
-            mCommunicationBtnTest.setText(getString(R.string.start_mic_test));
-            mCommunicationBtnTest.setIconResource("\uf130");
-        }
 
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
 
         mResultTvNext.setClickable(false);
+
+        if (testFlag == 1){
+            // 工厂测试版本，直接进行录音
+            mCommunicationToolbarTitle.setTitle(getString(R.string.mic_test));
+//            mCommunicationBtnTest.setText(getString(R.string.start_mic_test));
+//            mCommunicationBtnTest.setIconResource("\uf130");
+            micCheck();
+            mCommunicationBtnTest.setIconResource("\uf028");
+            mCommunicationBtnTest.setText(getResources().getString(R.string.recording));
+            mCommunicationBtnTest.setClickable(false);
+        } else {
+            onViewClicked(mCommunicationBtnTest);
+        }
     }
 
     @Override
@@ -100,10 +107,12 @@ public class CommunicationTestActivity extends AppCompatActivity {
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
                 } else if (testFlag == 1) {
                     micCheck();
+                    mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationBtnTest.setText(getResources().getString(R.string.recording));
                     mCommunicationBtnTest.setClickable(false);
                 }else if (testFlag == bluetoothFlag) {
-                    startActivityForResult(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS), 2);
+                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                    startActivityForResult(intent, 2);
                 }
                 break;
             case R.id.result_img_ok:
@@ -122,25 +131,26 @@ public class CommunicationTestActivity extends AppCompatActivity {
                 if (testFlag == 0) {
                     mSpUtils.saveWifiCheckResult(checkResult);
                     Log.i(TAG, "WifiCheckResult: " + mSpUtils.getWifiCheckResult());
-                    mResultLlConfirm.setVisibility(View.GONE);
+//                    mResultLlConfirm.setVisibility(View.GONE);
                     resetCheck();
-                    mCommunicationLlEnter.setVisibility(View.VISIBLE);
+//                    mCommunicationLlEnter.setVisibility(View.VISIBLE);
 //                    mCommunicationLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.mic_test_color));
 //                    mCommunicationBtnTest.setText(getResources().getString(R.string.start_mic_test));
 //                    mCommunicationBtnTest.setIconResource("\uf028");
 //                    mCommunicationToolbarTitle.setTitle(R.string.mic_test);
 //                    testFlag = 1;
-                    mCommunicationLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
-                    mCommunicationBtnTest.setText(getResources().getString(R.string.start_bluetooth_test));
-                    mCommunicationBtnTest.setIconResource("\uf028");
+//                    mCommunicationLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
+//                    mCommunicationBtnTest.setText(getResources().getString(R.string.start_bluetooth_test));
+//                    mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationToolbarTitle.setTitle(R.string.bluetooth_test);
                     testFlag = 3;
+                    onViewClicked(mCommunicationBtnTest);
                 } else if (testFlag == 1) {
                     mSpUtils.saveMicCheckResult(checkResult);
                     Log.i(TAG, "MicCheckResult: " + mSpUtils.getMicCheckResult());
                     mResultLlConfirm.setVisibility(View.GONE);
                     resetCheck();
-                    mCommunicationLlEnter.setVisibility(View.VISIBLE);
+//                    mCommunicationLlEnter.setVisibility(View.VISIBLE);
 //                    mCommunicationLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
 //                    mCommunicationBtnTest.setText(getResources().getString(R.string.start_bluetooth_test));
 //                    mCommunicationBtnTest.setIconResource("\uf028");
@@ -254,7 +264,7 @@ public class CommunicationTestActivity extends AppCompatActivity {
                     MediaPlayer mediaPlayer = new MediaPlayer();
                     mediaPlayer.reset();
                     try {
-                        mediaPlayer.setDataSource(Environment.getExternalStorageDirectory() + "/recordtest" + ".amr");
+                        mediaPlayer.setDataSource("/storage/emulated/0/recordtest.amr");
                         mediaPlayer.prepare();
                         mediaPlayer.start();
                     } catch (IllegalArgumentException e) {
@@ -271,6 +281,11 @@ public class CommunicationTestActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     mHandler.sendEmptyMessage(0);
+                    File file = new File("/storage/emulated/0/recordtest.amr");
+                    if (file.exists()){
+                        boolean delete = file.delete();
+                        Log.e(TAG, "micCheck delete temp amr file:" + delete);
+                    }
                 }
             });
         } catch (IOException e) {

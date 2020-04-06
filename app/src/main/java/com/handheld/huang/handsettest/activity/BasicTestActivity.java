@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StatFs;
-import android.os.storage.StorageManager;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -28,16 +25,9 @@ import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.StorageUtils;
 import com.handheld.huang.handsettest.utils.Util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,9 +146,9 @@ public class BasicTestActivity extends AppCompatActivity {
                 if (testFlag == 0) {
                     mSpUtils.saveCameraCheckResult(checkResult);
                     Log.i(TAG, "CameraCheckResult: " + mSpUtils.getCameraCheckResult());
-                    mResultLlConfirm.setVisibility(View.GONE);
-                    resetCheck();
-                    mBasicLlEnter.setVisibility(View.VISIBLE);
+//                    mResultLlConfirm.setVisibility(View.GONE);
+//                    resetCheck();
+//                    mBasicLlEnter.setVisibility(View.VISIBLE);
 //                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.call_test_color));
 //                    mBasicBtnTest.setText(getResources().getString(R.string.start_call_test));
 //                    mBasicBtnTest.setIconResource("\uf095");

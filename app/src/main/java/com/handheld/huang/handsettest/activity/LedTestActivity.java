@@ -3,7 +3,7 @@ package com.handheld.huang.handsettest.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -120,11 +120,13 @@ public class LedTestActivity extends AppCompatActivity {
             case R.id.result_tv_next:
                 mSpUtils.saveLedCheckResult(checkResult);
                 Log.i(TAG, "LedCheckResult: " + mSpUtils.getLedCheckResult());
-                Intent intent = new Intent(LedTestActivity.this, BasicTestActivity.class);
-                intent.putExtra("testFlag", 3);
-                startActivity(intent);
-
-                overridePendingTransition(R.animator.activity_start_rigth,0);
+//                Intent intent = new Intent(LedTestActivity.this, BasicTestActivity.class);
+//                intent.putExtra("testFlag", 3);
+//                startActivity(intent);
+//
+//                overridePendingTransition(R.animator.activity_start_rigth,0);
+                startActivity(new Intent(LedTestActivity.this, DbmActivity.class));
+                overridePendingTransition(R.animator.activity_start_rigth, 0);
                 finish();
                 break;
             default:

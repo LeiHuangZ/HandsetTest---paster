@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
-import android.support.v4.os.EnvironmentCompat;
+import androidx.core.os.EnvironmentCompat;
 import android.util.Log;
 
 import com.handheld.huang.handsettest.StorageBean;

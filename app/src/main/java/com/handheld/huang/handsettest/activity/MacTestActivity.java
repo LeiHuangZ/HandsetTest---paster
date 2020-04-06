@@ -10,7 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -83,7 +85,6 @@ public class MacTestActivity extends AppCompatActivity {
     private TimerTask mTask = new TimerTask() {
         @Override
         public void run() {
-            saveFlag = 0;
             try {
                 while (mWifiManager == null || !mWifiManager.isWifiEnabled()) {
                     try {
@@ -105,11 +106,10 @@ public class MacTestActivity extends AppCompatActivity {
                     message.what = flagMacSuccess;
                     mHandler.sendMessage(message);
                 }
-                Thread.sleep(1000);
+                Thread.sleep(100);
 
                 String imei = MobileInfoUtil.getIMEI(MacTestActivity.this);
                 Log.i(TAG, "imei : " + imei);
-                saveFlag = 1;
                 if (imei == null || originImei.equals(imei) || imei.equals("")) {
                     mHandler.sendEmptyMessage(flagImeiFail);
                 } else {
@@ -120,9 +120,8 @@ public class MacTestActivity extends AppCompatActivity {
                     message.what = flagImeiSuccess;
                     mHandler.sendMessage(message);
                 }
-                Thread.sleep(1000);
+                Thread.sleep(100);
 
-                saveFlag = 2;
                 String sn = "";
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     sn = MobileInfoUtil.get("vendor.gsm.serial");
@@ -144,9 +143,8 @@ public class MacTestActivity extends AppCompatActivity {
                         mHandler.sendEmptyMessage(flagBoardFail);
                     }
                 }
-                Thread.sleep(1000);
+                Thread.sleep(100);
 
-                saveFlag = 3;
                 String flashnum = Build.SERIAL;
                 if (flashnum.equals("") || flashnum == null) {
                     mHandler.sendEmptyMessage(flagFlashFail);
@@ -184,6 +182,7 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mMacTvResult.append(span);
+                mWeakReference.get().saveFlag = 0;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagMacSuccess) {
@@ -196,6 +195,7 @@ public class MacTestActivity extends AppCompatActivity {
                 macTestActivity.mMacTvResult.append(span);
                 macTestActivity.mMacImgShow.setVisibility(View.VISIBLE);
                 macTestActivity.mMacImgShow.setImageBitmap(image);
+                mWeakReference.get().saveFlag = 0;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagImeiSuccess) {
@@ -208,6 +208,7 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.mImeiTvResult.append(span);
+                mWeakReference.get().saveFlag = 1;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagImeiFail) {
@@ -217,6 +218,7 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mImeiTvResult.append(span);
+                mWeakReference.get().saveFlag = 1;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
                 macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
             } else if (what == macTestActivity.flagBoardSuccess) {
@@ -226,6 +228,7 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.mBoardTvResult.append(span);
+                mWeakReference.get().saveFlag = 2;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
@@ -237,6 +240,7 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mBoardTvResult.append(span);
+                mWeakReference.get().saveFlag = 2;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
@@ -248,17 +252,19 @@ public class MacTestActivity extends AppCompatActivity {
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mFlashTvResult.append(span);
+                mWeakReference.get().saveFlag = 3;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
                 macTestActivity.mProgressDialog.dismiss();
             } else if (what == macTestActivity.flagFlashSuccess) {
-                CharSequence flashNum = (CharSequence)msg.obj;
-                Spannable span = new SpannableString( flashNum);
+                CharSequence flashNum = (CharSequence) msg.obj;
+                Spannable span = new SpannableString(flashNum);
                 span.setSpan(new AbsoluteSizeSpan(70), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.mFlashTvResult.append(span);
+                mWeakReference.get().saveFlag = 3;
                 macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
                 macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
                 macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
@@ -321,7 +327,7 @@ public class MacTestActivity extends AppCompatActivity {
                     mSpUtils.saveImeiCheckResult(checkResult);
                 } else if (saveFlag == 2) {
                     mSpUtils.saveBoardCheckResult(checkResult);
-                }else if (saveFlag == 3){
+                } else if (saveFlag == 3) {
                     mSpUtils.saveFlashCheckResult(checkResult);
                     finish();
                 }

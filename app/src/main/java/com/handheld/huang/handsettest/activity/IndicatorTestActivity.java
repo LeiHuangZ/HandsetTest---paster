@@ -8,15 +8,14 @@ import android.graphics.Point;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.utils.SpUtils;
@@ -93,37 +92,6 @@ public class IndicatorTestActivity extends AppCompatActivity {
     protected void onStart() {
         updateButtonStat();
         super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        //  BX6000退出页面时恢复正常充电灯状态
-        if (Build.VERSION.SDK_INT == 28) {
-            BatteryManager manager = (BatteryManager) getSystemService(BATTERY_SERVICE);
-            if (manager != null) {
-                int intProperty = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-                if (intProperty >= 90){
-                    boolean redOn = UsbTils.getGpioState(78);
-                    if (redOn){
-                        mSerialPort.setGPIOlow(160);
-                    }
-                    boolean blueOn = UsbTils.getGpioState(57);
-                    if (!blueOn) {
-                        mSerialPort.setGPIOhigh(57);
-                    }
-                } else {
-                    boolean redOn = UsbTils.getGpioState(78);
-                    if (!redOn){
-                        mSerialPort.setGPIOhigh(160);
-                    }
-                    boolean blueOn = UsbTils.getGpioState(57);
-                    if (blueOn) {
-                        mSerialPort.setGPIOlow(57);
-                    }
-                }
-            }
-        }
-        super.onStop();
     }
 
     @Override
@@ -309,7 +277,6 @@ public class IndicatorTestActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT == 28) {
             isBlueOn = UsbTils.getGpioState(57);
             isRedOn = UsbTils.getGpioState(78);
-            Toast.makeText(this, "蓝灯：" + isBlueOn + ", " + "红灯：" + isRedOn, Toast.LENGTH_SHORT).show();
             if (!isRedOn) {
                 mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
                 mIndicatorBtnRed.setIconResource("\uf0eb");

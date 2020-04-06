@@ -1,16 +1,22 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.Settings;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -73,6 +79,28 @@ public class TestConclusionActivity extends AppCompatActivity {
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        // 关闭GPS
+        Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, false);
+        // 关闭WiFi
+        WifiManager mWifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (mWifiManager != null && mWifiManager.isWifiEnabled()) {
+            mWifiManager.setWifiEnabled(false);
+        }
+        // 关闭蓝牙
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Log.e(TAG, "onCreate 不支持蓝牙:");
+            return;
+        }
+        if (bluetoothAdapter.isEnabled()) {
+            boolean res = bluetoothAdapter.disable();
+            Log.e(TAG, "onCreate :" + res);
+        }
+        super.onDestroy();
+    }
+
     private void initData() {
         mUtil.getExecutorService().execute(new Runnable() {
             @Override
@@ -87,14 +115,14 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result(getResources().getString(R.string.camera_test), mSpUtils.getCameraCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.call_test), mSpUtils.getCallCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.sd_test), mSpUtils.getSdCheckResult()));
-                mList.add(new Result(getResources().getString(R.string.speaker_test), mSpUtils.getSpeakerCheckResult()));
+//                mList.add(new Result(getResources().getString(R.string.speaker_test), mSpUtils.getSpeakerCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.wifi_test), mSpUtils.getWifiCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.imei_test), mSpUtils.getImeiCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.mac_test), mSpUtils.getMacCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.board_test), mSpUtils.getBoardCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.mic_test), mSpUtils.getMicCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.bluetooth_test), mSpUtils.getBluetoothCheckResult()));
-//                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
+                mList.add(new Result(getResources().getString(R.string.gps_test), mSpUtils.getGpsCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.indicator), mSpUtils.getIndocatorCheckResult()));
                 mList.add(new Result("Usb测试", mSpUtils.getUsbCheckResult()));
                 mList.add(new Result("底座测试", mSpUtils.getChargerCheckResult()));
@@ -179,12 +207,12 @@ public class TestConclusionActivity extends AppCompatActivity {
 //                    }else {
 //                        str = str.concat("未通过\n");
 //                    }
-                    str = str.concat(getResources().getString(R.string.speaker_test) + "：   ");
-                    if (mSpUtils.getSpeakerCheckResult() == 0) {
-                        str = str.concat("通过\n");
-                    }else {
-                        str = str.concat("未通过\n");
-                    }
+//                    str = str.concat(getResources().getString(R.string.speaker_test) + "：   ");
+//                    if (mSpUtils.getSpeakerCheckResult() == 0) {
+//                        str = str.concat("通过\n");
+//                    }else {
+//                        str = str.concat("未通过\n");
+//                    }
                     str = str.concat(getResources().getString(R.string.wifi_test) + "：  ");
                     if (mSpUtils.getWifiCheckResult() == 0) {
                         str = str.concat("通过\n");
@@ -215,12 +243,12 @@ public class TestConclusionActivity extends AppCompatActivity {
 //                    }else {
 //                        str = str.concat("未通过\n");
 //                    }
-//                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
-//                    if (mSpUtils.getGpsCheckResult() == 0) {
-//                        str = str.concat("通过\n");
-//                    }else {
-//                        str = str.concat("未通过\n");
-//                    }
+                    str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
+                    if (mSpUtils.getGpsCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    }else {
+                        str = str.concat("未通过\n");
+                    }
                     str = str.concat(getResources().getString(R.string.bluetooth_test) + "：   ");
                     if (mSpUtils.getBluetoothCheckResult() == 0) {
                         str = str.concat("通过\n");

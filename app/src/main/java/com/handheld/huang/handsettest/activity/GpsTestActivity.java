@@ -3,7 +3,7 @@ package com.handheld.huang.handsettest.activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,8 +60,6 @@ public class GpsTestActivity extends AppCompatActivity {
                 mGpsImgCross.setImageResource(R.drawable.check_cross_unselected);
                 checkResult = 0;
                 mFinishTvNext.setClickable(true);
-
-
                 break;
             case R.id.gps_img_cross:
                 mGpsImgCross.setImageResource(R.drawable.check_cross_selected);
@@ -76,8 +74,8 @@ public class GpsTestActivity extends AppCompatActivity {
                 break;
             case R.id.gps_btn_test:
                 ComponentName localComponentName = new ComponentName(
-                        "com.chartcross.gpstest",
-                        "com.chartcross.gpstest.GPSTest");
+                        "com.chartcross.gpstestplus",
+                        "com.chartcross.gpstestplus.GPSTestPlus");
                 Intent localIntent = new Intent();
                 localIntent.setComponent(localComponentName);
                 startActivity(localIntent);
