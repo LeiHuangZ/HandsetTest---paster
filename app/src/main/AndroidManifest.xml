@@ -37,8 +37,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
-                <data android:host="authactivity" android:scheme="com.hand.assemble.ht" />
+                <data android:host="authactivity" android:scheme="com.hand.ht"/>
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />

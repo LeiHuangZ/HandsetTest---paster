@@ -10,7 +10,6 @@
     tools:context="com.handheld.huang.handsettest.activity.ImeiTestActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/imei_toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/imei_test"/>
