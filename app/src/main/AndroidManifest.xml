@@ -33,11 +33,14 @@
         android:theme="@style/FulScreenTheme">
         <activity android:name=".activity.DbmActivity" />
         <activity android:name=".activity.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data android:host="authactivity" android:scheme="com.hand.ht"/>
+                <data
+                    android:host="authactivity"
+                    android:scheme="com.hand.ht" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
@@ -48,7 +51,8 @@
         <activity android:name=".activity.MacTestActivity" />
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
-        <activity android:name=".activity.IndicatorTestActivity" />
+        <activity android:name=".activity.IndicatorTestActivity" >
+        </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
         <activity android:name=".activity.GpsTestActivity" />
         <activity android:name=".activity.TestConclusionActivity" />

@@ -115,12 +115,15 @@ public class IndicatorTestActivity extends AppCompatActivity {
         int screen711 = 1208;
         String version = "5.1";
         String version1 = "7.0";
+        String versionQ = "9.0";
+        int sdkInt = Build.VERSION.SDK_INT;
+        Log.e(TAG, "onViewClicked: sdkInt=" + sdkInt);
         switch (view.getId()) {
             case R.id.indicator_btn_blue:
                 if (!isBlueOn) {
                     // 蓝灯亮
-                    if (Build.VERSION.SDK_INT == 28){
-                        // BX6000蓝灯
+                    if (sdkInt == 28 || sdkInt == 29){
+                        // BX6000P蓝灯
                         mSerialPort.setGPIOhigh(57);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
@@ -145,7 +148,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isBlueOn = true;
                 } else {
                     //蓝灯灭
-                    if (Build.VERSION.SDK_INT == 28){
+                    if (sdkInt == 28 || sdkInt == 29){
                         // BX6000蓝灯
                         mSerialPort.setGPIOlow(57);
                     } else if (mScreenHeight == screen901) {
@@ -175,7 +178,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_red:
                 if (!isRedOn) {
                     //红灯亮
-                    if (Build.VERSION.SDK_INT == 28){
+                    if (sdkInt == 28 || sdkInt == 29){
                         // BX6000蓝灯
                         mSerialPort.setGPIOhigh(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
@@ -209,7 +212,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isRedOn = true;
                 } else {
                     //红灯灭
-                    if (Build.VERSION.SDK_INT == 28){
+                    if (sdkInt == 28 || sdkInt == 29){
                         // BX6000蓝灯
                         mSerialPort.setGPIOlow(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));

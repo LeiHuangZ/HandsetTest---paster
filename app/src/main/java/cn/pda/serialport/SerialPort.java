@@ -1,20 +1,22 @@
 /*
  * Copyright 2009 Cedric Priscal
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 package cn.pda.serialport;
+
+import android.util.Log;
 
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -22,18 +24,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import android.util.Log;
 
 /*
- * SerialPort����JNI�࣬���������Ӳ����ͨ��
+ * SerialPort类是JNI类，负责程序与硬件的通信
  */
 public class SerialPort {
 
 	private static final String TAG = "SerialPort";
 
-
-	public static int TNCOM_EVENPARITY = 0;//żУ��
-	public static int TNCOM_ODDPARITY = 1 ;//��У��
+	public static int TNCOM_EVENPARITY = 0;//偶校验
+	public static int TNCOM_ODDPARITY = 1 ;//奇校验
 
 	/*
 	 * Do not remove or rename the field mFd: it is used by native method close();
@@ -43,11 +43,14 @@ public class SerialPort {
 	private FileOutputStream mFileOutputStream;
 	private boolean trig_on=false;
 	byte[] test;
+	//用于调用GPIO
+	public SerialPort(){}
+
 	public SerialPort(int port, int baudrate, int flags) throws SecurityException, IOException {
 //		System.load("/data/data/com.example.uartdemo/lib/libdevapi.so");
 //		System.load("/data/data/com.example.uartdemo/lib/libSerialPort.so");
-		mFd = open(port, baudrate,0);
-		Log.d("open", "����"+port+"������"+baudrate);
+		mFd = open(port, baudrate);
+
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
 			throw new IOException();
@@ -60,11 +63,6 @@ public class SerialPort {
 
 
 	}
-
-	public SerialPort() {
-		// TODO Auto-generated constructor stub
-	}
-
 	// Getters and setters
 	public InputStream getInputStream() {
 		return mFileInputStream;
@@ -90,15 +88,6 @@ public class SerialPort {
 	}
 	public void rfid_poweroff(){
 		rfidPoweroff();
-	}
-	public void zigbee_poweron() {
-		zigbeepoweron();
-	}
-	public void printer_poweron() {
-
-	}
-	public void printer_poweroff() {
-
 	}
 	public void psam_poweron() {
 		psampoweron();
@@ -126,14 +115,6 @@ public class SerialPort {
 	public boolean scaner_trig_stat(){
 		return trig_on;
 	}
-	//	/**
-//	 * ������żУ��
-//	 * @param mode  
-//	 */
-	public void setPortparity(int mode){
-		setPortParity(mode);
-	}
-
 	// JNI
 
 	private native static FileDescriptor open(int port, int baudrate);
@@ -164,7 +145,7 @@ public class SerialPort {
 	public native void setGPIOlow(int gpio);
 
 
-	public native void setPortParity(int mode); //����У��λ
+//	public native void setPortParity(int mode); //设置校验位
 
 	public native void test(byte[] bytes);
 

@@ -3,7 +3,7 @@ package cn.pda.serialport;
 
 public class Tools {
 
-	//byte תʮ������
+	//byte 转十六进制
 	public static String Bytes2HexString(byte[] b, int size) {
 		String ret = "";
 		for (int i = 0; i < size; i++) {
@@ -16,7 +16,6 @@ public class Tools {
 		return ret;
 	}
 
-
 	public static byte uniteBytes(byte src0, byte src1) {
 		byte _b0 = Byte.decode("0x" + new String(new byte[]{src0})).byteValue();
 		_b0 = (byte)(_b0 << 4);
@@ -25,7 +24,7 @@ public class Tools {
 		return ret;
 	}
 
-	//ʮ������תbyte
+	//十六进制转byte
 	public static byte[] HexString2Bytes(String src) {
 		int len = src.length() / 2;
 		byte[] ret = new byte[len];
@@ -37,7 +36,7 @@ public class Tools {
 		return ret;
 	}
 
-	/* byte[]תInt */
+	/* byte[]转Int */
 	public static int bytesToInt(byte[] bytes)
 	{
 		int addr = bytes[0] & 0xFF;
@@ -48,7 +47,7 @@ public class Tools {
 
 	}
 
-	/* Intתbyte[] */
+	/* Int转byte[] */
 	public static byte[] intToByte(int i)
 	{
 		byte[] abyte0 = new byte[4];
