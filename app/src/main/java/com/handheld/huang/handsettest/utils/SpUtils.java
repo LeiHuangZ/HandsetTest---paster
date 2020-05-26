@@ -35,6 +35,15 @@ public class SpUtils {
         return mPreferences.getInt("DisplayCheckResult", 1);
     }
 
+    /** 存储屏幕测试结果 */
+    public void saveGsensorCheckResult(int result){
+        mPreferences.edit().putInt("GsensorCheckResult", result).apply();
+    }
+    /** 获取屏幕测试结果  0 --> 通过，1 --> 不通过 */
+    public int getGsensorCheckResult(){
+        return mPreferences.getInt("GsensorCheckResult", 1);
+    }
+
     /** 存储触摸测试结果 */
     public void saveToucheCheckResult(int result){
         mPreferences.edit().putInt("ToucheCheckResult", result).apply();

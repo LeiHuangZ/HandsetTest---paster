@@ -2,12 +2,16 @@
     <string name="app_name">HandsetTest</string>
 
     <string name="all_test">整机测试</string>
+    <string name="app_not_installed">GPS测试+ 应用未安装</string>
 
     <string name="app_not_installed">GPS测试+ 应用未安装</string>
 
     <string name="display_test">屏幕测试</string>
     <string name="start_display_test">点击屏幕开始屏幕测试</string>
     <string name="display_test_confirm">确认屏幕测试结果</string>
+
+    <string name="gsensor_test">重力传感器测试</string>
+    <string name="gsensor_test_confirm">确认重力传感器测试结果</string>
 
     <string name="touch_test">触摸测试</string>
     <string name="start_touch_test">点击屏幕开始触摸测试</string>

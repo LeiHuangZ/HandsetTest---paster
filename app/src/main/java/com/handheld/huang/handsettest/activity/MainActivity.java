@@ -9,9 +9,8 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;

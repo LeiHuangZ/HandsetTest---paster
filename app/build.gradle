@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
+//        applicationId "com.hand.huang.ht"
         applicationId "com.hand.ht"
         minSdkVersion 19
         //noinspection OldTargetApi
