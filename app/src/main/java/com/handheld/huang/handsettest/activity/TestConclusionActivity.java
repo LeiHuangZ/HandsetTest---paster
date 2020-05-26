@@ -1,12 +1,17 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,6 +87,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(result);
                 mList.add(new Result(getResources().getString(R.string.touch_test), mSpUtils.getTouchCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.led_test), mSpUtils.getLedCheckResult()));
+                mList.add(new Result(getResources().getString(R.string.gsensor_test), mSpUtils.getGsensorCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.key_test), mSpUtils.getKeyCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.camera_test), mSpUtils.getCameraCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.call_test), mSpUtils.getCallCheckResult()));
@@ -137,6 +143,12 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }
                     str = str.concat(getResources().getString(R.string.touch_test) + "：   ");
                     if (mSpUtils.getTouchCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    }else {
+                        str = str.concat("未通过\n");
+                    }
+                    str = str.concat(getResources().getString(R.string.gsensor_test) + "：   ");
+                    if (mSpUtils.getGsensorCheckResult() == 0) {
                         str = str.concat("通过\n");
                     }else {
                         str = str.concat("未通过\n");
@@ -295,5 +307,27 @@ public class TestConclusionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        // 关闭GPS
+        Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, false);
+        // 关闭WiFi
+        WifiManager mWifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (mWifiManager != null && mWifiManager.isWifiEnabled()) {
+            mWifiManager.setWifiEnabled(false);
+        }
+        // 关闭蓝牙
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Log.e(TAG, "onCreate 不支持蓝牙:");
+            return;
+        }
+        if (bluetoothAdapter.isEnabled()) {
+            boolean res = bluetoothAdapter.disable();
+            Log.e(TAG, "onCreate :" + res);
+        }
+        super.onDestroy();
     }
 }

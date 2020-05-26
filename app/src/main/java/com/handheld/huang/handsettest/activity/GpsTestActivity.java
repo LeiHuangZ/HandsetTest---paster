@@ -76,8 +76,8 @@ public class GpsTestActivity extends AppCompatActivity {
                 break;
             case R.id.gps_btn_test:
                 ComponentName localComponentName = new ComponentName(
-                        "com.chartcross.gpstest",
-                        "com.chartcross.gpstest.GPSTest");
+                        "com.chartcross.gpstestplus",
+                        "com.chartcross.gpstestplus.GPSTestPlus");
                 Intent localIntent = new Intent();
                 localIntent.setComponent(localComponentName);
                 startActivity(localIntent);

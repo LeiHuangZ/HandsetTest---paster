@@ -272,6 +272,11 @@ public class CommunicationTestActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     mHandler.sendEmptyMessage(0);
+                    File file = new File("/storage/emulated/0/recordtest.amr");
+                    if (file.exists()){
+                        boolean delete = file.delete();
+                        Log.e(TAG, "micCheck delete temp amr file:" + delete);
+                    }
                 }
             });
         } catch (IOException e) {

@@ -3,12 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.hand.huang.ht"
-//        applicationId "com.huang.ht"
+//        applicationId "com.hand.huang.ht"
+        applicationId "com.hand.ht"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 7
-        versionName "1.7"
+        versionCode 8
+        versionName "1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
@@ -45,10 +45,10 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.bx1000
+            signingConfig signingConfigs.bx6000
         }
         release {
-            signingConfig signingConfigs.bx1000
+            signingConfig signingConfigs.bx6000
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

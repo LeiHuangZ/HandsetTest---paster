@@ -98,7 +98,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_blue:
                 if (!isBlueOn) {
                     // 亮蓝灯
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(57);
                     }else if (mScreenHeight == screen901) {
@@ -124,7 +124,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isBlueOn = true;
                 } else {
                     //蓝灯灭
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(57);
                     } else if (mScreenHeight == screen901) {
@@ -154,7 +154,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_red:
                 if (!isRedOn) {
                     //红灯亮
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
@@ -188,7 +188,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isRedOn = true;
                 } else {
                     //红灯灭
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));

@@ -85,7 +85,7 @@ public class TouchTestActivity extends AppCompatActivity {
             case R.id.result_tv_next:
                 mSpUtils.saveToucheCheckResult(checkResult);
                 Log.i(TAG, "TouchCheckResult: " + mSpUtils.getTouchCheckResult());
-                Intent intent = new Intent(TouchTestActivity.this, LedTestActivity.class);
+                Intent intent = new Intent(TouchTestActivity.this, SensorTestActivity.class);
 //                intent.putExtra("testFlag", 1);
                 startActivity(intent);
                 overridePendingTransition(R.animator.activity_start_rigth,0);
