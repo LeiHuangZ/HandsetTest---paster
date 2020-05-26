@@ -121,9 +121,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.indicator_btn_blue:
                 if (!isBlueOn) {
-                    // 蓝灯亮
-                    if (sdkInt == 28 || sdkInt == 29){
-                        // BX6000P蓝灯
+                    // 亮蓝灯
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                        // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(57);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
@@ -148,8 +148,8 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isBlueOn = true;
                 } else {
                     //蓝灯灭
-                    if (sdkInt == 28 || sdkInt == 29){
-                        // BX6000蓝灯
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                        // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(57);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
@@ -178,8 +178,8 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_red:
                 if (!isRedOn) {
                     //红灯亮
-                    if (sdkInt == 28 || sdkInt == 29){
-                        // BX6000蓝灯
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                        // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
                         mIndicatorBtnRed.setIconResource("\uf05e");
@@ -212,8 +212,8 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isRedOn = true;
                 } else {
                     //红灯灭
-                    if (sdkInt == 28 || sdkInt == 29){
-                        // BX6000蓝灯
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                        // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
                         mIndicatorBtnRed.setIconResource("\uf0eb");
