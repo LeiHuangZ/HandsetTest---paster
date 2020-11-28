@@ -86,11 +86,17 @@ public class MacTestActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
+                int maxLoopCount = 7;
+                int loopCount = 0;
                 while (mWifiManager == null || !mWifiManager.isWifiEnabled()) {
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+                    loopCount++;
+                    if (loopCount > maxLoopCount) {
+                        break;
                     }
                 }
                 String mac = MobileInfoUtil.getMacAddr();

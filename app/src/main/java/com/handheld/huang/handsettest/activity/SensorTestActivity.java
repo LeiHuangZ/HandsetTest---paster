@@ -102,7 +102,10 @@ public class SensorTestActivity extends AppCompatActivity {
                 mSpUtils.saveGsensorCheckResult(1);
                 break;
             case R.id.result_tv_next:
-                Intent intent = new Intent(this, LedTestActivity.class);
+//                Intent intent = new Intent(this, LedTestActivity.class);
+                // 进入通话测试
+                Intent intent = new Intent(this, BasicTestActivity.class);
+                intent.putExtra("testFlag", 1);
                 startActivity(intent);
                 overridePendingTransition(R.animator.activity_start_rigth,0);
                 finish();

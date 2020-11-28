@@ -7,20 +7,17 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.Settings;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.handheld.huang.handsettest.R;
@@ -133,60 +130,59 @@ public class TestConclusionActivity extends AppCompatActivity {
                     String savePath = Environment.getExternalStorageDirectory().getPath() + "/Ringtones/";
                     File folder = new File(savePath);
                     //如果文件夹不存在则创建
-                    if (!folder.exists())
-                    {
+                    if (!folder.exists()) {
                         boolean makeDir = folder.mkdir();
                         Log.i(TAG, "saveTestConclusion, makeDir >>>>>>> " + makeDir);
                     }
                     FileWriter fw = new FileWriter(savePath + "/zsb.txt");
                     String str;
                     str = "Flash序列号：    ";
-                    if (mSpUtils.getFlashCheckResult() == 0){
+                    if (mSpUtils.getFlashCheckResult() == 0) {
                         str = str.concat(Build.SERIAL + "\n");
-                    }else {
+                    } else {
                         str = str.concat("无序列号\n");
                     }
 
                     str = str.concat(getResources().getString(R.string.display_test) + "：   ");
                     if (mSpUtils.getDisplayCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.touch_test) + "：   ");
                     if (mSpUtils.getTouchCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.gsensor_test) + "：   ");
                     if (mSpUtils.getGsensorCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.led_test) + "： ");
                     if (mSpUtils.getLedCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.key_test) + "：   ");
                     if (mSpUtils.getKeyCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.camera_test) + "：   ");
                     if (mSpUtils.getCameraCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.call_test) + "：   ");
                     if (mSpUtils.getCallCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
 //                    str = str.concat(getResources().getString(R.string.sd_test) + "：  ");
@@ -204,7 +200,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                     str = str.concat(getResources().getString(R.string.wifi_test) + "：  ");
                     if (mSpUtils.getWifiCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
 //                    str = str.concat(getResources().getString(R.string.imei_test) + "：  ");
@@ -222,7 +218,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                     str = str.concat(getResources().getString(R.string.mic_test) + "：   ");
                     if (mSpUtils.getMicCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
 //                    str = str.concat(getResources().getString(R.string.mac_test) + "：   ");
@@ -234,19 +230,19 @@ public class TestConclusionActivity extends AppCompatActivity {
                     str = str.concat(getResources().getString(R.string.gps_test) + "：   ");
                     if (mSpUtils.getGpsCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.bluetooth_test) + "：   ");
                     if (mSpUtils.getBluetoothCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat(getResources().getString(R.string.indicator) + "： ");
                     if (mSpUtils.getIndocatorCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
 //                    str = str.concat(getResources().getString(R.string.onElectricity_test) + "： ");
@@ -264,13 +260,13 @@ public class TestConclusionActivity extends AppCompatActivity {
                     str = str.concat("Usb测试： ");
                     if (mSpUtils.getUsbCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat("底座测试  ");
                     if (mSpUtils.getChargerCheckResult() == 0) {
                         str = str.concat("通过\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat("网络强度测试  ");
@@ -284,7 +280,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                         str = str.concat(String.valueOf(mSpUtils.getWiFiDbm()));
                         str = str.concat("dBm");
                         str = str.concat("\n");
-                    }else {
+                    } else {
                         str = str.concat("未通过 ");
                         str = str.concat("信号值:");
                         str = str.concat("移动网络 ");

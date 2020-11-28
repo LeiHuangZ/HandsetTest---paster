@@ -38,7 +38,7 @@ public class CommunicationTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     /**
      * 用以标识测试功能，0 --> wifi；1 --> mic，2 --> gps，3 --> 蓝牙
      */
@@ -104,15 +104,25 @@ public class CommunicationTestActivity extends AppCompatActivity {
             case R.id.communication_btn_test:
                 Log.i(TAG, "onViewClicked, testFlag >>>>>> " + testFlag);
                 if (testFlag == 0) {
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
+                    try {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        onViewClicked(mResultTvNext);
+                    }
                 } else if (testFlag == 1) {
                     micCheck();
                     mCommunicationBtnTest.setIconResource("\uf028");
                     mCommunicationBtnTest.setText(getResources().getString(R.string.recording));
                     mCommunicationBtnTest.setClickable(false);
                 }else if (testFlag == bluetoothFlag) {
-                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-                    startActivityForResult(intent, 2);
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                        startActivityForResult(intent, 2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        onViewClicked(mResultTvNext);
+                    }
                 }
                 break;
             case R.id.result_img_ok:

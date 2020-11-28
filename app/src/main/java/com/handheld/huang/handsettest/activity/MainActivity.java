@@ -10,7 +10,6 @@ import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "onCreate :" + res);
         }
         // 声音设置为最大
-        AudioManager am=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         if (am != null) {
             am.setStreamVolume(AudioManager.STREAM_SYSTEM, am.getStreamMaxVolume(AudioManager.STREAM_SYSTEM), AudioManager.FLAG_PLAY_SOUND);
             am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.main_btn_gps_test:
                 boolean appInstalled = checkAppInstalled(MainActivity.this);
-                if (!appInstalled){
+                if (!appInstalled) {
                     Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.app_not_installed), Toast.LENGTH_SHORT).show();
                 } else {
                     startActivity(new Intent(MainActivity.this, GpsTestActivity.class));
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (mNeedClose){
+        if (mNeedClose) {
             // 关闭GPS
             Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, false);
             // 关闭WiFi

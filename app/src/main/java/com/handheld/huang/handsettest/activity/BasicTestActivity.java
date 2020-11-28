@@ -55,7 +55,7 @@ public class BasicTestActivity extends AppCompatActivity {
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
-    int checkResult = 0;
+    int checkResult = 1;
     /**
      * 用以标识测试功能，0 --> 相机；1 --> 通话，2 --> 存储卡，3 --> 喇叭
      */
@@ -120,8 +120,13 @@ public class BasicTestActivity extends AppCompatActivity {
                     }
                     mBasicBtnTest.setClickable(false);
                 } else if (testFlag == 1) {
-                    startActivityForResult(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 1);
-                    mBasicBtnTest.setClickable(false);
+                    try {
+                        startActivityForResult(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 1);
+                        mBasicBtnTest.setClickable(false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        onViewClicked(mResultTvNext);
+                    }
                 } else if (testFlag == sdFlag) {
                     sdCheck();
                     mBasicBtnTest.setClickable(false);
