@@ -59,7 +59,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="cn.icon.ht.fileProvider"
+            android:authorities="com.hand.ht.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
