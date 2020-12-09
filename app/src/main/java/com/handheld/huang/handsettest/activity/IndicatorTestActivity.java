@@ -190,6 +190,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         mSerialPort.setGPIOhigh(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
                         mIndicatorBtnRed.setIconResource("\uf05e");
+                        redLedOnP22();
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -224,6 +225,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         mSerialPort.setGPIOlow(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
                         mIndicatorBtnRed.setIconResource("\uf0eb");
+                        redLedOffP22();
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -305,9 +307,6 @@ public class IndicatorTestActivity extends AppCompatActivity {
     }
 
     private void blueLedOnP22() {
-        File file = new File("/sys/class/leds/mt6370_pmu_led1/brightness");
-        boolean exists = file.exists();
-        Log.e(TAG, "file exists: " + exists);
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led1/brightness"));
             bufferedWriter.write("1");
@@ -319,11 +318,30 @@ public class IndicatorTestActivity extends AppCompatActivity {
     }
 
     private void blueLedOffP22() {
-        File file = new File("/sys/class/leds/mt6370_pmu_led1/brightness");
-        boolean exists = file.exists();
-        Log.e(TAG, "file exists: " + exists);
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led1/brightness"));
+            bufferedWriter.write("0");
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void redLedOnP22() {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led2/brightness"));
+            bufferedWriter.write("1");
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void redLedOffP22() {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led2/brightness"));
             bufferedWriter.write("0");
             bufferedWriter.flush();
             bufferedWriter.close();
