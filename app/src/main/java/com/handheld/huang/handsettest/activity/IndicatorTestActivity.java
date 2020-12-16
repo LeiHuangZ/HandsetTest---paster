@@ -334,6 +334,11 @@ public class IndicatorTestActivity extends AppCompatActivity {
             bufferedWriter.write("1");
             bufferedWriter.flush();
             bufferedWriter.close();
+            // NB801S第一批试产主板，为led4控制红灯
+            bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led4/brightness"));
+            bufferedWriter.write("1");
+            bufferedWriter.flush();
+            bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -342,6 +347,11 @@ public class IndicatorTestActivity extends AppCompatActivity {
     private void redLedOffP22() {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led2/brightness"));
+            bufferedWriter.write("0");
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            // NB801S第一批试产主板，为led4控制红灯
+            bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/mt6370_pmu_led4/brightness"));
             bufferedWriter.write("0");
             bufferedWriter.flush();
             bufferedWriter.close();
