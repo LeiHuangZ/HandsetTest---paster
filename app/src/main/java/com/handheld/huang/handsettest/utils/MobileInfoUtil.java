@@ -69,7 +69,7 @@ public class MobileInfoUtil {
         try {
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
-                if (!nif.getName().equalsIgnoreCase("wlan0")) {
+                if (!"wlan0".equalsIgnoreCase(nif.getName())) {
                     continue;
                 }
 

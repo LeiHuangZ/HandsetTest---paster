@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -101,7 +102,7 @@ public class MacTestActivity extends AppCompatActivity {
                 }
                 String mac = MobileInfoUtil.getMacAddr();
                 Log.i(TAG, "mac : " + mac);
-                if (originMac.equals(mac)) {
+                if (TextUtils.isEmpty(mac) || mac.startsWith("00") || originMac.equals(mac)) {
                     mHandler.sendEmptyMessage(flagMacFail);
                 } else {
                     String url = mac.replaceAll(":", "");
@@ -116,7 +117,7 @@ public class MacTestActivity extends AppCompatActivity {
 
                 String imei = MobileInfoUtil.getIMEI(MacTestActivity.this);
                 Log.i(TAG, "imei : " + imei);
-                if (imei == null || originImei.equals(imei) || imei.equals("")) {
+                if (imei == null || originImei.equals(imei) || "".equals(imei)) {
                     mHandler.sendEmptyMessage(flagImeiFail);
                 } else {
                     Bitmap qrImage;
@@ -128,17 +129,17 @@ public class MacTestActivity extends AppCompatActivity {
                 }
                 Thread.sleep(100);
 
-                String sn = "";
+                String sn;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     sn = MobileInfoUtil.get("vendor.gsm.serial");
                 } else {
                     sn = MobileInfoUtil.get("gsm.serial");
                 }
                 Log.e(TAG, "run, gsm.barcode " + sn);
-                if (sn.equals("") || sn == null) {
+                if ("".equals(sn) || sn == null || sn.length() < 61) {
                     mHandler.sendEmptyMessage(flagBoardFail);
                 } else {
-                    StringBuilder s = new StringBuilder("");
+                    StringBuilder s = new StringBuilder();
                     s.append(sn.charAt(60));
                     s.append(sn.charAt(61));
                     Log.i(TAG, "run, calibration >>>>>> " + s);
@@ -151,8 +152,13 @@ public class MacTestActivity extends AppCompatActivity {
                 }
                 Thread.sleep(100);
 
-                String flashnum = Build.SERIAL;
-                if (flashnum.equals("") || flashnum == null) {
+                String flashnum;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    flashnum = Build.getSerial();
+                } else {
+                    flashnum = Build.SERIAL;
+                }
+                if (TextUtils.isEmpty(flashnum) || "0123456789ABCDEF".equals(flashnum)) {
                     mHandler.sendEmptyMessage(flagFlashFail);
                 } else {
                     Message message = new Message();
@@ -254,7 +260,7 @@ public class MacTestActivity extends AppCompatActivity {
             } else if (what == macTestActivity.flagFlashFail) {
                 macTestActivity.showToast("未获取到Flash序列号！");
                 macTestActivity.mUtil.playAudio(2);
-                Spannable span = new SpannableString("无Flash序列号！");
+                Spannable span = new SpannableString("无序列号！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.mFlashTvResult.append(span);

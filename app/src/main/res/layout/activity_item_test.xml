@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ItemTestActivity">
+
+    <Button
+        android:id="@+id/item_btn_display"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/display_test"/>
+
+    <Button
+        android:id="@+id/item_btn_touch"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/touch_test"/>
+
+    <Button
+        android:id="@+id/item_btn_sensor"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/gsensor_test"/>
+
+    <Button
+        android:id="@+id/item_btn_call"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/call_test"/>
+
+    <Button
+        android:id="@+id/item_btn_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/wifi_test"/>
+
+    <Button
+        android:id="@+id/item_btn_bt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/bluetooth_test"/>
+
+    <Button
+        android:id="@+id/item_btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/camera_test"/>
+
+    <Button
+        android:id="@+id/item_btn_mic"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/mic_test"/>
+
+    <Button
+        android:id="@+id/item_btn_led"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/led_test"/>
+
+    <Button
+        android:id="@+id/item_btn_dbm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/dbm_test"/>
+
+    <Button
+        android:id="@+id/item_btn_key"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/key_test"/>
+
+    <Button
+        android:id="@+id/item_btn_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/indicator"/>
+
+</LinearLayout>

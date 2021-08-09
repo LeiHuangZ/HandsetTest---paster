@@ -57,7 +57,7 @@ public class ChargerActivity extends AppCompatActivity {
             case R.id.result_tv_next:
                 mSpUtils.saveChargerCheckResult(onCheckResult);
                 Log.i(TAG, "getChargerCheckResult: " + mSpUtils.getChargerCheckResult() );
-                startActivity(new Intent(ChargerActivity.this, TestConclusionActivity.class));
+                startActivity(new Intent(ChargerActivity.this, FlashlightActivity.class));
                 overridePendingTransition(R.animator.activity_start_rigth, 0);
                 finish();
                 break;

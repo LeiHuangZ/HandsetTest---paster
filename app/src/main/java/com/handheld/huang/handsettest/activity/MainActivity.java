@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.main_btn_all_test, R.id.main_btn_mac_test, R.id.main_btn_gps_test})
+    @OnClick({R.id.main_btn_all_test, R.id.main_btn_mac_test, R.id.main_btn_gps_test, R.id.main_btn_item_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.main_btn_all_test:
@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     startActivity(new Intent(MainActivity.this, GpsTestActivity.class));
                 }
+                break;
+            case R.id.main_btn_item_test:
+                startActivity(new Intent(MainActivity.this, ItemTestActivity.class));
                 break;
             default:
                 break;

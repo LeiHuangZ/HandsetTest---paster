@@ -135,6 +135,13 @@ public class DbmActivity extends AppCompatActivity {
             mResultTvQuestion.setText("确认网络信号强度测试结果");
             mResultLlConfirm.setVisibility(View.VISIBLE);
         }
+
+        int rssi = mWifiManager.getConnectionInfo().getRssi();
+        if (rssi != -127) {
+            mDbmTv.append("WiFi：" + rssi + "dBm");
+        } else {
+            mDbmTv.append("WiFi：未连接");
+        }
     }
 
     @Override

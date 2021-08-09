@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">HandsetTest</string>
 
+    <string name="item_test">分项测试</string>
+
     <string name="all_test">整机测试</string>
     <string name="app_not_installed">GPS测试+ 应用未安装</string>
 
@@ -74,6 +76,8 @@
     <string name="onElectricity_test_confirm">开机电流测试结果</string>
     <string name="offElectricity_test_confirm">关机电流测试结果</string>
 
+    <string name="flashlight_test">闪光灯测试</string>
+    <string name="flashlight_test_result">闪光灯测试结果</string>
 
     <string name="facade_test">外观测试</string>
     <string name="start_facade_test">开始外观测试</string>

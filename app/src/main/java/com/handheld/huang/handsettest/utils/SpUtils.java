@@ -323,4 +323,13 @@ public class SpUtils {
     public int getShellCheckResult(){
         return mPreferences.getInt("ShellCheckResult", 1);
     }
+
+    /** 闪光灯 */
+    public void saveFlashlightCheckResult(int result){
+        mPreferences.edit().putInt("FlashlightCheckResult", result).apply();
+    }
+    /** 闪光灯 */
+    public int getFlashlightCheckResult(){
+        return mPreferences.getInt("FlashlightCheckResult", 1);
+    }
 }

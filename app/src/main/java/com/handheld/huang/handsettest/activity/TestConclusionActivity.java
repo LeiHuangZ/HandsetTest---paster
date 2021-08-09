@@ -106,6 +106,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result("Usb测试", mSpUtils.getUsbCheckResult()));
                 mList.add(new Result("底座测试", mSpUtils.getChargerCheckResult()));
                 mList.add(new Result("网络信号强度测试", mSpUtils.getDbmCheckResult()));
+                mList.add(new Result(getResources().getString(R.string.flashlight_test), mSpUtils.getFlashlightCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.onElectricity_test), mSpUtils.getOnElectricityCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.offElectricity_test), mSpUtils.getOffElectricityCheckResult()));
 
@@ -265,6 +266,12 @@ public class TestConclusionActivity extends AppCompatActivity {
                     }
                     str = str.concat("底座测试  ");
                     if (mSpUtils.getChargerCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    } else {
+                        str = str.concat("未通过\n");
+                    }
+                    str = str.concat("闪光灯测试  ");
+                    if (mSpUtils.getFlashlightCheckResult() == 0) {
                         str = str.concat("通过\n");
                     } else {
                         str = str.concat("未通过\n");
