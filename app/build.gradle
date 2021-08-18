@@ -65,7 +65,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            def fileName = "HandsetTest_paster_v${defaultConfig.versionName}.apk"
+            def fileName = "HandsetTest_paster_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
             outputFileName = fileName
         }
     }
