@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.hand.ht"
+        applicationId "com.hand.assemble.ht"
 //        applicationId "cn.icon.ht"
         minSdkVersion 19
         //noinspection OldTargetApi
@@ -65,7 +65,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            def fileName = "HandsetTest_paster_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
+            def fileName = "HandsetTest_工厂非内置_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
             outputFileName = fileName
         }
     }

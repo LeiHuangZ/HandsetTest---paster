@@ -45,9 +45,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <data
-                    android:host="authactivity"
-                    android:scheme="com.hand.ht" />
+<!--                <data-->
+<!--                    android:host="authactivity"-->
+<!--                    android:scheme="com.hand.ht" />-->
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
@@ -66,7 +66,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.hand.ht.fileProvider"
+            android:authorities="com.hand.assemble.ht.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -80,9 +80,9 @@
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
 
-                <data
-                    android:host="99999"
-                    android:scheme="android_secret_code" />
+<!--                <data-->
+<!--                    android:host="99999"-->
+<!--                    android:scheme="android_secret_code" />-->
             </intent-filter>
         </receiver>
         <receiver
