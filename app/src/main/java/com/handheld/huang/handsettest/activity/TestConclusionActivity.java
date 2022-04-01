@@ -348,6 +348,7 @@ public class TestConclusionActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         // 关闭GPS
         Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, false);
         // 关闭WiFi
@@ -365,6 +366,5 @@ public class TestConclusionActivity extends AppCompatActivity {
             boolean res = bluetoothAdapter.disable();
             Log.e(TAG, "onCreate :" + res);
         }
-        super.onDestroy();
     }
 }
