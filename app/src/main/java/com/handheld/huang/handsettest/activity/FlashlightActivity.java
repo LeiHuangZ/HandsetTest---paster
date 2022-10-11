@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -51,7 +52,12 @@ public class FlashlightActivity extends Activity {
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
         try {
-            String cameraId = cameraManager.getCameraIdList()[0];
+            String[] cameraIdList = cameraManager.getCameraIdList();
+            if (cameraIdList.length == 0) {
+                Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String cameraId = cameraIdList[0];
             cameraManager.setTorchMode(cameraId, true);
         } catch (CameraAccessException e) {
             e.printStackTrace();

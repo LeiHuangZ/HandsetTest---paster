@@ -98,4 +98,5 @@
 
     <string name="test_conclusion">测试结果</string>
 
+    <string name="camera_not_found">未找到可用相机</string>
 </resources>
