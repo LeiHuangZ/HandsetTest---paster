@@ -332,4 +332,14 @@ public class SpUtils {
     public int getFlashlightCheckResult(){
         return mPreferences.getInt("FlashlightCheckResult", 1);
     }
+
+    /** 串口13，5V测试 */
+    public void saveTTL135VCheckResult(int result){
+        mPreferences.edit().putInt("TTL135VCheckResult", result).apply();
+    }
+
+    /** 串口13，5V测试 */
+    public int getTTL135VCheckResult(){
+        return mPreferences.getInt("TTL135VCheckResult", 1);
+    }
 }

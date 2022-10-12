@@ -72,7 +72,11 @@ public class FlashlightActivity extends Activity {
     private void flashLightOff() {
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            String cameraId = cameraManager.getCameraIdList()[0];
+            String[] cameraIdList = cameraManager.getCameraIdList();
+            if (cameraIdList.length <= 0) {
+                return;
+            }
+            String cameraId = cameraIdList[0];
             cameraManager.setTorchMode(cameraId, false);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -108,7 +112,7 @@ public class FlashlightActivity extends Activity {
                 break;
             case R.id.result_tv_next:
                 mSpUtils.saveFlashlightCheckResult(onCheckResult);
-                startActivity(new Intent(FlashlightActivity.this, TestConclusionActivity.class));
+                startActivity(new Intent(FlashlightActivity.this, Serial13TestActivity.class));
                 overridePendingTransition(R.animator.activity_start_rigth, 0);
                 finish();
                 break;

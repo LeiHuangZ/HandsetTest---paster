@@ -99,4 +99,9 @@
     <string name="test_conclusion">测试结果</string>
 
     <string name="camera_not_found">未找到可用相机</string>
+    
+    <string name="ttl_test">串口测试</string>
+    <string name="ttl_testing">串口测试中....</string>
+    <string name="ttl_test_failed">串口测试失败....</string>
+    <string name="ttl_test_success">串口测试成功....</string>
 </resources>

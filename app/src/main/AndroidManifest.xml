@@ -32,6 +32,10 @@
         android:supportsRtl="true"
         android:theme="@style/FulScreenTheme">
         <activity
+            android:name=".activity.Serial13TestActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".activity.ItemTestActivity"
             android:exported="true" />
         <activity android:name=".activity.FlashlightActivity">
