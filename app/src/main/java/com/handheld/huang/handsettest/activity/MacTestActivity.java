@@ -2,6 +2,7 @@ package com.handheld.huang.handsettest.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -13,6 +14,7 @@ import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.SystemClock;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -70,6 +72,8 @@ public class MacTestActivity extends AppCompatActivity {
     private SpUtils mSpUtils;
     String originMac = "20:08:ed:05:03:65";
     String originImei = "860527010207000";
+    private int clickCount = 0;
+    private long lastClickTime;
     /**
      * 0 --> Mac, 1 --> Imei, 2 --> Board, 3 ---> FlashNumber
      */
@@ -121,7 +125,7 @@ public class MacTestActivity extends AppCompatActivity {
                     mHandler.sendEmptyMessage(flagImeiFail);
                 } else {
                     Bitmap qrImage;
-                    qrImage = CodeUtil.creatBarcode(MacTestActivity.this, imei, 800, 400, new PointF(0, 250), true);
+                    qrImage = CodeUtil.creatBarcode(MacTestActivity.this, imei, 800, 160, new PointF(0, 140), true);
                     Message message = new Message();
                     message.obj = qrImage;
                     message.what = flagImeiSuccess;
@@ -308,6 +312,24 @@ public class MacTestActivity extends AppCompatActivity {
         ExecutorService executorService = mUtil.getExecutorService();
         executorService.execute(mTask);
 
+        mMacImgShow.setOnClickListener(v -> {
+            if (clickCount > 0) {
+                long clickTime = SystemClock.elapsedRealtime();
+                if (clickTime - lastClickTime < 1000){
+                    clickCount++;
+                } else {
+                    clickCount = 0;
+                }
+            } else {
+                lastClickTime = SystemClock.elapsedRealtime();
+                clickCount++;
+            }
+            if (clickCount >= 5) {
+                Intent intent = new Intent(MacTestActivity.this, DeviceInfoActivity.class);
+                startActivity(intent);
+                MacTestActivity.this.finish();
+            }
+        });
     }
 
     @Override

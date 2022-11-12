@@ -37,6 +37,10 @@
     <string name="start_speaker_test">点击此处开始喇叭测试</string>
     <string name="speaker_test_confirm">确认喇叭测试结果</string>
 
+    <string name="device_imei">IMEI</string>
+    <string name="device_wifi_address">WiFi MAC</string>
+    <string name="device_serial_number">序列号</string>
+    <string name="device_bt_address">蓝牙 MAC</string>
     <string name="mac_imei_board_test">设备MAC,IMEI,主板校准状态测试</string>
 
     <string name="start_mac_test">点击此处显示本机MAC</string>
@@ -99,9 +103,12 @@
     <string name="test_conclusion">测试结果</string>
 
     <string name="camera_not_found">未找到可用相机</string>
-    
+
     <string name="ttl_test">串口测试</string>
     <string name="ttl_testing">串口测试中....</string>
     <string name="ttl_test_failed">串口测试失败....</string>
     <string name="ttl_test_success">串口测试成功....</string>
+
+    <string name="barcode_test">条码测试</string>
+    <string name="barcode_test_result">条码测试结果</string>
 </resources>

@@ -108,6 +108,7 @@ public class TestConclusionActivity extends AppCompatActivity {
                 mList.add(new Result("网络信号强度测试", mSpUtils.getDbmCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.flashlight_test), mSpUtils.getFlashlightCheckResult()));
                 mList.add(new Result(getResources().getString(R.string.ttl_test), mSpUtils.getTTL135VCheckResult()));
+                mList.add(new Result(getResources().getString(R.string.barcode_test), mSpUtils.getBarcodeCkR()));
 //                mList.add(new Result(getResources().getString(R.string.onElectricity_test), mSpUtils.getOnElectricityCheckResult()));
 //                mList.add(new Result(getResources().getString(R.string.offElectricity_test), mSpUtils.getOffElectricityCheckResult()));
 
@@ -278,6 +279,12 @@ public class TestConclusionActivity extends AppCompatActivity {
                         str = str.concat("未通过\n");
                     }
                     str = str.concat("串口135V测试  ");
+                    if (mSpUtils.getTTL135VCheckResult() == 0) {
+                        str = str.concat("通过\n");
+                    } else {
+                        str = str.concat("未通过\n");
+                    }
+                    str = str.concat("扫描头测试  ");
                     if (mSpUtils.getTTL135VCheckResult() == 0) {
                         str = str.concat("通过\n");
                     } else {

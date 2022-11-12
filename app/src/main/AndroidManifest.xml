@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.handheld.huang.handsettest"
-    android:sharedUserId="android.uid.system">
+    android:sharedUserId="android.uid.system" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -19,9 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
@@ -30,28 +29,36 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/FulScreenTheme">
+        android:theme="@style/FulScreenTheme" >
+        <activity
+            android:name=".activity.BarcodeActivity"
+            android:exported="true" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".activity.Serial13TestActivity"
-            android:exported="false">
+            android:exported="false" >
         </activity>
         <activity
             android:name=".activity.ItemTestActivity"
             android:exported="true" />
-        <activity android:name=".activity.FlashlightActivity">
+        <activity android:name=".activity.FlashlightActivity" >
         </activity>
         <activity android:name=".activity.DbmActivity" />
-        <activity android:name=".activity.SensorTestActivity">
+        <activity android:name=".activity.SensorTestActivity" >
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <data
-                    android:host="authactivity"
-                    android:scheme="com.hand.ht" />
+                <!--                <data-->
+                <!--                    android:host="authactivity"-->
+                <!--                    android:scheme="com.hand.ht" />-->
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
@@ -62,7 +69,7 @@
         <activity android:name=".activity.MacTestActivity" />
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
-        <activity android:name=".activity.IndicatorTestActivity">
+        <activity android:name=".activity.IndicatorTestActivity" >
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
         <activity android:name=".activity.GpsTestActivity" />
@@ -70,9 +77,9 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.hand.ht.fileProvider"
+            android:authorities="com.hand.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -80,7 +87,7 @@
 
         <receiver
             android:name=".MyReceiver"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
 
@@ -91,7 +98,7 @@
         </receiver>
         <receiver
             android:name=".EmBootupReceiver"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
@@ -102,6 +109,7 @@
         <activity android:name=".activity.UsbActivity" />
         <activity android:name=".activity.ChargerActivity" />
         <activity android:name=".activity.FacadeTestActivity" />
+        <activity android:name=".activity.DeviceInfoActivity" />
     </application>
 
 </manifest>

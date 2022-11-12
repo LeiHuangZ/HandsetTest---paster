@@ -342,4 +342,14 @@ public class SpUtils {
     public int getTTL135VCheckResult(){
         return mPreferences.getInt("TTL135VCheckResult", 1);
     }
+
+    /** 扫描头测试 */
+    public void saveBarcodeCkR(int result){
+        mPreferences.edit().putInt("BarcodeCkR", result).apply();
+    }
+
+    /** 扫描头测试 */
+    public int getBarcodeCkR(){
+        return mPreferences.getInt("BarcodeCkR", 1);
+    }
 }

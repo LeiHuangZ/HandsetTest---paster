@@ -81,7 +81,7 @@ public class Serial13TestActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            startActivity(new Intent(Serial13TestActivity.this, TestConclusionActivity.class));
+            startActivity(new Intent(Serial13TestActivity.this, BarcodeActivity.class));
             Serial13TestActivity.this.finish();
         });
     }
