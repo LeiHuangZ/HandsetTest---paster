@@ -112,7 +112,7 @@ public class FlashlightActivity extends Activity {
                 break;
             case R.id.result_tv_next:
                 mSpUtils.saveFlashlightCheckResult(onCheckResult);
-                startActivity(new Intent(FlashlightActivity.this, Serial13TestActivity.class));
+                startActivity(new Intent(FlashlightActivity.this, TestConclusionActivity.class));
                 overridePendingTransition(R.animator.activity_start_rigth, 0);
                 finish();
                 break;
