@@ -44,7 +44,7 @@ public class DisplayTestActivity extends AppCompatActivity {
     /**
      * 图片计数最大值，如果计数超过该最大值，停止图片展示，进入结果确认
      */
-    int maxCount = 4;
+    int maxCount = 5;
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
@@ -95,6 +95,8 @@ public class DisplayTestActivity extends AppCompatActivity {
             case 2:
                 canvas.drawColor(Color.GREEN);
                 break;
+            case 3:
+                canvas.drawColor(Color.BLACK);
             default:
                 break;
         }
@@ -104,18 +106,21 @@ public class DisplayTestActivity extends AppCompatActivity {
     @OnClick({R.id.display_tv_tips, R.id.display_img_color, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.display_img_color:
+                mHandler.post(() -> mHandler.sendEmptyMessage(0));
+                break;
             //点击屏幕进入屏幕测试阶段
             case R.id.display_tv_tips:
                 mDisplayTvTips.setVisibility(View.GONE);
                 mDisplayImgColor.setVisibility(View.VISIBLE);
                 showImageView(0);
                 count++;
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.sendEmptyMessage(0);
-                    }
-                }, 800);
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mHandler.sendEmptyMessage(0);
+//                    }
+//                }, 800);
                 mResultTvNext.setClickable(false);
                 break;
             case R.id.result_img_ok:
@@ -167,12 +172,12 @@ public class DisplayTestActivity extends AppCompatActivity {
                     mActivity.mResultLlConfirm.setVisibility(View.VISIBLE);
                     return;
                 }
-                mActivity.mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mActivity.mHandler.sendEmptyMessage(0);
-                    }
-                }, 800);
+//                mActivity.mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mActivity.mHandler.sendEmptyMessage(0);
+//                    }
+//                }, 800);
                 //如果计数超过最大值，即屏幕测试完成，进入确认流程
             }
         }
