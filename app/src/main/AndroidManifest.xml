@@ -56,9 +56,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
-                <!--                <data-->
-                <!--                    android:host="authactivity"-->
-                <!--                    android:scheme="com.hand.ht" />-->
+                <data
+                    android:host="authactivity"
+                    android:scheme="com.hand.ht" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.hh.hand.ht.HANDSET_TEST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
