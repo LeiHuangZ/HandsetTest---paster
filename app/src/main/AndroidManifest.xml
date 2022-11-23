@@ -31,6 +31,15 @@
         android:supportsRtl="true"
         android:theme="@style/FulScreenTheme" >
         <activity
+            android:name=".activity.PingActivity"
+            android:exported="true"
+            android:configChanges="keyboard|keyboardHidden"
+            android:excludeFromRecents="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.BarcodeActivity"
             android:exported="true" >
             <meta-data
@@ -93,6 +102,10 @@
 
                 <data
                     android:host="99999"
+                    android:scheme="android_secret_code" />
+
+                <data
+                    android:host="666"
                     android:scheme="android_secret_code" />
             </intent-filter>
         </receiver>

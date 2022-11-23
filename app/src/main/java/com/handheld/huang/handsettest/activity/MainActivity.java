@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             am.setStreamVolume(AudioManager.STREAM_VOICE_CALL, am.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL), AudioManager.FLAG_PLAY_SOUND);
             am.setStreamVolume(AudioManager.STREAM_DTMF, am.getStreamMaxVolume(AudioManager.STREAM_DTMF), AudioManager.FLAG_PLAY_SOUND);
         }
+
+        findViewById(R.id.main_btn_all_test).setOnLongClickListener(v -> {
+            Intent intentEm = new Intent(MainActivity.this, PingActivity.class);
+            MainActivity.this.startActivity(intentEm);
+            return true;
+        });
     }
 
     @OnClick({R.id.main_btn_all_test, R.id.main_btn_mac_test, R.id.main_btn_gps_test, R.id.main_btn_item_test})

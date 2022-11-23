@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.handheld.huang.handsettest.activity.MainActivity;
+import com.handheld.huang.handsettest.activity.PingActivity;
 
 /**
  * @author huang
@@ -20,6 +21,7 @@ public class MyReceiver extends BroadcastReceiver {
     private static final String SECRET_CODE_ACTION = "android.provider.Telephony.SECRET_CODE";
     /** process *#*#99999#*#*  */
     private final Uri mEmUri = Uri.parse("android_secret_code://99999");
+    private final Uri mEmUri2 = Uri.parse("android_secret_code://666");
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -34,6 +36,11 @@ public class MyReceiver extends BroadcastReceiver {
                 Intent intentEm = new Intent(context, MainActivity.class);
                 intentEm.setData(Uri.parse("com.android.example://AuthActivity"));
                 intentEm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Log.i(TAG, "onReceive, Before start Main activity");
+                context.startActivity(intentEm);
+            } else if (uri.equals(mEmUri2)){
+                Intent intentEm = new Intent(context, PingActivity.class);
+                intentEm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Log.i(TAG, "onReceive, Before start Main activity");
                 context.startActivity(intentEm);
             }else {
