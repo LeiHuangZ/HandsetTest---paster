@@ -41,6 +41,7 @@
     <string name="device_wifi_address">WiFi MAC</string>
     <string name="device_serial_number">序列号</string>
     <string name="device_bt_address">蓝牙 MAC</string>
+    <string name="all_info">整机信息</string>
     <string name="mac_imei_board_test">设备MAC,IMEI,主板校准状态测试</string>
 
     <string name="start_mac_test">点击此处显示本机MAC</string>

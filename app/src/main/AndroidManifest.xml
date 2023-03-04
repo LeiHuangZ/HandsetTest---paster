@@ -109,6 +109,7 @@
         <activity android:name=".activity.ChargerActivity" />
         <activity android:name=".activity.FacadeTestActivity" />
         <activity android:name=".activity.DeviceInfoActivity" />
+        <activity android:name=".activity.DeviceInfoDetailsActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/show_imei"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:text="@string/device_imei"/>
+
+    <Button
+        android:id="@+id/show_wifi_mac"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:text="@string/device_wifi_address"/>
+
+    <Button
+        android:id="@+id/show_serial_number"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:text="@string/device_serial_number"/>
+
+    <Button
+        android:id="@+id/show_bt_mac"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:text="@string/device_bt_address"/>
+
+    <Button
+        android:id="@+id/show_all_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:text="@string/all_test"/>
+
+
+</LinearLayout>
