@@ -72,6 +72,8 @@
     <string name="indicator">指示灯测试</string>
     <string name="blue_on">打开蓝灯</string>
     <string name="blue_off">关闭蓝灯</string>
+    <string name="green_on">打开绿灯</string>
+    <string name="green_off">关闭绿灯</string>
     <string name="red_on">打开红灯</string>
     <string name="red_off">关闭红灯</string>
     <string name="red_no">该机型红灯不可控，通过USB插拔可测试红灯</string>

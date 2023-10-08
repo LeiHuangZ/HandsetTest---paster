@@ -71,6 +71,7 @@ public class MacTestActivity extends AppCompatActivity {
     private Toast mToast;
     private SpUtils mSpUtils;
     String originMac = "20:08:ed:05:03:65";
+    String originMac2 = "02:00:00:00:00:00";
     String originImei = "860527010207000";
     private int clickCount = 0;
     private long lastClickTime;
@@ -105,12 +106,11 @@ public class MacTestActivity extends AppCompatActivity {
                     }
                 }
                 String mac = MobileInfoUtil.getMacAddr();
-                Log.i(TAG, "mac : " + mac);
-                if (TextUtils.isEmpty(mac) || mac.startsWith("00") || originMac.equals(mac)) {
+                Log.i(TAG, "mac: " + mac);
+                if (TextUtils.isEmpty(mac) || mac.startsWith("00") || originMac.equals(mac) || originMac2.equals(mac)) {
                     mHandler.sendEmptyMessage(flagMacFail);
                 } else {
                     String url = mac.replaceAll(":", "");
-                    Log.i(TAG, "url: " + url);
                     Bitmap qrImage = CodeUtil.creatBarcode(MacTestActivity.this, url, 800, 160, new PointF(0, 140), true);
                     Message message = new Message();
                     message.obj = qrImage;
@@ -120,7 +120,7 @@ public class MacTestActivity extends AppCompatActivity {
                 Thread.sleep(100);
 
                 String imei = MobileInfoUtil.getIMEI(MacTestActivity.this);
-                Log.i(TAG, "imei : " + imei);
+                Log.i(TAG, "imei: " + imei);
                 if (imei == null || originImei.equals(imei) || "".equals(imei)) {
                     mHandler.sendEmptyMessage(flagImeiFail);
                 } else {
@@ -133,25 +133,28 @@ public class MacTestActivity extends AppCompatActivity {
                 }
                 Thread.sleep(100);
 
-                String sn;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    sn = MobileInfoUtil.get("vendor.gsm.serial");
-                } else {
-                    sn = MobileInfoUtil.get("gsm.serial");
-                }
-                Log.e(TAG, "run, gsm.barcode " + sn);
-                if ("".equals(sn) || sn == null || sn.length() < 61) {
-                    mHandler.sendEmptyMessage(flagBoardFail);
-                } else {
-                    StringBuilder s = new StringBuilder();
-                    s.append(sn.charAt(60));
-                    s.append(sn.charAt(61));
-                    Log.i(TAG, "run, calibration >>>>>> " + s);
-                    String calibration = s.toString();
-                    if ("10".equals(calibration)) {
-                        mHandler.sendEmptyMessage(flagBoardSuccess);
+                // 展锐7885平台，暂无方法判断是否校验
+                if (!"uis7885_2h10".equals(Build.HARDWARE)) {
+                    String sn;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        sn = MobileInfoUtil.get("vendor.gsm.serial");
                     } else {
+                        sn = MobileInfoUtil.get("gsm.serial");
+                    }
+                    Log.e(TAG, "gsm.barcode: " + sn);
+                    if ("".equals(sn) || sn == null || sn.length() < 61) {
                         mHandler.sendEmptyMessage(flagBoardFail);
+                    } else {
+                        StringBuilder s = new StringBuilder();
+                        s.append(sn.charAt(60));
+                        s.append(sn.charAt(61));
+                        Log.i(TAG, "run, calibration >>>>>> " + s);
+                        String calibration = s.toString();
+                        if ("10".equals(calibration)) {
+                            mHandler.sendEmptyMessage(flagBoardSuccess);
+                        } else {
+                            mHandler.sendEmptyMessage(flagBoardFail);
+                        }
                     }
                 }
                 Thread.sleep(100);
@@ -172,6 +175,7 @@ public class MacTestActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                mHandler.sendEmptyMessage(flagFlashFail);
             }
         }
     };

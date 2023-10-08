@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -48,19 +49,20 @@ public class MainActivity extends AppCompatActivity {
         // 打开GPS
         Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, true);
         // 打开WiFi
-        WifiManager mWifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        if (mWifiManager != null && !mWifiManager.isWifiEnabled()) {
-            mWifiManager.setWifiEnabled(true);
+        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager == null) {
+            Log.e(TAG, "Open wifi err: 不支持WLAN");
+        } else if (!wifiManager.isWifiEnabled()) {
+            boolean enableWifi = wifiManager.setWifiEnabled(true);
+            Log.i(TAG, "Open wifi result: " + enableWifi);
         }
         // 打开蓝牙
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
-            Log.e(TAG, "onCreate 不支持蓝牙:");
-            return;
-        }
-        if (!bluetoothAdapter.isEnabled()) {
+            Log.e(TAG, "Open bluetooth err: 不支持蓝牙");
+        } else if (!bluetoothAdapter.isEnabled()) {
             boolean res = bluetoothAdapter.enable();
-            Log.e(TAG, "onCreate :" + res);
+            Log.i(TAG, "Open bluetooth result: " + res);
         }
         // 声音设置为最大
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.startActivity(intentEm);
             return true;
         });
+        Log.i(TAG, "onCreate >>>>>>>>>");
     }
 
     @OnClick({R.id.main_btn_all_test, R.id.main_btn_mac_test, R.id.main_btn_gps_test, R.id.main_btn_item_test})
@@ -109,27 +112,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy <<<<<<<<<");
         if (mNeedClose) {
             // 关闭GPS
             Settings.Secure.setLocationProviderEnabled(getContentResolver(), LocationManager.GPS_PROVIDER, false);
             // 关闭WiFi
-            WifiManager mWifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            if (mWifiManager != null && mWifiManager.isWifiEnabled()) {
-                mWifiManager.setWifiEnabled(false);
+            WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            if (wifiManager == null) {
+                Log.e(TAG, "Close wifi err: 不支持WLAN");
+            } else if (wifiManager.isWifiEnabled()) {
+                boolean b = wifiManager.setWifiEnabled(false);
+                Log.e(TAG, "Close wifi result: " + b);
             }
             // 关闭蓝牙
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter == null) {
-                Log.e(TAG, "onCreate 不支持蓝牙:");
-                return;
-            }
-            if (bluetoothAdapter.isEnabled()) {
+                Log.e(TAG, "Close bluetooth err: 不支持蓝牙");
+            } else if (bluetoothAdapter.isEnabled()) {
                 boolean res = bluetoothAdapter.disable();
-                Log.e(TAG, "onCreate :" + res);
+                Log.i(TAG, "Close bluetooth result :" + res);
             }
         }
         super.onDestroy();
+        Log.i(TAG, "onDestroy >>>>>>>>>");
     }
 
     /**
@@ -146,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < info.size(); i++) {
             if ("com.chartcross.gpstestplus".equals(info.get(i).packageName)) {
+                return true;
+            } else if ("com.chartcross.gpstest".equals(info.get(i).packageName)) {
                 return true;
             }
         }
