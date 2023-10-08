@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -21,8 +23,10 @@ import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.UsbTils;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -68,6 +72,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
             Log.e(TAG, "onReceive, action:" + action);
         }
     };
+    
+    private String blueOnBtnText;
+    private String blueOffBtnText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(mReceiver, intentFilter);
+
+        blueOnBtnText = getString(R.string.blue_on);
+        blueOffBtnText = getString(R.string.blue_off);
     }
 
     @Override
@@ -127,10 +137,11 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_blue:
                 if (!isBlueOn) {
                     // 亮蓝灯
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(57);
                         blueLedOnP22();
+                        setLedUis7885State(0, true);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
@@ -149,15 +160,16 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         //H711
                         mSerialPort.setGPIOhigh(64);
                     }
-                    mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_off));
+                    mIndicatorBtnBlue.setText(blueOffBtnText);
                     mIndicatorBtnBlue.setIconResource("\uf05e");
                     isBlueOn = true;
                 } else {
                     //蓝灯灭
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(57);
                         blueLedOffP22();
+                        setLedUis7885State(0, false);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
@@ -177,7 +189,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         mSerialPort.setGPIOlow(64);
                     }
                     isBlueOn = false;
-                    mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_on));
+                    mIndicatorBtnBlue.setText(blueOnBtnText);
                     mIndicatorBtnBlue.setIconResource("\uf0eb");
                     Log.i(TAG, "onViewClicked, blueoff");
                 }
@@ -185,12 +197,13 @@ public class IndicatorTestActivity extends AppCompatActivity {
             case R.id.indicator_btn_red:
                 if (!isRedOn) {
                     //红灯亮
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
                         mIndicatorBtnRed.setIconResource("\uf05e");
                         redLedOnP22();
+                        setLedUis7885State(1, true);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -220,12 +233,13 @@ public class IndicatorTestActivity extends AppCompatActivity {
                     isRedOn = true;
                 } else {
                     //红灯灭
-                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT == 29){
+                    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(160);
                         mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
                         mIndicatorBtnRed.setIconResource("\uf0eb");
                         redLedOffP22();
+                        setLedUis7885State(1, false);
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -297,11 +311,33 @@ public class IndicatorTestActivity extends AppCompatActivity {
                 mIndicatorBtnRed.setIconResource("\uf05e");
             }
             if (!isBlueOn){
-                mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_on));
+                mIndicatorBtnBlue.setText(blueOnBtnText);
                 mIndicatorBtnBlue.setIconResource("\uf0eb");
             } else {
-                mIndicatorBtnBlue.setText(getResources().getString(R.string.blue_off));
+                mIndicatorBtnBlue.setText(blueOffBtnText);
                 mIndicatorBtnBlue.setIconResource("\uf05e");
+            }
+        }
+        if ("uis7885_2h10".equals(Build.HARDWARE)) {
+            blueOnBtnText = getResources().getString(R.string.green_on);
+            blueOffBtnText = getResources().getString(R.string.green_off);
+            int state = getLedUis7885State(0);
+            isBlueOn = state > 0;
+            if (state > 0) {
+                mIndicatorBtnBlue.setText(blueOffBtnText);
+                mIndicatorBtnBlue.setIconResource("\uf05e");
+            } else {
+                mIndicatorBtnBlue.setText(blueOnBtnText);
+                mIndicatorBtnBlue.setIconResource("\uf0eb");
+            }
+            state = getLedUis7885State(1);
+            isRedOn = state > 0;
+            if (state > 0) {
+                mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
+                mIndicatorBtnRed.setIconResource("\uf05e");
+            } else if (state == 0){
+                mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
+                mIndicatorBtnRed.setIconResource("\uf0eb");
             }
         }
     }
@@ -312,8 +348,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             bufferedWriter.write("1");
             bufferedWriter.flush();
             bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -323,8 +358,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             bufferedWriter.write("0");
             bufferedWriter.flush();
             bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -339,8 +373,7 @@ public class IndicatorTestActivity extends AppCompatActivity {
             bufferedWriter.write("1");
             bufferedWriter.flush();
             bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -355,8 +388,46 @@ public class IndicatorTestActivity extends AppCompatActivity {
             bufferedWriter.write("0");
             bufferedWriter.flush();
             bufferedWriter.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    private void setLedUis7885State(int ledType, boolean enable) {
+        try {
+            BufferedWriter bufferedWriter;
+            if (ledType == 0) {
+                // 绿灯
+                bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/sc27xx:green/brightness"));
+            } else {
+                // 红灯
+                bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/sc27xx:red/brightness"));
+            }
+            if (enable) {
+                bufferedWriter.write("255");
+            } else {
+                bufferedWriter.write("0");
+            }
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    private int getLedUis7885State(int ledType) {
+        try {
+            BufferedReader bufferedReader;
+            if (ledType == 0) {
+                // 绿灯
+                bufferedReader = new BufferedReader(new FileReader("/sys/class/leds/sc27xx:green/brightness"));
+            } else {
+                // 红灯
+                bufferedReader = new BufferedReader(new FileReader("/sys/class/leds/sc27xx:red/brightness"));
+            }
+            String state = bufferedReader.readLine();
+            bufferedReader.close();
+            return Integer.parseInt(state);
         } catch (IOException e) {
-            e.printStackTrace();
+            return -1;
         }
     }
 }

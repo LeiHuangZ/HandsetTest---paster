@@ -2,6 +2,8 @@ package com.handheld.huang.handsettest.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
@@ -73,12 +75,25 @@ public class GpsTestActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.gps_btn_test:
-                ComponentName localComponentName = new ComponentName(
-                        "com.chartcross.gpstestplus",
-                        "com.chartcross.gpstestplus.GPSTestPlus");
-                Intent localIntent = new Intent();
-                localIntent.setComponent(localComponentName);
-                startActivity(localIntent);
+                PackageManager packageManager = getPackageManager();
+                try {
+                    packageManager.getPackageInfo("com.chartcross.gpstestplus", 0);
+                    // gpstestplus应用已安装
+                    ComponentName localComponentName = new ComponentName(
+                            "com.chartcross.gpstestplus",
+                            "com.chartcross.gpstestplus.GPSTestPlus");
+                    Intent localIntent = new Intent();
+                    localIntent.setComponent(localComponentName);
+                    startActivity(localIntent);
+                } catch (PackageManager.NameNotFoundException e) {
+                    // gpstestplus应用未安装
+                    ComponentName localComponentName = new ComponentName(
+                            "com.chartcross.gpstest",
+                            "com.chartcross.gpstest.MainActivity");
+                    Intent localIntent = new Intent();
+                    localIntent.setComponent(localComponentName);
+                    startActivity(localIntent);
+                }
                 mGpsLlEnter.setVisibility(View.GONE);
                 mGpsLlConfirm.setVisibility(View.VISIBLE);
                 break;

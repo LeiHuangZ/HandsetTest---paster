@@ -27,6 +27,7 @@ import java.util.concurrent.ThreadFactory;
  * @author LeiHuang
  */
 public class DeviceInfoActivity extends AppCompatActivity {
+    private final String TAG = DeviceInfoActivity.class.getSimpleName();
     private final ThreadFactory threadFactory = Executors.defaultThreadFactory();
     private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2, threadFactory);
     private ProgressDialog progressDialog;
@@ -58,15 +59,21 @@ public class DeviceInfoActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (wifiManager != null && !wifiManager.isWifiEnabled()) {
-            wifiManager.setWifiEnabled(true);
-            waitToWifiBt = true;
+        // 打开WiFi
+        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager == null) {
+            Log.e(TAG, "Open wifi err: 不支持WLAN");
+        } else if (!wifiManager.isWifiEnabled()) {
+            boolean enableWifi = wifiManager.setWifiEnabled(true);
+            Log.i(TAG, "Open wifi result: " + enableWifi);
         }
-        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.enable();
-            waitToWifiBt = true;
+        // 打开蓝牙
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Log.e(TAG, "Open bluetooth err: 不支持蓝牙");
+        } else if (!bluetoothAdapter.isEnabled()) {
+            boolean res = bluetoothAdapter.enable();
+            Log.i(TAG, "Open bluetooth result: " + res);
         }
 
         scheduledExecutorService.execute(() -> {
@@ -82,16 +89,4 @@ public class DeviceInfoActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (wifiManager != null && wifiManager.isWifiEnabled()) {
-            wifiManager.setWifiEnabled(false);
-        }
-        if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.disable();
-        }
-    }
 }

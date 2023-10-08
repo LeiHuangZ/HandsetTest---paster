@@ -76,7 +76,8 @@
         <activity android:name=".activity.MacTestActivity" />
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
-        <activity android:name=".activity.IndicatorTestActivity" >
+        <activity android:name=".activity.IndicatorTestActivity"
+            android:exported="true">
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
         <activity android:name=".activity.GpsTestActivity" />
