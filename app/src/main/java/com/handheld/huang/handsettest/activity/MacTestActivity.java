@@ -134,7 +134,7 @@ public class MacTestActivity extends AppCompatActivity {
                 Thread.sleep(100);
 
                 // 展锐7885平台，暂无方法判断是否校验
-                if (!"uis7885_2h10".equals(Build.HARDWARE)) {
+                if (!"uis7885_2h10".equals(Build.HARDWARE) && !"qcom".equals(Build.HARDWARE)) {
                     String sn;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         sn = MobileInfoUtil.get("vendor.gsm.serial");
