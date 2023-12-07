@@ -138,10 +138,15 @@ public class IndicatorTestActivity extends AppCompatActivity {
                 if (!isBlueOn) {
                     // 亮蓝灯
                     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
-                        // BX6000,BX6100,BX6200,Android 9.0
-                        mSerialPort.setGPIOhigh(57);
-                        blueLedOnP22();
-                        setLedUis7885State(0, true);
+                        if (Build.HARDWARE.equals("qcom")) {
+                            // NB801-5G
+                            setLedSM4350State(0, true);
+                        } else {
+                            // BX6000,BX6100,BX6200,Android 9.0
+                            mSerialPort.setGPIOhigh(57);
+                            blueLedOnP22();
+                            setLedUis7885State(0, true);
+                        }
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
@@ -166,10 +171,15 @@ public class IndicatorTestActivity extends AppCompatActivity {
                 } else {
                     //蓝灯灭
                     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
-                        // BX6000,BX6100,BX6200,Android 9.0
-                        mSerialPort.setGPIOlow(57);
-                        blueLedOffP22();
-                        setLedUis7885State(0, false);
+                        if (Build.HARDWARE.equals("qcom")) {
+                            // NB801-5G
+                            setLedSM4350State(0, false);
+                        } else {
+                            // BX6000,BX6100,BX6200,Android 9.0
+                            mSerialPort.setGPIOlow(57);
+                            blueLedOffP22();
+                            setLedUis7885State(0, false);
+                        }
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)) {
                             //H942
@@ -198,12 +208,15 @@ public class IndicatorTestActivity extends AppCompatActivity {
                 if (!isRedOn) {
                     //红灯亮
                     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
-                        // BX6000,BX6100,BX6200,Android 9.0
-                        mSerialPort.setGPIOhigh(160);
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
-                        mIndicatorBtnRed.setIconResource("\uf05e");
-                        redLedOnP22();
-                        setLedUis7885State(1, true);
+                        if (Build.HARDWARE.equals("qcom")) {
+                            // NB801-5G
+                            setLedSM4350State(1, true);
+                        } else {
+                            // BX6000,BX6100,BX6200,Android 9.0
+                            mSerialPort.setGPIOhigh(160);
+                            redLedOnP22();
+                            setLedUis7885State(1, true);
+                        }
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -212,13 +225,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
                             //H941
                             mSerialPort.setGPIOhigh(18);
                         }
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
-                        mIndicatorBtnRed.setIconResource("\uf05e");
                     } else if (mScreenHeight == screenC5000) {
                         //C5000
                         mSerialPort.setGPIOhigh(9);
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
-                        mIndicatorBtnRed.setIconResource("\uf05e");
                     } else if (mScreenHeight == screen70101 || mScreenHeight == screen70102 || mScreenHeight == screen70103 || mScreenHeight == screen70104 || mScreenHeight == screen70105) {
                         //701红指示灯不可控
 //                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_no));
@@ -231,15 +240,20 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         mIndicatorBtnRed.setIconResource("\uf05e");
                     }
                     isRedOn = true;
+                    mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
+                    mIndicatorBtnRed.setIconResource("\uf05e");
                 } else {
                     //红灯灭
                     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P || Build.VERSION.SDK_INT >= 29){
-                        // BX6000,BX6100,BX6200,Android 9.0
-                        mSerialPort.setGPIOlow(160);
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
-                        mIndicatorBtnRed.setIconResource("\uf0eb");
-                        redLedOffP22();
-                        setLedUis7885State(1, false);
+                        if (Build.HARDWARE.equals("qcom")) {
+                            // NB801-5G
+                            setLedSM4350State(1, false);
+                        } else {
+                            // BX6000,BX6100,BX6200,Android 9.0
+                            mSerialPort.setGPIOlow(160);
+                            redLedOffP22();
+                            setLedUis7885State(1, false);
+                        }
                     } else if (mScreenHeight == screen901) {
                         if (mRelease.equals(version) || mRelease.equals(version1)){
                             //H942
@@ -248,13 +262,9 @@ public class IndicatorTestActivity extends AppCompatActivity {
                             //H941
                             mSerialPort.setGPIOlow(18);
                         }
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
-                        mIndicatorBtnRed.setIconResource("\uf0eb");
                     } else if (mScreenHeight == screenC5000) {
                         //C5000
                         mSerialPort.setGPIOlow(9);
-                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
-                        mIndicatorBtnRed.setIconResource("\uf0eb");
                     } else if (mScreenHeight == screen70101 || mScreenHeight == screen70102 || mScreenHeight == screen70103 || mScreenHeight == screen70104 || mScreenHeight == screen70105) {
                         //701红指示灯不可控
 //                        mIndicatorBtnRed.setText(getResources().getString(R.string.red_no));
@@ -267,6 +277,8 @@ public class IndicatorTestActivity extends AppCompatActivity {
                         mIndicatorBtnRed.setIconResource("\uf05e");
                     }
                     isRedOn = false;
+                    mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
+                    mIndicatorBtnRed.setIconResource("\uf0eb");
                 }
                 break;
             case R.id.result_img_ok:
@@ -318,27 +330,40 @@ public class IndicatorTestActivity extends AppCompatActivity {
                 mIndicatorBtnBlue.setIconResource("\uf05e");
             }
         }
+        initBtnColorState();
+    }
+
+    private void initBtnColorState() {
+        int state;
         if ("uis7885_2h10".equals(Build.HARDWARE)) {
             blueOnBtnText = getResources().getString(R.string.green_on);
             blueOffBtnText = getResources().getString(R.string.green_off);
-            int state = getLedUis7885State(0);
-            isBlueOn = state > 0;
-            if (state > 0) {
-                mIndicatorBtnBlue.setText(blueOffBtnText);
-                mIndicatorBtnBlue.setIconResource("\uf05e");
-            } else {
-                mIndicatorBtnBlue.setText(blueOnBtnText);
-                mIndicatorBtnBlue.setIconResource("\uf0eb");
-            }
+            state = getLedUis7885State(0);
+        } else if ("qcom".equals(Build.HARDWARE)) {
+            state = getLedSM4350State(0);
+        } else {
+            return;
+        }
+        isBlueOn = state > 0;
+        if (state > 0) {
+            mIndicatorBtnBlue.setText(blueOffBtnText);
+            mIndicatorBtnBlue.setIconResource("\uf05e");
+        } else {
+            mIndicatorBtnBlue.setText(blueOnBtnText);
+            mIndicatorBtnBlue.setIconResource("\uf0eb");
+        }
+        if ("uis7885_2h10".equals(Build.HARDWARE)) {
             state = getLedUis7885State(1);
-            isRedOn = state > 0;
-            if (state > 0) {
-                mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
-                mIndicatorBtnRed.setIconResource("\uf05e");
-            } else if (state == 0){
-                mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
-                mIndicatorBtnRed.setIconResource("\uf0eb");
-            }
+        } else {
+            state = getLedSM4350State(1);
+        }
+        isRedOn = state > 0;
+        if (state > 0) {
+            mIndicatorBtnRed.setText(getResources().getString(R.string.red_off));
+            mIndicatorBtnRed.setIconResource("\uf05e");
+        } else if (state == 0){
+            mIndicatorBtnRed.setText(getResources().getString(R.string.red_on));
+            mIndicatorBtnRed.setIconResource("\uf0eb");
         }
     }
 
@@ -422,6 +447,45 @@ public class IndicatorTestActivity extends AppCompatActivity {
             } else {
                 // 红灯
                 bufferedReader = new BufferedReader(new FileReader("/sys/class/leds/sc27xx:red/brightness"));
+            }
+            String state = bufferedReader.readLine();
+            bufferedReader.close();
+            return Integer.parseInt(state);
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    private void setLedSM4350State(int ledType, boolean enable) {
+        try {
+            BufferedWriter bufferedWriter;
+            if (ledType == 0) {
+                // 蓝灯
+                bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/blue/brightness"));
+            } else {
+                // 红灯
+                bufferedWriter = new BufferedWriter(new FileWriter("/sys/class/leds/red/brightness"));
+            }
+            if (enable) {
+                bufferedWriter.write("255");
+            } else {
+                bufferedWriter.write("0");
+            }
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    private int getLedSM4350State(int ledType) {
+        try {
+            BufferedReader bufferedReader;
+            if (ledType == 0) {
+                // 蓝灯
+                bufferedReader = new BufferedReader(new FileReader("/sys/class/leds/blue/brightness"));
+            } else {
+                // 红灯
+                bufferedReader = new BufferedReader(new FileReader("/sys/class/leds/red/brightness"));
             }
             String state = bufferedReader.readLine();
             bufferedReader.close();
