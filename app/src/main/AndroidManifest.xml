@@ -69,7 +69,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DisplayTestActivity" />
-        <activity android:name=".activity.TouchTestActivity" />
+        <activity android:name=".activity.TouchTestActivity"
+            android:exported="true"/>
         <activity android:name=".activity.LedTestActivity" />
         <activity android:name=".activity.KeyTestActivity" />
         <activity android:name=".activity.BasicTestActivity" />
