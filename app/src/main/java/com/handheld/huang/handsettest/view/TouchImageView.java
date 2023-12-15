@@ -33,7 +33,7 @@ public class TouchImageView extends ImageView {
         super(context);
         Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
         Point outSize = new Point();
-        display.getSize(outSize);
+        display.getRealSize(outSize);
         int screenWidth = outSize.x;
         int screenHeight = outSize.y;
         mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
@@ -49,7 +49,7 @@ public class TouchImageView extends ImageView {
         super(context, attrs);
         Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
         Point outSize = new Point();
-        display.getSize(outSize);
+        display.getRealSize(outSize);
         int screenWidth = outSize.x;
         int screenHeight = outSize.y;
         mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
@@ -65,7 +65,7 @@ public class TouchImageView extends ImageView {
         super(context, attrs, defStyleAttr);
         Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
         Point outSize = new Point();
-        display.getSize(outSize);
+        display.getRealSize(outSize);
         int screenWidth = outSize.x;
         int screenHeight = outSize.y;
         mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
