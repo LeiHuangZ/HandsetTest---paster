@@ -12,37 +12,38 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.handheld.huang.handsettest.R;
+import com.handheld.huang.handsettest.databinding.ActivityMainBinding;
 import com.handheld.huang.handsettest.utils.SpUtils;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @author huang
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
 
     private boolean mNeedClose = true;
+    private com.handheld.huang.handsettest.databinding.ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
         }
-
-        ButterKnife.bind(this);
 
         new SpUtils(this).clearAll();
 
@@ -82,33 +83,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         Log.i(TAG, "onCreate >>>>>>>>>");
-    }
-
-    @OnClick({R.id.main_btn_all_test, R.id.main_btn_mac_test, R.id.main_btn_gps_test, R.id.main_btn_item_test})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.main_btn_all_test:
-                mNeedClose = false;
-                startActivity(new Intent(MainActivity.this, DisplayTestActivity.class));
-                finish();
-                break;
-            case R.id.main_btn_mac_test:
-                startActivity(new Intent(MainActivity.this, MacTestActivity.class));
-                break;
-            case R.id.main_btn_gps_test:
-                boolean appInstalled = checkAppInstalled(MainActivity.this);
-                if (!appInstalled) {
-                    Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.app_not_installed), Toast.LENGTH_SHORT).show();
-                } else {
-                    startActivity(new Intent(MainActivity.this, GpsTestActivity.class));
-                }
-                break;
-            case R.id.main_btn_item_test:
-                startActivity(new Intent(MainActivity.this, ItemTestActivity.class));
-                break;
-            default:
-                break;
-        }
+        binding.mainBtnAllTest.setOnClickListener(this);
+        binding.mainBtnMacTest.setOnClickListener(this);
+        binding.mainBtnGpsTest.setOnClickListener(this);
+        binding.mainBtnItemTest.setOnClickListener(this);
     }
 
     @Override
@@ -166,4 +144,24 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onClick(@NonNull View view) {
+        if (view == binding.mainBtnAllTest) {
+            mNeedClose = false;
+            startActivity(new Intent(MainActivity.this, DisplayTestActivity.class));
+            finish();
+        } else if (view == binding.mainBtnMacTest) {
+            startActivity(new Intent(MainActivity.this, MacTestActivity.class));
+        } else if (view == binding.mainBtnGpsTest) {
+            boolean appInstalled = checkAppInstalled(MainActivity.this);
+            if (!appInstalled) {
+                Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.app_not_installed), Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(MainActivity.this, GpsTestActivity.class));
+            }
+        } else if (view == binding.mainBtnItemTest) {
+            startActivity(new Intent(MainActivity.this, ItemTestActivity.class));
+        }
+
+    }
 }

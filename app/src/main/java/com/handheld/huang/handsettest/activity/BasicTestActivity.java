@@ -1,5 +1,6 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -8,19 +9,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.StorageBean;
+import com.handheld.huang.handsettest.databinding.ActivityBasicTestBinding;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.StorageUtils;
 import com.handheld.huang.handsettest.utils.Util;
@@ -29,29 +30,11 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import mehdi.sakout.fancybuttons.FancyButton;
-
 /**
  * @author huang
  */
-public class BasicTestActivity extends AppCompatActivity {
+public class BasicTestActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = BasicTestActivity.class.getSimpleName();
-
-    @BindView(R.id.basic_btn_test)
-    FancyButton mBasicBtnTest;
-    @BindView(R.id.result_tv_question)
-    TextView mResultTvQuestion;
-    @BindView(R.id.result_img_ok)
-    ImageView mResultImgOk;
-    @BindView(R.id.result_img_cross)
-    ImageView mResultImgCross;
-    @BindView(R.id.result_tv_next)
-    TextView mResultTvNext;
-    @BindView(R.id.result_ll_confirm)
-    LinearLayout mResultLlConfirm;
     /**
      * 检查结果，默认为0  0 --> 通过，1 --> 不通过
      */
@@ -62,41 +45,43 @@ public class BasicTestActivity extends AppCompatActivity {
     int testFlag = 0;
     int sdFlag = 2;
     int speakerFlag = 3;
-    @BindView(R.id.basic_ll_enter)
-    LinearLayout mBasicLlEnter;
-    @BindView(R.id.basic_toolbar_title)
-    Toolbar mBasicToolbarTitle;
     private SpUtils mSpUtils;
 
     private Toast mToast;
     private Util mUtil;
+    private com.handheld.huang.handsettest.databinding.ActivityBasicTestBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basic_test);
-        ButterKnife.bind(this);
+        binding = ActivityBasicTestBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         testFlag = intent.getIntExtra("testFlag", 0);
-        if (testFlag == 1){
-            mBasicToolbarTitle.setTitle(getString(R.string.call_test));
-            mBasicBtnTest.setText(getString(R.string.start_call_test));
-            mBasicBtnTest.setIconResource("\uf095");
-        }else if (testFlag == 3){
-            mBasicToolbarTitle.setTitle(getString(R.string.speaker_test));
-            mBasicBtnTest.setText(getString(R.string.start_speaker_test));
-            mBasicBtnTest.setIconResource("\uf028");
-            mResultLlConfirm.setVisibility(View.VISIBLE);
-            mResultTvQuestion.setText(R.string.speaker_test_confirm);
+        if (testFlag == 1) {
+            binding.basicToolbarTitle.setTitle(getString(R.string.call_test));
+            binding.basicBtnTest.setText(getString(R.string.start_call_test));
+            binding.basicBtnTest.setIconResource("\uf095");
+        } else if (testFlag == 3) {
+            binding.basicToolbarTitle.setTitle(getString(R.string.speaker_test));
+            binding.basicBtnTest.setText(getString(R.string.start_speaker_test));
+            binding.basicBtnTest.setIconResource("\uf028");
+            binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+            binding.layoutResultConfirm.resultTvQuestion.setText(R.string.speaker_test_confirm);
         }
 
         mSpUtils = new SpUtils(this);
         mUtil = new Util(this);
         mUtil.initAudio();
 
+        binding.basicBtnTest.setOnClickListener(this);
+        binding.layoutResultConfirm.resultImgOk.setOnClickListener(this);
+        binding.layoutResultConfirm.resultImgCross.setOnClickListener(this);
+        binding.layoutResultConfirm.resultTvNext.setOnClickListener(this);
+
         // 自动进入测试
-        onViewClicked(mBasicBtnTest);
+        binding.basicBtnTest.callOnClick();
     }
 
     @Override
@@ -105,133 +90,29 @@ public class BasicTestActivity extends AppCompatActivity {
         mUtil.closeAudio();
     }
 
-    @OnClick({R.id.basic_btn_test, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.basic_btn_test:
-                if (testFlag == 0) {
-                    try {
-                        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
-                    } catch (Exception e) {
-                        Toast.makeText(this, "设备相机连接异常，请检查硬件！", Toast.LENGTH_SHORT).show();
-                        onViewClicked(mResultImgCross);
-                        mResultImgCross.setClickable(false);
-                        mResultImgOk.setClickable(false);
-                    }
-                    mBasicBtnTest.setClickable(false);
-                } else if (testFlag == 1) {
-                    try {
-                        startActivityForResult(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 1);
-                        mBasicBtnTest.setClickable(false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        onViewClicked(mResultTvNext);
-                    }
-                } else if (testFlag == sdFlag) {
-                    sdCheck();
-                    mBasicBtnTest.setClickable(false);
-                } else if (testFlag == speakerFlag) {
-                    speakerCheck();
-                }
-
-                break;
-            case R.id.result_img_ok:
-                mResultImgOk.setImageResource(R.drawable.check_ok_selected);
-                mResultImgCross.setImageResource(R.drawable.check_cross_unselected);
-                checkResult = 0;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_img_cross:
-                mResultImgCross.setImageResource(R.drawable.check_cross_selected);
-                mResultImgOk.setImageResource(R.drawable.check_ok_unselected);
-                checkResult = 1;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_tv_next:
-                if (testFlag == 0) {
-                    mSpUtils.saveCameraCheckResult(checkResult);
-                    Log.i(TAG, "CameraCheckResult: " + mSpUtils.getCameraCheckResult());
-//                    mResultLlConfirm.setVisibility(View.GONE);
-//                    resetCheck();
-//                    mBasicLlEnter.setVisibility(View.VISIBLE);
-//                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.call_test_color));
-//                    mBasicBtnTest.setText(getResources().getString(R.string.start_call_test));
-//                    mBasicBtnTest.setIconResource("\uf095");
-//                    mBasicToolbarTitle.setTitle(R.string.call_test);
-//                    testFlag = 1;
-//
-//                    mResultImgCross.setClickable(true);
-//                    mResultImgOk.setClickable(true);
-                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
-                    intent.putExtra("testFlag", 1);
-                    startActivity(intent);
-                    overridePendingTransition(R.animator.activity_start_rigth, 0);
-                    finish();
-                } else if (testFlag == 1) {
-                    mSpUtils.saveCallCheckResult(checkResult);
-                    Log.i(TAG, "CallCheckResult: " + mSpUtils.getCallCheckResult());
-                    mResultLlConfirm.setVisibility(View.GONE);
-                    resetCheck();
-//                    mBasicLlEnter.setVisibility(View.VISIBLE);
-//                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.sd_test_color));
-//                    mBasicBtnTest.setText(getResources().getString(R.string.start_sd_test));
-//                    mBasicBtnTest.setIconResource("\uf02f");
-//                    mBasicToolbarTitle.setTitle(R.string.sd_test);
-//                    testFlag = 2;
-                    Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
-//                    intent.putExtra("testFlag", 1);
-                    startActivity(intent);
-                    overridePendingTransition(R.animator.activity_start_rigth, 0);
-                    finish();
-                } else if (testFlag == sdFlag) {
-                    mSpUtils.saveSdCheckResult(checkResult);
-                    Log.i(TAG, "SdCheckResult: " + mSpUtils.getSdCheckResult());
-                    mResultLlConfirm.setVisibility(View.GONE);
-                    resetCheck();
-                    mBasicLlEnter.setVisibility(View.VISIBLE);
-                    mBasicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.speaker_test_color));
-                    mBasicBtnTest.setText(getResources().getString(R.string.start_speaker_test));
-                    mBasicBtnTest.setIconResource("\uf028");
-                    mBasicToolbarTitle.setTitle(R.string.speaker_test);
-                    mResultLlConfirm.setVisibility(View.VISIBLE);
-                    mResultTvQuestion.setText(R.string.speaker_test_confirm);
-                    testFlag = 3;
-                } else if (testFlag == speakerFlag) {
-                    mSpUtils.saveSpeakerCheckResult(checkResult);
-                    Log.i(TAG, "SpeakerCheckResult: " + mSpUtils.getSpeakerCheckResult());
-                    startActivity(new Intent(BasicTestActivity.this, DbmActivity.class));
-                    overridePendingTransition(R.animator.activity_start_rigth, 0);
-                    finish();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
-            mBasicLlEnter.setVisibility(View.GONE);
-            mResultLlConfirm.setVisibility(View.VISIBLE);
-            mResultTvQuestion.setText(R.string.camera_test_confirm);
+            binding.basicLlEnter.setVisibility(View.GONE);
+            binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+            binding.layoutResultConfirm.resultTvQuestion.setText(R.string.camera_test_confirm);
         } else if (requestCode == 1) {
             Log.i(TAG, "onActivityResult: ");
-            mBasicLlEnter.setVisibility(View.GONE);
-            mResultLlConfirm.setVisibility(View.VISIBLE);
-            mResultTvQuestion.setText(R.string.call_test_confirm);
+            binding.basicLlEnter.setVisibility(View.GONE);
+            binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+            binding.layoutResultConfirm.resultTvQuestion.setText(R.string.call_test_confirm);
         }
-        mBasicBtnTest.setClickable(true);
+        binding.basicBtnTest.setClickable(true);
     }
 
     /**
      * 在每一项测试结果确认后，重置结果确认界面，以准备下一次结果确认
      */
     private void resetCheck() {
-        mResultTvNext.setClickable(false);
-        mResultImgOk.setImageResource(R.drawable.check_ok_unselected);
-        mResultImgCross.setImageResource(R.drawable.check_cross_unselected);
+        binding.layoutResultConfirm.resultTvNext.setClickable(false);
+        binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_unselected);
+        binding.layoutResultConfirm.resultImgCross.setImageResource(R.drawable.check_cross_unselected);
     }
 
     /**
@@ -300,6 +181,84 @@ public class BasicTestActivity extends AppCompatActivity {
 
     private BasicTestHandler mHandler = new BasicTestHandler(this);
 
+    @Override
+    public void onClick(@NonNull View view) {
+        if (view == binding.basicBtnTest) {
+            if (testFlag == 0) {
+                try {
+                    startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0);
+                } catch (Exception e) {
+                    Toast.makeText(this, "设备相机连接异常，请检查硬件！", Toast.LENGTH_SHORT).show();
+                    binding.layoutResultConfirm.resultImgCross.callOnClick();
+                    binding.layoutResultConfirm.resultImgCross.setClickable(false);
+                    binding.layoutResultConfirm.resultImgOk.setClickable(false);
+                }
+                binding.basicBtnTest.setClickable(false);
+            } else if (testFlag == 1) {
+                try {
+                    startActivityForResult(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 1);
+                    binding.basicBtnTest.setClickable(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    binding.layoutResultConfirm.resultTvNext.callOnClick();
+                }
+            } else if (testFlag == sdFlag) {
+                sdCheck();
+                binding.basicBtnTest.setClickable(false);
+            } else if (testFlag == speakerFlag) {
+                speakerCheck();
+            }
+        } else if (view == binding.layoutResultConfirm.resultImgOk) {
+            binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_selected);
+            binding.layoutResultConfirm.resultImgCross.setImageResource(R.drawable.check_cross_unselected);
+            checkResult = 0;
+            binding.layoutResultConfirm.resultTvNext.setClickable(true);
+        } else if (view == binding.layoutResultConfirm.resultImgCross) {
+            binding.layoutResultConfirm.resultImgCross.setImageResource(R.drawable.check_cross_selected);
+            binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_unselected);
+            checkResult = 1;
+            binding.layoutResultConfirm.resultTvNext.setClickable(true);
+        } else if (view == binding.layoutResultConfirm.resultTvNext) {
+            if (testFlag == 0) {
+                mSpUtils.saveCameraCheckResult(checkResult);
+                Log.i(TAG, "CameraCheckResult: " + mSpUtils.getCameraCheckResult());
+                Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+                intent.putExtra("testFlag", 1);
+                startActivity(intent);
+                overridePendingTransition(R.animator.activity_start_rigth, 0);
+                finish();
+            } else if (testFlag == 1) {
+                mSpUtils.saveCallCheckResult(checkResult);
+                Log.i(TAG, "CallCheckResult: " + mSpUtils.getCallCheckResult());
+                binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.GONE);
+                resetCheck();
+                Intent intent = new Intent(BasicTestActivity.this, CommunicationTestActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.animator.activity_start_rigth, 0);
+                finish();
+            } else if (testFlag == sdFlag) {
+                mSpUtils.saveSdCheckResult(checkResult);
+                Log.i(TAG, "SdCheckResult: " + mSpUtils.getSdCheckResult());
+                binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.GONE);
+                resetCheck();
+                binding.basicLlEnter.setVisibility(View.VISIBLE);
+                binding.basicLlEnter.setBackgroundColor(ContextCompat.getColor(this, R.color.speaker_test_color));
+                binding.basicBtnTest.setText(getResources().getString(R.string.start_speaker_test));
+                binding.basicBtnTest.setIconResource("\uf028");
+                binding.basicToolbarTitle.setTitle(R.string.speaker_test);
+                binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+                binding.layoutResultConfirm.resultTvQuestion.setText(R.string.speaker_test_confirm);
+                testFlag = 3;
+            } else if (testFlag == speakerFlag) {
+                mSpUtils.saveSpeakerCheckResult(checkResult);
+                Log.i(TAG, "SpeakerCheckResult: " + mSpUtils.getSpeakerCheckResult());
+                startActivity(new Intent(BasicTestActivity.this, DbmActivity.class));
+                overridePendingTransition(R.animator.activity_start_rigth, 0);
+                finish();
+            }
+        }
+    }
+
     private static class BasicTestHandler extends Handler {
         private WeakReference<BasicTestActivity> mWeakReference;
 
@@ -311,11 +270,12 @@ public class BasicTestActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             BasicTestActivity activity = mWeakReference.get();
-            activity.onViewClicked(activity.mResultTvNext);
-            activity.mBasicBtnTest.setClickable(true);
+            activity.binding.layoutResultConfirm.resultTvNext.callOnClick();
+            activity.binding.basicBtnTest.setClickable(true);
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
     }

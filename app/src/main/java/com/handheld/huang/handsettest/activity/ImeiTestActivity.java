@@ -10,59 +10,44 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.handheld.huang.handsettest.R;
+import com.handheld.huang.handsettest.databinding.ActivityImeiTestBinding;
 import com.handheld.huang.handsettest.utils.CodeUtil;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.Util;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import mehdi.sakout.fancybuttons.FancyButton;
-
 /**
  * @author huang
  */
-public class ImeiTestActivity extends AppCompatActivity {
+public class ImeiTestActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = ImeiTestActivity.class.getSimpleName();
 
-    @BindView(R.id.imei_btn_test)
-    FancyButton mImeiBtnTest;
-    @BindView(R.id.imei_ll_enter)
-    LinearLayout mImeiLlEnter;
-    @BindView(R.id.imei_img_show)
-    ImageView mImeiImgShow;
-    @BindView(R.id.result_tv_question)
-    TextView mResultTvQuestion;
-    @BindView(R.id.result_img_ok)
-    ImageView mResultImgOk;
-    @BindView(R.id.result_img_cross)
-    ImageView mResultImgCross;
-    @BindView(R.id.result_tv_next)
-    TextView mResultTvNext;
-    @BindView(R.id.result_ll_confirm)
-    LinearLayout mResultLlConfirm;
     int checkResult;
     private Util mUtil;
     private Toast mToast;
     private SpUtils mSpUtils;
+    private com.handheld.huang.handsettest.databinding.ActivityImeiTestBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_imei_test);
-        ButterKnife.bind(this);
+        binding = ActivityImeiTestBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+
         mUtil = new Util(this);
         mUtil.initAudio();
         mSpUtils = new SpUtils(this);
+
+        binding.imeiBtnTest.setOnClickListener(this);
+        binding.layoutResultConfirm.resultImgOk.setOnClickListener(this);
+        binding.layoutResultConfirm.resultImgCross.setOnClickListener(this);
+        binding.layoutResultConfirm.resultTvNext.setOnClickListener(this);
     }
 
     @Override
@@ -72,58 +57,6 @@ public class ImeiTestActivity extends AppCompatActivity {
     }
 
     String originImei = "860527010207000";
-
-    @OnClick({R.id.imei_btn_test, R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.imei_btn_test:
-                String imei = getImei();
-                Log.i(TAG, "imei : " + imei);
-                if (imei == null || originImei.equals(imei)) {
-                    showToast("原始IMEI地址，IMEI测试不通过！");
-                    mUtil.playAudio(2);
-                    mImeiBtnTest.setText("原始IMEI地址，IMEI测试不通过！请点击下一步");
-                    mResultLlConfirm.setVisibility(View.VISIBLE);
-                    onViewClicked(mResultImgCross);
-                    mResultImgOk.setClickable(false);
-                    mResultImgCross.setClickable(false);
-                } else {
-                    Bitmap qrImage;
-                    qrImage = CodeUtil.creatBarcode(ImeiTestActivity.this, imei, 800, 400, new PointF(0, 250), true);
-                    showToast("检测通过！");
-                    mImeiLlEnter.setVisibility(View.GONE);
-                    mImeiImgShow.setVisibility(View.VISIBLE);
-                    mImeiImgShow.setImageBitmap(qrImage);
-                    mResultLlConfirm.setVisibility(View.VISIBLE);
-                    mResultTvQuestion.setText(R.string.imei_test);
-                    onViewClicked(mResultImgOk);
-                    mResultImgOk.setClickable(false);
-                    mResultImgCross.setClickable(false);
-                }
-                break;
-            case R.id.result_img_ok:
-                mResultImgOk.setImageResource(R.drawable.check_ok_selected);
-                mResultImgCross.setImageResource(R.drawable.check_cross_unselected);
-                checkResult = 0;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_img_cross:
-                mResultImgCross.setImageResource(R.drawable.check_cross_selected);
-                mResultImgOk.setImageResource(R.drawable.check_ok_unselected);
-                checkResult = 1;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_tv_next:
-                mSpUtils.saveImeiCheckResult(checkResult);
-                Log.i(TAG, "ImeiCheckResult: " + mSpUtils.getImeiCheckResult());
-                startActivity(new Intent(ImeiTestActivity.this, CommunicationTestActivity.class));
-                overridePendingTransition(R.animator.activity_start_rigth, 0);
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * 获取IMEI号
@@ -158,8 +91,54 @@ public class ImeiTestActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(binding.imeiBtnTest)) {
+            String imei = getImei();
+            Log.i(TAG, "imei : " + imei);
+            if (imei == null || originImei.equals(imei)) {
+                showToast("原始IMEI地址，IMEI测试不通过！");
+                mUtil.playAudio(2);
+                binding.imeiBtnTest.setText("原始IMEI地址，IMEI测试不通过！请点击下一步");
+                binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+                binding.layoutResultConfirm.resultImgCross.callOnClick();
+                binding.layoutResultConfirm.resultImgOk.setClickable(false);
+                binding.layoutResultConfirm.resultImgCross.setClickable(false);
+            } else {
+                Bitmap qrImage;
+                qrImage = CodeUtil.creatBarcode(ImeiTestActivity.this, imei, 800, 400, new PointF(0, 250), true);
+                showToast("检测通过！");
+                binding.imeiLlEnter.setVisibility(View.GONE);
+                binding.imeiImgShow.setVisibility(View.VISIBLE);
+                binding.imeiImgShow.setImageBitmap(qrImage);
+                binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
+                binding.layoutResultConfirm.resultTvQuestion.setText(R.string.imei_test);
+                binding.layoutResultConfirm.resultImgOk.callOnClick();
+                binding.layoutResultConfirm.resultImgOk.setClickable(false);
+                binding.layoutResultConfirm.resultImgCross.setClickable(false);
+            }
+        } else if (view.equals(binding.layoutResultConfirm.resultImgOk)) {
+            binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_selected);
+            binding.layoutResultConfirm.resultImgCross.setImageResource(R.drawable.check_cross_unselected);
+            checkResult = 0;
+            binding.layoutResultConfirm.resultTvNext.setClickable(true);
+        } else if (view.equals(binding.layoutResultConfirm.resultImgCross)) {
+            binding.layoutResultConfirm.resultImgCross.setImageResource(R.drawable.check_cross_selected);
+            binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_unselected);
+            checkResult = 1;
+            binding.layoutResultConfirm.resultTvNext.setClickable(true);
+        } else if (view.equals(binding.layoutResultConfirm.resultTvNext)) {
+            mSpUtils.saveImeiCheckResult(checkResult);
+            Log.i(TAG, "ImeiCheckResult: " + mSpUtils.getImeiCheckResult());
+            startActivity(new Intent(ImeiTestActivity.this, CommunicationTestActivity.class));
+            overridePendingTransition(R.animator.activity_start_rigth, 0);
+            finish();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.SystemClock;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -22,12 +20,15 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.handheld.huang.handsettest.R;
+import com.handheld.huang.handsettest.databinding.ActivityMacTestBinding;
 import com.handheld.huang.handsettest.utils.CodeUtil;
 import com.handheld.huang.handsettest.utils.MobileInfoUtil;
 import com.handheld.huang.handsettest.utils.SpUtils;
@@ -37,36 +38,13 @@ import java.lang.ref.WeakReference;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @author huang
  */
-public class MacTestActivity extends AppCompatActivity {
+public class MacTestActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = MacTestActivity.class.getSimpleName();
 
-    @BindView(R.id.mac_img_show)
-    ImageView mMacImgShow;
-    @BindView(R.id.result_img_ok)
-    ImageView mResultImgOk;
-    @BindView(R.id.result_img_cross)
-    ImageView mResultImgCross;
-    @BindView(R.id.result_tv_next)
-    TextView mResultTvNext;
-    @BindView(R.id.imei_img_show)
-    ImageView mImeiImgShow;
-    @BindView(R.id.mac_tv_result)
-    TextView mMacTvResult;
-
     int checkResult;
-    @BindView(R.id.imei_tv_result)
-    TextView mImeiTvResult;
-    @BindView(R.id.board_tv_result)
-    TextView mBoardTvResult;
-    @BindView(R.id.flash_tv_result)
-    TextView mFlashTvResult;
     private Util mUtil;
     private Toast mToast;
     private SpUtils mSpUtils;
@@ -183,6 +161,35 @@ public class MacTestActivity extends AppCompatActivity {
     private MyHandler mHandler = new MyHandler(MacTestActivity.this);
     private WifiManager mWifiManager;
     private ProgressDialog mProgressDialog;
+    private com.handheld.huang.handsettest.databinding.ActivityMacTestBinding binding;
+
+    @Override
+    public void onClick(@NonNull View view) {
+        if (view.equals(binding.resultImgOk)) {
+            binding.resultImgOk.setImageResource(R.drawable.check_ok_selected);
+            binding.resultImgCross.setImageResource(R.drawable.check_cross_unselected);
+            checkResult = 0;
+            binding.resultTvNext.setClickable(true);
+        } else if (view.equals(binding.resultImgCross)) {
+            binding.resultImgCross.setImageResource(R.drawable.check_cross_selected);
+            binding.resultImgOk.setImageResource(R.drawable.check_ok_unselected);
+            checkResult = 1;
+            binding.resultTvNext.setClickable(true);
+        } else if (view.equals(binding.resultTvNext)) {
+            if (saveFlag == 0) {
+                mSpUtils.saveMacCheckResult(checkResult);
+                Log.i(TAG, "MacCheckResult: " + mSpUtils.getMacCheckResult());
+            } else if (saveFlag == 1) {
+                mSpUtils.saveImeiCheckResult(checkResult);
+            } else if (saveFlag == 2) {
+                mSpUtils.saveBoardCheckResult(checkResult);
+            } else if (saveFlag == 3) {
+                mSpUtils.saveFlashCheckResult(checkResult);
+                finish();
+            }
+        }
+
+    }
 
     private static class MyHandler extends Handler {
         private WeakReference<MacTestActivity> mWeakReference;
@@ -201,93 +208,93 @@ public class MacTestActivity extends AppCompatActivity {
                 Spannable span = new SpannableString("FAIL！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                macTestActivity.mMacTvResult.append(span);
+                macTestActivity.binding.macTvResult.append(span);
                 mWeakReference.get().saveFlag = 0;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgCross.callOnClick();
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagMacSuccess) {
                 Bitmap image = (Bitmap) msg.obj;
                 macTestActivity.showToast("MAC检测通过！");
                 Spannable span = new SpannableString("PASS！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
-                macTestActivity.mMacTvResult.append(span);
-                macTestActivity.mMacImgShow.setVisibility(View.VISIBLE);
-                macTestActivity.mMacImgShow.setImageBitmap(image);
+//                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
+                macTestActivity.binding.macTvResult.append(span);
+                macTestActivity.binding.macImgShow.setVisibility(View.VISIBLE);
+                macTestActivity.binding.macImgShow.setImageBitmap(image);
                 mWeakReference.get().saveFlag = 0;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgOk.callOnClick();
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagImeiSuccess) {
                 Bitmap image = (Bitmap) msg.obj;
                 macTestActivity.showToast("IMEI检测通过！");
-                macTestActivity.mImeiImgShow.setVisibility(View.VISIBLE);
-                macTestActivity.mImeiImgShow.setImageBitmap(image);
+                macTestActivity.binding.imeiImgShow.setVisibility(View.VISIBLE);
+                macTestActivity.binding.imeiImgShow.setImageBitmap(image);
                 Spannable span = new SpannableString("PASS！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
-                macTestActivity.mImeiTvResult.append(span);
+//                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
+                macTestActivity.binding.imeiTvResult.append(span);
                 mWeakReference.get().saveFlag = 1;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgOk.callOnClick();
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagImeiFail) {
                 macTestActivity.showToast("原始IMEI地址，IMEI测试不通过！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("FAIL！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                macTestActivity.mImeiTvResult.append(span);
+                macTestActivity.binding.imeiTvResult.append(span);
                 mWeakReference.get().saveFlag = 1;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgCross.callOnClick();
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagBoardSuccess) {
                 macTestActivity.showToast("机器主板已校准");
                 Spannable span = new SpannableString("PASS！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
-                macTestActivity.mBoardTvResult.append(span);
+//                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
+                macTestActivity.binding.boardTvResult.append(span);
                 mWeakReference.get().saveFlag = 2;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
-                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
-                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgOk.callOnClick();
+                macTestActivity.binding.resultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagBoardFail) {
                 macTestActivity.showToast("机器主板未校准！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("FAIL！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                macTestActivity.mBoardTvResult.append(span);
+                macTestActivity.binding.boardTvResult.append(span);
                 mWeakReference.get().saveFlag = 2;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
-                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
-                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
-                macTestActivity.onViewClicked(macTestActivity.mResultTvNext);
+                macTestActivity.binding.resultImgCross.callOnClick();
+                macTestActivity.binding.resultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultTvNext.callOnClick();
             } else if (what == macTestActivity.flagFlashFail) {
                 macTestActivity.showToast("未获取到Flash序列号！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("无序列号！");
                 span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                macTestActivity.mFlashTvResult.append(span);
+                macTestActivity.binding.flashTvResult.append(span);
                 mWeakReference.get().saveFlag = 3;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgCross);
-                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
-                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgCross.callOnClick();
+                macTestActivity.binding.resultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgCross.setVisibility(View.INVISIBLE);
                 macTestActivity.mProgressDialog.dismiss();
             } else if (what == macTestActivity.flagFlashSuccess) {
                 CharSequence flashNum = (CharSequence) msg.obj;
                 Spannable span = new SpannableString(flashNum);
                 span.setSpan(new AbsoluteSizeSpan(70), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                macTestActivity.mBoardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
-                macTestActivity.mFlashTvResult.append(span);
+//                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
+                macTestActivity.binding.flashTvResult.append(span);
                 mWeakReference.get().saveFlag = 3;
-                macTestActivity.onViewClicked(macTestActivity.mResultImgOk);
-                macTestActivity.mResultImgOk.setVisibility(View.INVISIBLE);
-                macTestActivity.mResultImgCross.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgOk.callOnClick();
+                macTestActivity.binding.resultImgOk.setVisibility(View.INVISIBLE);
+                macTestActivity.binding.resultImgCross.setVisibility(View.INVISIBLE);
                 macTestActivity.mProgressDialog.dismiss();
             }
             super.handleMessage(msg);
@@ -297,8 +304,9 @@ public class MacTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mac_test);
-        ButterKnife.bind(this);
+        binding = ActivityMacTestBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+
         mProgressDialog = new ProgressDialog(MacTestActivity.this);
         mProgressDialog.setMessage("正在进行设备校准状态检测.....");
         mProgressDialog.setCancelable(false);
@@ -316,10 +324,10 @@ public class MacTestActivity extends AppCompatActivity {
         ExecutorService executorService = mUtil.getExecutorService();
         executorService.execute(mTask);
 
-        mMacImgShow.setOnClickListener(v -> {
+        binding.macImgShow.setOnClickListener(v -> {
             if (clickCount > 0) {
                 long clickTime = SystemClock.elapsedRealtime();
-                if (clickTime - lastClickTime < 1000){
+                if (clickTime - lastClickTime < 1000) {
                     clickCount++;
                 } else {
                     clickCount = 0;
@@ -334,45 +342,16 @@ public class MacTestActivity extends AppCompatActivity {
                 MacTestActivity.this.finish();
             }
         });
+
+        binding.resultImgOk.setOnClickListener(this);
+        binding.resultImgCross.setOnClickListener(this);
+        binding.resultTvNext.setOnClickListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mUtil.closeAudio();
-    }
-
-    @OnClick({R.id.result_img_ok, R.id.result_img_cross, R.id.result_tv_next})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.result_img_ok:
-                mResultImgOk.setImageResource(R.drawable.check_ok_selected);
-                mResultImgCross.setImageResource(R.drawable.check_cross_unselected);
-                checkResult = 0;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_img_cross:
-                mResultImgCross.setImageResource(R.drawable.check_cross_selected);
-                mResultImgOk.setImageResource(R.drawable.check_ok_unselected);
-                checkResult = 1;
-                mResultTvNext.setClickable(true);
-                break;
-            case R.id.result_tv_next:
-                if (saveFlag == 0) {
-                    mSpUtils.saveMacCheckResult(checkResult);
-                    Log.i(TAG, "MacCheckResult: " + mSpUtils.getMacCheckResult());
-                } else if (saveFlag == 1) {
-                    mSpUtils.saveImeiCheckResult(checkResult);
-                } else if (saveFlag == 2) {
-                    mSpUtils.saveBoardCheckResult(checkResult);
-                } else if (saveFlag == 3) {
-                    mSpUtils.saveFlashCheckResult(checkResult);
-                    finish();
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     /**
@@ -392,6 +371,7 @@ public class MacTestActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
 

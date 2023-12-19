@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 34
+
+    defaultConfig {
+        minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion,OldTargetApi
+        targetSdkVersion 28
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        gms {
+        }
+        bx1000 {
+        }
+        bx6000 {
+        }
+    }
+    namespace 'mehdi.sakout.fancybuttons'
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.12.0'
+}
+
+archivesBaseName = 'fancybuttons'
+//apply from: rootProject.file("bintrayUpload.gradle")
