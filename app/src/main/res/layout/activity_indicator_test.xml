@@ -61,7 +61,9 @@
         fancy:fb_textColor="#DD4B39"
         fancy:fb_textSize="23sp"/>
 
-    <include layout="@layout/layout_result_confirm"
+    <include
+        android:id="@+id/layout_result_confirm"
+        layout="@layout/layout_result_confirm"
         android:visibility="visible"/>
 
 </LinearLayout>

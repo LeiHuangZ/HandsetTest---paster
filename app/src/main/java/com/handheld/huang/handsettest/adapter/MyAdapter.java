@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handheld.huang.handsettest.R;
+import com.handheld.huang.handsettest.databinding.LayoutResultItemBinding;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author huang
@@ -23,6 +22,7 @@ import butterknife.ButterKnife;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<Result> mResultList;
     private Context mContext;
+    private com.handheld.huang.handsettest.databinding.LayoutResultItemBinding binding;
 
     public MyAdapter(List<Result> list, Context context) {
         mResultList = list;
@@ -32,8 +32,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_result_item, parent, false);
-        return new MyViewHolder(view);
+        binding = LayoutResultItemBinding.inflate(LayoutInflater.from(parent.getContext()));
+        return new MyViewHolder(binding.getRoot());
     }
 
     @Override
@@ -53,12 +53,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.test_result_name)
         TextView mTestResultName;
 
         MyViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            mTestResultName = view.findViewById(R.id.test_result_name);
         }
     }
 }

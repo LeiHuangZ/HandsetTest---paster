@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handheld.huang.handsettest"
     android:sharedUserId="android.uid.system" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -82,7 +81,8 @@
         </activity>
         <activity android:name=".activity.ElectricityTestActivity" />
         <activity android:name=".activity.GpsTestActivity" />
-        <activity android:name=".activity.TestConclusionActivity" />
+        <activity android:name=".activity.TestConclusionActivity"
+            android:exported="true"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -119,7 +119,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.UsbActivity" />
+        <activity android:name=".activity.UsbActivity"
+            android:exported="true"/>
         <activity android:name=".activity.ChargerActivity" />
         <activity android:name=".activity.FacadeTestActivity" />
         <activity android:name=".activity.DeviceInfoActivity" />

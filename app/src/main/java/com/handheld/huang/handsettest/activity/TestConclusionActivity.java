@@ -1,5 +1,6 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -14,15 +15,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.adapter.MyAdapter;
 import com.handheld.huang.handsettest.adapter.Result;
+import com.handheld.huang.handsettest.databinding.ActivityTestConclusionBinding;
+import com.handheld.huang.handsettest.databinding.LayoutDialogProgressBinding;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.Util;
 
@@ -32,35 +37,31 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
  * @author huang
  */
-public class TestConclusionActivity extends AppCompatActivity {
+public class TestConclusionActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = TestConclusionActivity.class.getSimpleName();
 
-    @BindView(R.id.test_conclusion_lrcv)
-    RecyclerView mTestConclusionLrcv;
-    private MaterialDialog mDialog;
+    private AlertDialog mDialog;
     private Util mUtil;
     private SpUtils mSpUtils;
     private List<Result> mList = new ArrayList<>();
+    private com.handheld.huang.handsettest.databinding.ActivityTestConclusionBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_conclusion);
-        ButterKnife.bind(this);
+        binding = ActivityTestConclusionBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
 
-        mDialog = new MaterialDialog.Builder(this)
-                .title("请稍候")
-                .content("正在生成结果，请稍候....")
-                .progress(true, 100)
-                .cancelable(false)
+        LayoutDialogProgressBinding dialogProgressBinding = LayoutDialogProgressBinding.inflate(LayoutInflater.from(this));
+        dialogProgressBinding.progressContent.setText("正在生成结果，请稍候...");
+        mDialog = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setView(dialogProgressBinding.getRoot())
                 .show();
 
         FancyButton facebookLoginBtn = new FancyButton(this);
@@ -77,6 +78,8 @@ public class TestConclusionActivity extends AppCompatActivity {
         mSpUtils = new SpUtils(this);
 
         initData();
+
+        binding.btnSpotify.setOnClickListener(this);
     }
 
     private void initData() {
@@ -124,8 +127,17 @@ public class TestConclusionActivity extends AppCompatActivity {
 
     private ConclusionHandler mHandler = new ConclusionHandler(this);
 
-    @OnClick(R.id.btn_spotify)
-    public void onViewClicked() {
+    public void notifySystemToScan(String filePath) {
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(filePath);
+
+        Uri uri = Uri.fromFile(file);
+        intent.setData(uri);
+        this.getApplication().sendBroadcast(intent);
+    }
+
+    @Override
+    public void onClick(@NonNull View view) {
         mUtil.getExecutorService().execute(new Runnable() {
             @Override
             public void run() {
@@ -325,15 +337,6 @@ public class TestConclusionActivity extends AppCompatActivity {
         finish();
     }
 
-    public void notifySystemToScan(String filePath) {
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File file = new File(filePath);
-
-        Uri uri = Uri.fromFile(file);
-        intent.setData(uri);
-        this.getApplication().sendBroadcast(intent);
-    }
-
     private static class ConclusionHandler extends Handler {
         private WeakReference<TestConclusionActivity> mWeakReference;
         private final TestConclusionActivity mActivity;
@@ -349,12 +352,13 @@ public class TestConclusionActivity extends AppCompatActivity {
             super.handleMessage(msg);
 
             MyAdapter adapter = new MyAdapter(mActivity.mList, mActivity);
-            mActivity.mTestConclusionLrcv.setAdapter(adapter);
-            mActivity.mTestConclusionLrcv.setLayoutManager(new GridLayoutManager(mActivity, 2));
+            mActivity.binding.testConclusionLrcv.setAdapter(adapter);
+            mActivity.binding.testConclusionLrcv.setLayoutManager(new GridLayoutManager(mActivity, 2));
             mActivity.mDialog.dismiss();
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
 

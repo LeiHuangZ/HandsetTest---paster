@@ -21,6 +21,8 @@
         android:textSize="42sp"
         android:gravity="center"/>
 
-    <include layout="@layout/layout_result_confirm"/>
+    <include
+        android:id="@+id/layout_result_confirm"
+        layout="@layout/layout_result_confirm"/>
 
 </LinearLayout>

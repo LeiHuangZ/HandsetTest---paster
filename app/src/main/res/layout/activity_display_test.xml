@@ -29,6 +29,8 @@
         android:contentDescription="@string/app_name"
         android:visibility="gone"/>
 
-    <include layout="@layout/layout_result_confirm"/>
+    <include
+        android:id="@+id/layout_result_confirm"
+        layout="@layout/layout_result_confirm"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

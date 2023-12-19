@@ -44,7 +44,9 @@
         android:textColor="@android:color/black"
         android:textSize="30sp" />
 
-    <include layout="@layout/layout_result_confirm"
+    <include
+        android:id="@+id/layout_result_confirm"
+        layout="@layout/layout_result_confirm"
         android:visibility="visible"/>
 
 </LinearLayout>
