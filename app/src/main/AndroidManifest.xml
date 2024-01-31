@@ -73,7 +73,8 @@
         <activity android:name=".activity.LedTestActivity" />
         <activity android:name=".activity.KeyTestActivity" />
         <activity android:name=".activity.BasicTestActivity" />
-        <activity android:name=".activity.MacTestActivity" />
+        <activity android:name=".activity.MacTestActivity"
+            android:exported="true"/>
         <activity android:name=".activity.ImeiTestActivity" />
         <activity android:name=".activity.CommunicationTestActivity" />
         <activity android:name=".activity.IndicatorTestActivity"
@@ -125,6 +126,8 @@
         <activity android:name=".activity.FacadeTestActivity" />
         <activity android:name=".activity.DeviceInfoActivity" />
         <activity android:name=".activity.DeviceInfoDetailsActivity" />
+        <activity android:name="com.sprd.validationtools.itemstest.sysinfo.RFCALITest"
+            android:exported="true"/>
     </application>
 
 </manifest>

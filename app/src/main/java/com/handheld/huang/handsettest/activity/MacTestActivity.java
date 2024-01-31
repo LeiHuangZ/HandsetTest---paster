@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -33,6 +34,8 @@ import com.handheld.huang.handsettest.utils.CodeUtil;
 import com.handheld.huang.handsettest.utils.MobileInfoUtil;
 import com.handheld.huang.handsettest.utils.SpUtils;
 import com.handheld.huang.handsettest.utils.Util;
+import com.sprd.validationtools.TelephonyManagerSprd;
+import com.sprd.validationtools.utils.IATUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.TimerTask;
@@ -113,25 +116,35 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
 
                 // 展锐7885平台，暂无方法判断是否校验
                 if (!"uis7885_2h10".equals(Build.HARDWARE) && !"qcom".equals(Build.HARDWARE)) {
-                    String sn;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        sn = MobileInfoUtil.get("vendor.gsm.serial");
-                    } else {
-                        sn = MobileInfoUtil.get("gsm.serial");
-                    }
-                    Log.e(TAG, "gsm.barcode: " + sn);
-                    if ("".equals(sn) || sn == null || sn.length() < 61) {
-                        mHandler.sendEmptyMessage(flagBoardFail);
-                    } else {
-                        StringBuilder s = new StringBuilder();
-                        s.append(sn.charAt(60));
-                        s.append(sn.charAt(61));
-                        Log.i(TAG, "run, calibration >>>>>> " + s);
-                        String calibration = s.toString();
-                        if ("10".equals(calibration)) {
+                    if ("uis7863_6h10".equals(Build.HARDWARE)) {
+                        // C6000-GC4
+                        boolean b = testUis7863Modem();
+                        if (b) {
                             mHandler.sendEmptyMessage(flagBoardSuccess);
                         } else {
                             mHandler.sendEmptyMessage(flagBoardFail);
+                        }
+                    } else {
+                        String sn;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            sn = MobileInfoUtil.get("vendor.gsm.serial");
+                        } else {
+                            sn = MobileInfoUtil.get("gsm.serial");
+                        }
+                        Log.e(TAG, "gsm.barcode: " + sn);
+                        if ("".equals(sn) || sn == null || sn.length() < 61) {
+                            mHandler.sendEmptyMessage(flagBoardFail);
+                        } else {
+                            StringBuilder s = new StringBuilder();
+                            s.append(sn.charAt(60));
+                            s.append(sn.charAt(61));
+                            Log.i(TAG, "run, calibration >>>>>> " + s);
+                            String calibration = s.toString();
+                            if ("10".equals(calibration)) {
+                                mHandler.sendEmptyMessage(flagBoardSuccess);
+                            } else {
+                                mHandler.sendEmptyMessage(flagBoardFail);
+                            }
                         }
                     }
                 }
@@ -375,5 +388,70 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
 
+    }
+
+    private boolean testUis7863Modem() {
+        String str;
+        int modemType = TelephonyManagerSprd.getModemType();
+        Log.d(TAG,"initial modemType="+modemType);
+        if (modemType == TelephonyManagerSprd.MODEM_TYPE_TDSCDMA
+                || TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.TDD_CSFB
+                || TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.CSFB ) {
+            str = "GSM/TD ";
+        } else {
+            str = "GSM ";
+        }
+        Log.d(TAG,"initial str="+str);
+        str += IATUtils.sendATCmd("AT+SGMR=0,0,3,0", "atchannel0");
+        //Support WCDMA
+        if (modemType == TelephonyManagerSprd.MODEM_TYPE_WCDMA
+                || TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.FDD_CSFB
+                || TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.CSFB
+                || TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.LWLW
+                /*SPRd bug 830737:Add for support WCDMA*/
+                || TelephonyManagerSprd.IsSupportWCDMA()) {
+            str += "WCDMA ";
+            str += IATUtils.sendATCmd("AT+SGMR=0,0,3,1,1", "atchannel0");
+        } else if(modemType == TelephonyManagerSprd.MODEM_TYPE_LTE) {
+            /*SPRD bug 773421:Supprt WCDMA*/
+            if(TelephonyManagerSprd.getRadioCapbility() == TelephonyManagerSprd.RadioCapbility.WG){
+                str += "WCDMA ";
+                str += IATUtils.sendATCmd("AT+SGMR=0,0,3,1,1", "atchannel0");
+            }
+        }
+        if(modemType == TelephonyManagerSprd.MODEM_TYPE_LTE || TelephonyManagerSprd.IsSupportLTE()) {
+            //WG not support LTE
+            if(TelephonyManagerSprd.getRadioCapbility() != TelephonyManagerSprd.RadioCapbility.WG){
+                str += "LTE ";
+                //New at cmd for LTE band
+                String temp = IATUtils.sendAtCmd("AT+SGMR=1,0,3,3,1");
+                if(!IATUtils.AT_FAIL.equalsIgnoreCase(temp)){
+                    str += temp;
+                }else{
+                    str += IATUtils.sendATCmd("AT+SGMR=1,0,3,3", "atchannel0");
+                }
+            }
+        }
+        if(TelephonyManagerSprd.IsSupportCDMA()) {
+            str += "CDMA2000 ";
+            str += IATUtils.sendATCmd("AT+SGMR=0,0,3,2", "atchannel0");
+        }
+        if(TelephonyManagerSprd.IsSupportNR()) {
+            str += "NR ";
+            str += IATUtils.sendATCmd("AT+SGMR=1,0,3,4", "atchannel0");
+        }
+        return showCaliStr(str);
+    }
+
+    private boolean showCaliStr(String str) {
+        String[] strs = str.split("\n");
+        for (String s : strs) {
+            if (s.toLowerCase().contains("pass")) {
+                if (!s.toLowerCase().contains("not")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
