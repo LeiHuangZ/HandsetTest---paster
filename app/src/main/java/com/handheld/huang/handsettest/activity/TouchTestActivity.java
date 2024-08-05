@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.rfid.DevSettings;
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.databinding.ActivityTouchTestBinding;
 import com.handheld.huang.handsettest.utils.SpUtils;
@@ -28,12 +29,18 @@ public class TouchTestActivity extends AppCompatActivity implements View.OnClick
     int checkResult = 0;
     private SpUtils mSpUtils;
     private com.handheld.huang.handsettest.databinding.ActivityTouchTestBinding binding;
+    private DevSettings devSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityTouchTestBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+
+        // 屏蔽主屏幕键和菜单键
+        devSettings = new DevSettings(this);
+        devSettings.lockHome(true);
+        devSettings.setMenuKey(true);
 
         mSpUtils = new SpUtils(this);
 
@@ -121,5 +128,12 @@ public class TouchTestActivity extends AppCompatActivity implements View.OnClick
             overridePendingTransition(R.animator.activity_start_rigth, 0);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        devSettings.lockHome(false);
+        devSettings.setMenuKey(false);
+        super.onDestroy();
     }
 }

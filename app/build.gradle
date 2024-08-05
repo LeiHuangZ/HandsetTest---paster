@@ -5,13 +5,13 @@ android {
     compileSdkVersion 34
 
     defaultConfig {
-        applicationId "com.handheld_wireless.hl.ht"
+        applicationId "com.hhw.hl.htpaster"
 //        applicationId "cn.icon.ht"
         minSdkVersion 21
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdkVersion 28
-        versionCode 21
-        versionName "3.6.4"
+        versionCode 22
+        versionName "3.6.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "arm64-v8a"
@@ -43,10 +43,16 @@ android {
             storeFile file('./hhw.keystore')
             storePassword 'android'
         }
+        f1 {
+            keyAlias 'hhw_plat'
+            keyPassword 'hhw12580'
+            storeFile file('./v735_u0.keystore')
+            storePassword 'hhw12580'
+        }
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.bx6000
+            signingConfig signingConfigs.f1
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -63,9 +69,15 @@ android {
             signingConfig signingConfigs.bx6000_gms
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        f1 {
+            signingConfig signingConfigs.f1
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
-    namespace 'com.handheld.huang.handsettest'
+//    namespace 'com.handheld.huang.handsettest'
 
     applicationVariants.all { variant ->
         variant.outputs.all {
@@ -81,27 +93,28 @@ android {
         abortOnError false
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
+//    }
+//    kotlinOptions {
+//        jvmTarget = '17'
+//    }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation files('libs/dev_v1.4.0.jar')
     implementation project(':fancybuttons_library')
-    implementation 'androidx.core:core-ktx:+'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+//    implementation 'androidx.core:core-ktx:+'
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation files('libs/dev_v1.4.0.jar')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //noinspection AnnotationProcessorOnCompilePath
     //implementation 'com.jakewharton:butterknife:10.2.3'

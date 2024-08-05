@@ -68,7 +68,7 @@
 
     <string name="recording">正在录音</string>
 
-    <string name="indicator_test">指示灯测试, 请插入USB充电进行测试</string>
+    <string name="indicator_test">指示灯测试</string>
     <string name="indicator">指示灯测试</string>
     <string name="blue_on">打开蓝灯</string>
     <string name="blue_off">关闭蓝灯</string>

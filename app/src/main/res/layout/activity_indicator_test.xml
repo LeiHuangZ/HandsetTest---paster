@@ -48,7 +48,7 @@
         android:paddingRight="@dimen/x30"
         fancy:fb_iconPaddingRight="@dimen/x20"
         android:paddingTop="@dimen/y10"
-        android:layout_marginTop="@dimen/y30"
+        android:layout_marginTop="@dimen/y10"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_borderWidth="1dp"
         fancy:fb_defaultColor="#7ab800"
@@ -59,6 +59,30 @@
         fancy:fb_radius="30dp"
         fancy:fb_text="@string/red_on"
         fancy:fb_textColor="#DD4B39"
+        fancy:fb_textSize="23sp"/>
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/indicator_btn_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/y10"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        fancy:fb_iconPaddingRight="@dimen/x20"
+        android:paddingTop="@dimen/y10"
+        android:layout_marginTop="@dimen/y10"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#7ab800"
+        fancy:fb_focusColor="#9bd823"
+        fancy:fb_fontIconResource="&#xf0eb;"
+        fancy:fb_fontIconSize="30sp"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="30dp"
+        android:visibility="gone"
+        fancy:fb_text="@string/green_on"
+        fancy:fb_textColor="#00FF00"
         fancy:fb_textSize="23sp"/>
 
     <include

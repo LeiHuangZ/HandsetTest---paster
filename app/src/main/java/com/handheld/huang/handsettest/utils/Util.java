@@ -70,8 +70,7 @@ public class Util {
     }
 
     public void closeAudio() {
-        sp.pause(0);
-        sp.release();
+        sp = null;
     }
 
     /**
