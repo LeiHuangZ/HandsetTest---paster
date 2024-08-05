@@ -14,7 +14,7 @@ import android.util.Log;
 public class EmBootupReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Log.e("bootup", "recieve action: " + intent.getAction());
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Log.i("bootup", "onReceive: ");
         }

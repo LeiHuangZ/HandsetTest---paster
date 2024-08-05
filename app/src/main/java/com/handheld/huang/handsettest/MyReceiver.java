@@ -26,28 +26,28 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() == null){
-            Log.i(TAG, "onReceive, Null action");
+            Log.e(TAG, "onReceive, Null action");
             return;
         }
         if (intent.getAction().equals(SECRET_CODE_ACTION)){
             Uri uri = intent.getData();
-            Log.i(TAG, "onReceive, getIntent success in if ");
+            Log.e(TAG, "onReceive, getIntent success in if ");
             if (uri.equals(mEmUri)){
                 Intent intentEm = new Intent(context, MainActivity.class);
                 intentEm.setData(Uri.parse("com.android.example://AuthActivity"));
                 intentEm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Log.i(TAG, "onReceive, Before start Main activity");
+                Log.e(TAG, "onReceive, Before start Main activity");
                 context.startActivity(intentEm);
             } else if (uri.equals(mEmUri2)){
                 Intent intentEm = new Intent(context, PingActivity.class);
                 intentEm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Log.i(TAG, "onReceive, Before start Main activity");
+                Log.e(TAG, "onReceive, Before start Main activity");
                 context.startActivity(intentEm);
             }else {
-                Log.i(TAG, "onReceive, Not matched URI");
+                Log.e(TAG, "onReceive, Not matched URI");
             }
         }else {
-            Log.i(TAG, "onReceive, Not SECRET_CODE_ACTION");
+            Log.e(TAG, "onReceive, Not SECRET_CODE_ACTION");
         }
     }
 }

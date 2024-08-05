@@ -4,7 +4,7 @@ android {
     compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 19
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdkVersion 28
     }
@@ -19,8 +19,11 @@ android {
         }
         bx6000 {
         }
+        f1{
+
+        }
     }
-    namespace 'mehdi.sakout.fancybuttons'
+//    namespace 'mehdi.sakout.fancybuttons'
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -30,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core:1.12.0'
+    implementation 'androidx.core:core:1.1.0'
 }
 
 archivesBaseName = 'fancybuttons'

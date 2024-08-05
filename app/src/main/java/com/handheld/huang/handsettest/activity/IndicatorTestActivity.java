@@ -1,10 +1,14 @@
 package com.handheld.huang.handsettest.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,13 +16,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.databinding.ActivityIndicatorTestBinding;
@@ -30,9 +31,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import cn.pda.serialport.SerialPort;
-import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
  * @author huang
@@ -46,6 +47,12 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
 
     private SerialPort mSerialPort;
     private String mRelease;
+
+    private NotificationManager mNotificationMgr = null;
+    private String mThisChannel = "7328";
+    private String mThisChannel2 = "7329";
+    private String mThisChannel3 = "7330";
+    private int mThisNotificationId = 1396826;
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -87,9 +94,35 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
 
         binding.indicatorBtnBlue.setOnClickListener(this);
         binding.indicatorBtnRed.setOnClickListener(this);
+        binding.indicatorBtnGreen.setOnClickListener(this);
         binding.layoutResultConfirm.resultImgOk.setOnClickListener(this);
         binding.layoutResultConfirm.resultImgCross.setOnClickListener(this);
         binding.layoutResultConfirm.resultTvNext.setOnClickListener(this);
+
+        if (Build.HARDWARE.equals("mt6765")) {
+            binding.indicatorBtnGreen.setVisibility(View.VISIBLE);
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mNotificationMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel;
+            channel = new NotificationChannel(mThisChannel, "FactoryMode_LED_TEST", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            channel.setShowBadge(true);
+            channel.setSound(null, null);
+            NotificationChannel channel2 = new NotificationChannel(mThisChannel2, "FactoryMode_LED_TEST", NotificationManager.IMPORTANCE_DEFAULT);
+            channel2.enableLights(true);
+            channel2.setLightColor(Color.BLUE);
+            channel2.setShowBadge(true);
+            channel2.setSound(null, null);
+            NotificationChannel channel3 = new NotificationChannel(mThisChannel3, "FactoryMode_LED_TEST", NotificationManager.IMPORTANCE_DEFAULT);
+            channel3.enableLights(true);
+            channel3.setLightColor(Color.GREEN);
+            channel3.setShowBadge(true);
+            channel3.setSound(null, null);
+            mNotificationMgr.createNotificationChannels(Arrays.asList(channel, channel2, channel3));
+        }
     }
 
     @Override
@@ -100,12 +133,14 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onDestroy() {
+        ledNotificationOff();
         unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
     boolean isBlueOn = false;
     boolean isRedOn = false;
+    boolean isGreenOn = false;
 
     @SuppressLint("MissingSuperCall")
     @Override
@@ -298,6 +333,61 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void ledRedOn() {
+        Notification.Builder builder = new Notification.Builder(IndicatorTestActivity.this, mThisChannel)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Factory LED TEST")
+                .setContentText("Factory LED TEST");
+        mNotificationMgr.notify(mThisNotificationId, builder.build());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void ledBlueOn() {
+        Notification.Builder builder2 = new Notification.Builder(IndicatorTestActivity.this, mThisChannel2)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Factory LED TEST")
+                .setContentText("Factory LED TEST");
+        mNotificationMgr.notify(mThisNotificationId, builder2.build());
+        // F1最边上的蓝灯
+        openOrCloseFile(true);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void ledGreenOn() {
+        Notification.Builder builder = new Notification.Builder(IndicatorTestActivity.this, mThisChannel3)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Factory LED TEST")
+                .setContentText("Factory LED TEST");
+        mNotificationMgr.notify(mThisNotificationId, builder.build());
+    }
+
+    private void ledNotificationOff() {
+        cancelNotification();
+        // F1最边上的蓝灯
+        openOrCloseFile(false);
+    }
+
+    private void cancelNotification() {
+        mNotificationMgr.cancel(mThisNotificationId);
+    }
+
+    private void openOrCloseFile(boolean enabled) {
+        String str;
+        if (enabled) {
+            str = "echo 1 > /sys/devices/platform/module_power/dlledb_en";
+        } else {
+            str = "echo 0 > /sys/devices/platform/module_power/dlledb_en";
+        }
+        try {
+            Process exec = Runtime.getRuntime().exec(new String[]{"sh", "-c", str});
+            Log.d("MMI", "ColorsLed process str : " + str);
+            Log.d("MMI", "ColorsLed process exec.waitFor() : " + exec.waitFor());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -355,6 +445,9 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(0, true);
+                    } else if (Build.HARDWARE.equals("mt6765")) {
+                        // F1
+                        ledBlueOn();
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(57);
@@ -388,6 +481,9 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(0, false);
+                    } else if (Build.HARDWARE.equals("mt6765")) {
+                        // F1
+                        ledNotificationOff();
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(57);
@@ -424,6 +520,9 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(1, true);
+                    } else if (Build.HARDWARE.equals("mt6765")) {
+                        // F1
+                        ledRedOn();
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOhigh(160);
@@ -461,6 +560,9 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(1, false);
+                    } else if (Build.HARDWARE.equals("mt6765")) {
+                        // F1
+                        ledNotificationOff();
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(160);
@@ -492,6 +594,20 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                 isRedOn = false;
                 binding.indicatorBtnRed.setText(getResources().getString(R.string.red_on));
                 binding.indicatorBtnRed.setIconResource("\uf0eb");
+            }
+        } else if (view == binding.indicatorBtnGreen) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!isBlueOn) {
+                    ledGreenOn();
+                    isBlueOn = true;
+                    binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_off));
+                    binding.indicatorBtnGreen.setIconResource("\uf05e");
+                } else {
+                    ledNotificationOff();
+                    isBlueOn = false;
+                    binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_on));
+                    binding.indicatorBtnGreen.setIconResource("\uf0eb");
+                }
             }
         } else if (view == binding.layoutResultConfirm.resultImgOk) {
             binding.layoutResultConfirm.resultImgOk.setImageResource(R.drawable.check_ok_selected);
