@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.handheld.huang.handsettest.R;
@@ -56,6 +58,8 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
     String originImei = "860527010207000";
     private int clickCount = 0;
     private long lastClickTime;
+
+    private final Object waitLock = new Object();
     /**
      * 0 --> Mac, 1 --> Imei, 2 --> Board, 3 ---> FlashNumber
      */
@@ -115,10 +119,20 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 Thread.sleep(100);
 
                 // 展锐7885平台，暂无方法判断是否校验
-                if (!"uis7885_2h10".equals(Build.HARDWARE) && !"qcom".equals(Build.HARDWARE)) {
-                    if ("uis7863_6h10".equals(Build.HARDWARE)) {
+                String hardware = Build.HARDWARE;
+                if (!"uis7885_2h10".equals(hardware) && !"qcom".equals(hardware)) {
+                    if ("uis7863_6h10".equals(hardware)) {
                         // C6000-GC4
                         boolean b = testUis7863Modem();
+                        if (b) {
+                            mHandler.sendEmptyMessage(flagBoardSuccess);
+                        } else {
+                            mHandler.sendEmptyMessage(flagBoardFail);
+                        }
+                    }
+                    // F1主板校准状态获取
+                    else if (hardware.equals("mt6765")) {
+                        boolean b = testF1ModemStatus();
                         if (b) {
                             mHandler.sendEmptyMessage(flagBoardSuccess);
                         } else {
@@ -390,6 +404,18 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // F1获取BarCode值返回
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 8111) {
+            synchronized (waitLock) {
+                Log.i(TAG, "Get f1 barcode return");
+                waitLock.notify();
+            }
+        }
+    }
+
     private boolean testUis7863Modem() {
         String str;
         int modemType = TelephonyManagerSprd.getModemType();
@@ -453,5 +479,31 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         return false;
+    }
+
+    private boolean testF1ModemStatus() {
+        Intent mIntent = new Intent();
+        mIntent.setClassName("com.mediatek.engineermode",
+                "com.mediatek.engineermode.lte.CommandToolEdit");
+        mIntent.putExtra("action","readBarcode");
+        startActivityForResult(mIntent, 8111);
+        try {
+            // 等待AT执行完成，获取barcode值
+            synchronized (waitLock) {
+                waitLock.wait(5000);
+            }
+            String barCode = Settings.Global.getString(getContentResolver(),
+                    "vendor.gsm.serial");
+            Log.d(TAG, "Get f1 vendor.gsm.serial:" + barCode);
+            if (TextUtils.isEmpty(barCode)) {
+                return false;
+            }
+            int barCodeLen = barCode.length();
+            String barCodeLastChar = barCode.substring(barCodeLen - 3, barCodeLen - 1);
+            return barCodeLastChar.contains("10");
+        } catch (InterruptedException e) {
+            Log.e(TAG, "Test f1 modem failed:" + Log.getStackTraceString(e));
+            return false;
+        }
     }
 }

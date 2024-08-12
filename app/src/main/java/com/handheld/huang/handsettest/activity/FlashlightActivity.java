@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,8 +45,20 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
                 Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
                 return;
             }
-            String cameraId = cameraIdList[0];
-            cameraManager.setTorchMode(cameraId, true);
+            String flashCameraId = "-1";
+            for (String cameraId : cameraIdList) {
+                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                Boolean flashAvailable = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+                if (flashAvailable != null && flashAvailable) {
+                    flashCameraId = cameraId;
+                    break;
+                }
+            }
+            if (flashCameraId.equals("-1")) {
+                Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            cameraManager.setTorchMode(flashCameraId, true);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -63,8 +76,20 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
             if (cameraIdList.length <= 0) {
                 return;
             }
-            String cameraId = cameraIdList[0];
-            cameraManager.setTorchMode(cameraId, false);
+            String flashCameraId = "-1";
+            for (String cameraId : cameraIdList) {
+                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
+                Boolean flashAvailable = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+                if (flashAvailable != null && flashAvailable) {
+                    flashCameraId = cameraId;
+                    break;
+                }
+            }
+            if (flashCameraId.equals("-1")) {
+                Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            cameraManager.setTorchMode(flashCameraId, false);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,5 @@
 @echo off
-set DIR="F:\Workspace\DEMO\Test\HandsetTest---paster\app\build\outputs\apk\debug"
+set DIR="F:\Workspace\DEMO\Test\HandsetTest---paster\app\build\outputs\apk\f1"
 set FILE=""
 for /R %DIR% %%f in (*.apk) do ( 
 	set FILE=%%f
