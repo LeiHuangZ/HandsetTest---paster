@@ -90,7 +90,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                         break;
                     }
                 }
-                String mac = MobileInfoUtil.getMacAddr();
+                String mac = MobileInfoUtil.getMacAddr(MacTestActivity.this);
                 Log.i(TAG, "mac: " + mac);
                 if (TextUtils.isEmpty(mac) || mac.startsWith("00") || originMac.equals(mac) || originMac2.equals(mac)) {
                     mHandler.sendEmptyMessage(flagMacFail);

@@ -93,7 +93,7 @@ public class DeviceInfoDetailsActivity extends AppCompatActivity {
                     Log.e(TAG, "onStart imei: " + imei);
                     runOnUiThread(() -> binding.deviceImei.setImageBitmap(bitmapImei));
                 } else if (showFlag == wifiMacIntent) {
-                    String wifiAddress = MobileInfoUtil.getMacAddr();
+                    String wifiAddress = MobileInfoUtil.getMacAddr(DeviceInfoDetailsActivity.this);
                     Bitmap bitmapWifiAddress = CodeUtil.creatBarcode(
                             DeviceInfoDetailsActivity.this, wifiAddress, 850,
                             160, new PointF(0, 180), true);
@@ -122,7 +122,7 @@ public class DeviceInfoDetailsActivity extends AppCompatActivity {
                     runOnUiThread(() -> binding.deviceBtAddress.setImageBitmap(bitmapBtAddress));
                 } else if (showFlag == deviceInfoIntent) {
                     String imei = MobileInfoUtil.getIMEI(DeviceInfoDetailsActivity.this);
-                    String wifiAddress = MobileInfoUtil.getMacAddr();
+                    String wifiAddress = MobileInfoUtil.getMacAddr(DeviceInfoDetailsActivity.this);
                     String serialNumber;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         serialNumber = Build.getSerial();

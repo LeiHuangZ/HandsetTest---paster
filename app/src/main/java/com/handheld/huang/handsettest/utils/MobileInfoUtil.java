@@ -4,10 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import androidx.core.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -23,6 +27,7 @@ import java.util.List;
  */
 
 public class MobileInfoUtil {
+    private static final String TAG = "MobileInfoUtil";
     /**
      * 获取手机IMEI
      *
@@ -65,7 +70,12 @@ public class MobileInfoUtil {
 
     }
 
-    public static String getMacAddr() {
+    public static String getMacAddr(Context context) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                || Build.VERSION.SDK_INT == 35) {
+            // F1, F2, 获取WiFi的物理地址
+            return getWifiFactoryMacAddresses(context);
+        }
         try {
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
@@ -91,6 +101,38 @@ public class MobileInfoUtil {
         } catch (Exception ex) {
         }
         return "02:00:00:00:00:00";
+    }
+
+    /**
+     * 获取WiFi的物理地址，如果获取失败则返回"02:00:00:00:00:00"
+     *
+     * @return WiFi的物理地址，带英文冒号的形式
+     */
+    public static String getWifiFactoryMacAddresses(Context context) {
+        String macAddress = "02:00:00:00:00:00";
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+                || Build.VERSION.SDK_INT == 35) {
+            WifiManager wifiManager = context.getSystemService(WifiManager.class);
+            if (wifiManager != null) {
+                try {
+                    Method method = WifiManager.class.getMethod("getFactoryMacAddresses");
+                    final String[] macAddresses = (String[]) method.invoke(wifiManager);
+                    if (macAddresses != null && macAddresses.length > 0) {
+                        macAddress = macAddresses[0];
+                    } else {
+                        Log.e(TAG, "getWifiFactoryMacAddresses: macAddresses is null or empty");
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException |
+                         InvocationTargetException e) {
+                    Log.e(TAG, "getWifiFactoryMacAddresses: ", e);
+                }
+            } else {
+                Log.e(TAG, "getWifiFactoryMacAddresses: wifiManager is null");
+            }
+        } else {
+            Log.e(TAG, "getWifiFactoryMacAddresses: SDK_INT is not UPSIDE_DOWN_CAKE or VANILLA_ICE_CREAM");
+        }
+        return macAddress;
     }
 
     private static Class<?> mClassType = null;
