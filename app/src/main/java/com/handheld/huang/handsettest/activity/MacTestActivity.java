@@ -233,7 +233,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 macTestActivity.showToast("原始MAC地址，MAC测试不通过！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("FAIL！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.binding.macTvResult.append(span);
                 mWeakReference.get().saveFlag = 0;
@@ -243,7 +243,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 Bitmap image = (Bitmap) msg.obj;
                 macTestActivity.showToast("MAC检测通过！");
                 Spannable span = new SpannableString("PASS！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.binding.macTvResult.append(span);
@@ -258,7 +258,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 macTestActivity.binding.imeiImgShow.setVisibility(View.VISIBLE);
                 macTestActivity.binding.imeiImgShow.setImageBitmap(image);
                 Spannable span = new SpannableString("PASS！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.binding.imeiTvResult.append(span);
@@ -269,7 +269,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 macTestActivity.showToast("原始IMEI地址，IMEI测试不通过！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("FAIL！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.binding.imeiTvResult.append(span);
                 mWeakReference.get().saveFlag = 1;
@@ -278,7 +278,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
             } else if (what == macTestActivity.flagBoardSuccess) {
                 macTestActivity.showToast("机器主板已校准");
                 Spannable span = new SpannableString("PASS！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.binding.boardTvResult.append(span);
@@ -291,7 +291,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 macTestActivity.showToast("机器主板未校准！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("FAIL！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.binding.boardTvResult.append(span);
                 mWeakReference.get().saveFlag = 2;
@@ -303,7 +303,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                 macTestActivity.showToast("未获取到Flash序列号！");
                 macTestActivity.mUtil.playAudio(2);
                 Spannable span = new SpannableString("无序列号！");
-                span.setSpan(new AbsoluteSizeSpan(70), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 macTestActivity.binding.flashTvResult.append(span);
                 mWeakReference.get().saveFlag = 3;
@@ -314,7 +314,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
             } else if (what == macTestActivity.flagFlashSuccess) {
                 CharSequence flashNum = (CharSequence) msg.obj;
                 Spannable span = new SpannableString(flashNum);
-                span.setSpan(new AbsoluteSizeSpan(70), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                span.setSpan(new AbsoluteSizeSpan(spanTxtSize), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 span.setSpan(new ForegroundColorSpan(Color.GREEN), 0, flashNum.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                macTestActivity.binding.boardTvResult.append(Html.fromHtml("主板校准：<h1><font color='#6A8759'>PASS!</font></h1>"));
                 macTestActivity.binding.flashTvResult.append(span);
@@ -328,11 +328,16 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private static int spanTxtSize;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMacTestBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+
+        spanTxtSize = MacTestActivity.this.getResources().getDimensionPixelOffset(R.dimen.mac_test_text_size);
 
         mProgressDialog = new ProgressDialog(MacTestActivity.this);
         mProgressDialog.setMessage("正在进行设备校准状态检测.....");
