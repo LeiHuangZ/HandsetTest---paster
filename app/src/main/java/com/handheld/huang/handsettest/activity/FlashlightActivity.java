@@ -1,19 +1,24 @@
 package com.handheld.huang.handsettest.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
 import com.handheld.huang.handsettest.R;
 import com.handheld.huang.handsettest.databinding.ActivityFlashlightBinding;
@@ -30,20 +35,38 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
     private int onCheckResult;
     private SpUtils mSpUtils;
     private com.handheld.huang.handsettest.databinding.ActivityFlashlightBinding binding;
+    private CameraManager cameraManager;
+
+    private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(CameraDevice camera) {
+            Log.e("FlashlightActivity", "onOpened");
+            camera.close();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                flashLightOn();
+            }
+        }
+
+        @Override
+        public void onDisconnected(@NonNull CameraDevice camera) {
+            Log.e("FlashlightActivity", "onDisconnected");
+        }
+
+        @Override
+        public void onError(@NonNull CameraDevice camera, int error) {
+
+        }
+    };
 
     /**
-     * 打开闪光灯
+     * 获取可用的相机ID
      */
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void flashLightOn() {
-        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-
+    private String getAvailableId() {
         try {
             String[] cameraIdList = cameraManager.getCameraIdList();
             if (cameraIdList.length == 0) {
                 Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
-                return;
+                return "-1";
             }
             String flashCameraId = "-1";
             for (String cameraId : cameraIdList) {
@@ -56,9 +79,27 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
             }
             if (flashCameraId.equals("-1")) {
                 Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+                return "-1";
+            }
+            return flashCameraId;
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        return "-1";
+    }
+
+    /**
+     * 打开闪光灯
+     */
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void flashLightOn() {
+        try {
+            String avaId = getAvailableId();
+            if (avaId.equals("-1")) {
                 return;
             }
-            cameraManager.setTorchMode(flashCameraId, true);
+            cameraManager.setTorchMode(avaId, true);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -70,26 +111,31 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void flashLightOff() {
-        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            String[] cameraIdList = cameraManager.getCameraIdList();
-            if (cameraIdList.length <= 0) {
+            String avaId = getAvailableId();
+            if (avaId.equals("-1")) {
                 return;
             }
-            String flashCameraId = "-1";
-            for (String cameraId : cameraIdList) {
-                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
-                Boolean flashAvailable = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-                if (flashAvailable != null && flashAvailable) {
-                    flashCameraId = cameraId;
-                    break;
-                }
-            }
-            if (flashCameraId.equals("-1")) {
-                Toast.makeText(this, getString(R.string.camera_not_found), Toast.LENGTH_SHORT).show();
+            cameraManager.setTorchMode(avaId, false);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openCamera() {
+        //获取摄像头的管理者CameraManager
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        //检查权限
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            cameraManager.setTorchMode(flashCameraId, false);
+            //打开相机，第一个参数指示打开哪个摄像头，第二个参数stateCallback为相机的状态回调接口，第三个参数用来确定Callback在哪个线程执行，为null的话就在当前线程执行
+            String availableId = getAvailableId();
+            if (availableId.equals("-1")) {
+                return;
+            }
+            manager.openCamera(availableId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -100,6 +146,11 @@ public class FlashlightActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         binding = ActivityFlashlightBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
+        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        // F1F2先打开相机，以让扫码头关闭，不然4710打开时，无法使用手电筒
+        if (Build.VERSION.SDK_INT >= 34) {
+            openCamera();
+        }
         mSpUtils = new SpUtils(this);
         binding.resultTvNext.setClickable(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
