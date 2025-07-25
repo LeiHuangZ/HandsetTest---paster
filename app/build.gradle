@@ -46,6 +46,13 @@ android {
             storeFile file('./v735_u0.keystore')
             storePassword 'hhw12580'
         }
+        // C6000-GC4(uis7863)
+        platkey63 {
+            keyAlias 'key_63'
+            keyPassword 'ui111363'
+            storeFile file('./platkey63.keystore')
+            storePassword 'ui111363'
+        }
     }
     buildTypes {
         debug {
@@ -72,13 +79,19 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        // C6000-GC4(uis7863)
+        gc4_7863 {
+            signingConfig signingConfigs.platkey63
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
 //    namespace 'com.handheld.huang.handsettest'
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            def fileName = "HandsetTest_工厂非内置_v${defaultConfig.versionName}.apk"
+            def fileName = "HandsetTest_工厂非内置_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
             outputFileName = fileName
         }
     }

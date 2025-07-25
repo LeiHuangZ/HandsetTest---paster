@@ -22,6 +22,9 @@ android {
         f1{
 
         }
+        // C6000-GC4(uis7863)
+        gc4_7863 {
+        }
     }
 //    namespace 'mehdi.sakout.fancybuttons'
     lintOptions {
