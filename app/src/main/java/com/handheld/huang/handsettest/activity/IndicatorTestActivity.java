@@ -28,6 +28,7 @@ import com.handheld.huang.handsettest.utils.UsbTils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -99,7 +100,8 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         binding.layoutResultConfirm.resultImgCross.setOnClickListener(this);
         binding.layoutResultConfirm.resultTvNext.setOnClickListener(this);
 
-        if (Build.HARDWARE.equals("mt6765")) {
+        if (Build.HARDWARE.equals("mt6765") && ledGreenFile.exists()) {
+            // F1、F2有绿灯，C6-A15没有绿灯
             binding.indicatorBtnGreen.setVisibility(View.VISIBLE);
         }
 
@@ -133,7 +135,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onDestroy() {
-        ledNotificationOff();
+        ledNotificationOff(3);
         unregisterReceiver(mReceiver);
         super.onDestroy();
     }
@@ -333,8 +335,17 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    private final File ledBlueFile = new File("/sys/class/leds/blue/brightness");
+    private final File ledRedFile = new File("/sys/class/leds/red/brightness");
+    private final File ledGreenFile = new File("/sys/class/leds/green/brightness");
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void ledRedOn() {
+        if (!ledGreenFile.exists()) {
+            // C6-A15
+            ledRedC6A15(true);
+            return;
+        }
         Notification.Builder builder = new Notification.Builder(IndicatorTestActivity.this, mThisChannel)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Factory LED TEST")
@@ -342,8 +353,24 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         mNotificationMgr.notify(mThisNotificationId, builder.build());
     }
 
+    private void ledRedC6A15(boolean on) {
+        try {
+            FileWriter ledRedFw = new FileWriter(ledRedFile);
+            ledRedFw.write(on ? "255" : "0");
+            ledRedFw.flush();
+            ledRedFw.close();
+        } catch (IOException e) {
+            Log.e(TAG, "ledBlueOn: " + e.getMessage());
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void ledBlueOn() {
+        if (!ledGreenFile.exists()) {
+            // C6-A15
+            ledBlueC6A15(true);
+            return;
+        }
         Notification.Builder builder2 = new Notification.Builder(IndicatorTestActivity.this, mThisChannel2)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Factory LED TEST")
@@ -351,6 +378,17 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         mNotificationMgr.notify(mThisNotificationId, builder2.build());
         // F1最边上的蓝灯
         openOrCloseFile(true);
+    }
+
+    private void ledBlueC6A15(boolean on) {
+        try {
+            FileWriter ledBlueFw = new FileWriter(ledBlueFile);
+            ledBlueFw.write(on ? "255" : "0");
+            ledBlueFw.flush();
+            ledBlueFw.close();
+        } catch (IOException e) {
+            Log.e(TAG, "ledBlueOn: " + e.getMessage());
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -362,7 +400,16 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         mNotificationMgr.notify(mThisNotificationId, builder.build());
     }
 
-    private void ledNotificationOff() {
+    private void ledNotificationOff(int ledType) {
+        if (!ledGreenFile.exists()) {
+            // C6-A15
+            if (ledType == 0) {
+                ledBlueC6A15(false);
+            } else if (ledType == 1) {
+                ledRedC6A15(false);
+            }
+            return;
+        }
         cancelNotification();
         // F1最边上的蓝灯
         openOrCloseFile(false);
@@ -446,7 +493,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                         // NB801-5G
                         setLedSM4350State(0, true);
                     } else if (Build.HARDWARE.equals("mt6765")) {
-                        // F1
+                        // F1, C6-A15
                         ledBlueOn();
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
@@ -482,8 +529,8 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                         // NB801-5G
                         setLedSM4350State(0, false);
                     } else if (Build.HARDWARE.equals("mt6765")) {
-                        // F1
-                        ledNotificationOff();
+                        // F1, C6-A15
+                        ledNotificationOff(0);
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(57);
@@ -562,7 +609,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                         setLedSM4350State(1, false);
                     } else if (Build.HARDWARE.equals("mt6765")) {
                         // F1
-                        ledNotificationOff();
+                        ledNotificationOff(1);
                     } else {
                         // BX6000,BX6100,BX6200,Android 9.0
                         mSerialPort.setGPIOlow(160);
@@ -597,14 +644,14 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
             }
         } else if (view == binding.indicatorBtnGreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (!isBlueOn) {
+                if (!isGreenOn) {
                     ledGreenOn();
-                    isBlueOn = true;
+                    isGreenOn = true;
                     binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_off));
                     binding.indicatorBtnGreen.setIconResource("\uf05e");
                 } else {
-                    ledNotificationOff();
-                    isBlueOn = false;
+                    ledNotificationOff(2);
+                    isGreenOn = false;
                     binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_on));
                     binding.indicatorBtnGreen.setIconResource("\uf0eb");
                 }
