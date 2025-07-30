@@ -11,7 +11,7 @@ android {
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdkVersion 28
         versionCode 25
-        versionName "3.6.8"
+        versionName "3.6.8_c6a15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -46,6 +46,12 @@ android {
             storeFile file('./v735_u0.keystore')
             storePassword 'hhw12580'
         }
+        f1_gms {
+            keyAlias 'dev'
+            keyPassword 'hhwandroid12580'
+            storeFile file('./hdhl_a15.jks')
+            storePassword 'hhwandroid12580'
+        }
     }
     buildTypes {
         debug {
@@ -67,7 +73,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         f1 {
-            signingConfig signingConfigs.f1
+            signingConfig signingConfigs.f1_gms
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
