@@ -99,7 +99,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
         binding.layoutResultConfirm.resultImgCross.setOnClickListener(this);
         binding.layoutResultConfirm.resultTvNext.setOnClickListener(this);
 
-        if (Build.HARDWARE.equals("mt6765")) {
+        if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
             binding.indicatorBtnGreen.setVisibility(View.VISIBLE);
         }
 
@@ -445,7 +445,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(0, true);
-                    } else if (Build.HARDWARE.equals("mt6765")) {
+                    } else if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
                         // F1
                         ledBlueOn();
                     } else {
@@ -481,7 +481,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(0, false);
-                    } else if (Build.HARDWARE.equals("mt6765")) {
+                    } else if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
                         // F1
                         ledNotificationOff();
                     } else {
@@ -520,7 +520,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(1, true);
-                    } else if (Build.HARDWARE.equals("mt6765")) {
+                    } else if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
                         // F1
                         ledRedOn();
                     } else {
@@ -560,7 +560,7 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
                     if (Build.HARDWARE.equals("qcom")) {
                         // NB801-5G
                         setLedSM4350State(1, false);
-                    } else if (Build.HARDWARE.equals("mt6765")) {
+                    } else if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
                         // F1
                         ledNotificationOff();
                     } else {

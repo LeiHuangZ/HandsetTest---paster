@@ -83,7 +83,10 @@ public class DbmActivity extends AppCompatActivity implements View.OnClickListen
                 Log.e("Huang, DbmActivity", "invoke dbm:" + dbm);
                 mSpUtils.saveGsmDbm(dbm);
                 binding.dbmTv.setText("移动网络：" + dbm + "dBm\n\n");
-                int rssi = mWifiManager.getConnectionInfo().getRssi();
+                int rssi = -127;
+                if (mWifiManager != null) {
+                    rssi = mWifiManager.getConnectionInfo().getRssi();
+                }
                 if (rssi != -127) {
                     binding.dbmTv.append("WiFi：" + rssi + "dBm");
                 } else {
@@ -116,7 +119,10 @@ public class DbmActivity extends AppCompatActivity implements View.OnClickListen
             binding.layoutResultConfirm.resultLlConfirm.setVisibility(View.VISIBLE);
         }
 
-        int rssi = mWifiManager.getConnectionInfo().getRssi();
+        int rssi = -127;
+        if (mWifiManager != null) {
+            rssi = mWifiManager.getConnectionInfo().getRssi();
+        }
         if (rssi != -127) {
             binding.dbmTv.append("WiFi：" + rssi + "dBm");
         } else {

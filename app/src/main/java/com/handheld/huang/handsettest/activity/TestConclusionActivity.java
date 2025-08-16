@@ -375,13 +375,11 @@ public class TestConclusionActivity extends AppCompatActivity implements View.On
         }
         // 关闭蓝牙
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
-            Log.e(TAG, "onCreate 不支持蓝牙:");
-            return;
-        }
-        if (bluetoothAdapter.isEnabled()) {
-            boolean res = bluetoothAdapter.disable();
-            Log.e(TAG, "onCreate :" + res);
+        if (bluetoothAdapter != null) {
+            if (bluetoothAdapter.isEnabled()) {
+                boolean res = bluetoothAdapter.disable();
+                Log.e(TAG, "onCreate :" + res);
+            }
         }
         super.onDestroy();
     }

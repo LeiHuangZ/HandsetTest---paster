@@ -131,7 +131,7 @@ public class MacTestActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                     // F1主板校准状态获取
-                    else if (hardware.equals("mt6765")) {
+                    else if (Build.HARDWARE.equals("mt6765") && Build.VERSION.SDK_INT >= 34) {
                         boolean b = testF1ModemStatus();
                         if (b) {
                             mHandler.sendEmptyMessage(flagBoardSuccess);
