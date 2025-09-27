@@ -597,14 +597,14 @@ public class IndicatorTestActivity extends AppCompatActivity implements View.OnC
             }
         } else if (view == binding.indicatorBtnGreen) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (!isBlueOn) {
+                if (!isGreenOn) {
                     ledGreenOn();
-                    isBlueOn = true;
+                    isGreenOn = true;
                     binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_off));
                     binding.indicatorBtnGreen.setIconResource("\uf05e");
                 } else {
                     ledNotificationOff();
-                    isBlueOn = false;
+                    isGreenOn = false;
                     binding.indicatorBtnGreen.setText(getResources().getString(R.string.green_on));
                     binding.indicatorBtnGreen.setIconResource("\uf0eb");
                 }

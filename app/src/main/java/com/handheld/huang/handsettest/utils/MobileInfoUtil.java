@@ -38,7 +38,7 @@ public class MobileInfoUtil {
         String imei;
         try {
             //实例化TelephonyManager对象
-            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             //获取IMEI号
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -50,10 +50,12 @@ public class MobileInfoUtil {
                 // for ActivityCompat#requestPermissions for more details.
                 return null;
             }
-            if (Build.VERSION.SDK_INT >= 23) {
-                imei = telephonyManager.getDeviceId(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                imei = tm.getImei();
+            } else if (Build.VERSION.SDK_INT >= 23) {
+                imei = tm.getDeviceId(0);
             } else {
-                imei = telephonyManager.getDeviceId();
+                imei = tm.getDeviceId();
             }
             //在次做个验证，也不是什么时候都能获取到的啊
             if (imei == null) {
