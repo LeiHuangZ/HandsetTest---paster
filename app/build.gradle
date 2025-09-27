@@ -45,6 +45,10 @@ android {
             keyPassword 'hhw12580'
             storeFile file('./v735_u0.keystore')
             storePassword 'hhw12580'
+            keyAlias 'dev'
+            keyPassword 'hhwandroid12580'
+            storeFile file('./hdhl_a15.jks')
+            storePassword 'hhwandroid12580'
         }
     }
     buildTypes {
