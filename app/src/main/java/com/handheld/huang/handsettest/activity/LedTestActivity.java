@@ -88,9 +88,9 @@ public class LedTestActivity extends AppCompatActivity implements View.OnClickLi
         this.getWindow().setAttributes(lp);
 
         //保存为系统亮度方法1
-        Settings.System.putInt(getContentResolver(),
-                Settings.System.SCREEN_BRIGHTNESS,
-                brightness);
+//        Settings.System.putInt(getContentResolver(),
+//                Settings.System.SCREEN_BRIGHTNESS,
+//                brightness);
     }
 
     @SuppressLint("MissingSuperCall")

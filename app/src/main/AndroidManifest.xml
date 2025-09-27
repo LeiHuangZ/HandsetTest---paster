@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.handheld.huang.handsettest"
-    android:sharedUserId="android.uid.system" >
+    package="com.handheld.huang.handsettest" >
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,7 +22,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <!-- 勿扰模式下，调节音量 -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.MANAGE_NOTIFICATIONS" />
+    <!--    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />-->
 <!--    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />-->
 <!--    <uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
 
