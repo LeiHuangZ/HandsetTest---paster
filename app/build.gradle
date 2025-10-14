@@ -11,7 +11,7 @@ android {
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdkVersion 28
         versionCode 25
-        versionName "3.6.8_f1_plat"
+        versionName "3.6.9_f1_plat"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
