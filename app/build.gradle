@@ -11,7 +11,7 @@ android {
         //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdkVersion 28
         versionCode 26
-        versionName "3.6.9_1_plat"
+        versionName "3.6.10_0_plat"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -41,10 +41,10 @@ android {
             storePassword 'android'
         }
         f1 {
-            keyAlias 'hhw_plat'
-            keyPassword 'hhw12580'
-            storeFile file('./v735_u0.keystore')
-            storePassword 'hhw12580'
+//            keyAlias 'hhw_plat'
+//            keyPassword 'hhw12580'
+//            storeFile file('./v735_u0.keystore')
+//            storePassword 'hhw12580'
             keyAlias 'dev'
             keyPassword 'hhwandroid12580'
             storeFile file('./hdhl_a15.jks')
