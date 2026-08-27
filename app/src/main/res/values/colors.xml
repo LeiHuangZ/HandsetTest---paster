@@ -9,4 +9,6 @@
 
     <color name="speaker_test_color">#FF5F69</color>
 
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>

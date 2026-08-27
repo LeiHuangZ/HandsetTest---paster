@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.handheld.huang.handsettest.activity.MainActivity;
 import com.handheld.huang.handsettest.activity.PingActivity;
+import com.handheld.huang.handsettest.activity.SubBatTestActivity;
 
 /**
  * @author huang
@@ -22,6 +23,7 @@ public class MyReceiver extends BroadcastReceiver {
     /** process *#*#99999#*#*  */
     private final Uri mEmUri = Uri.parse("android_secret_code://99999");
     private final Uri mEmUri2 = Uri.parse("android_secret_code://666");
+    private final Uri mEmUri3 = Uri.parse("android_secret_code://27542");
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,7 +45,12 @@ public class MyReceiver extends BroadcastReceiver {
                 intentEm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Log.e(TAG, "onReceive, Before start Main activity");
                 context.startActivity(intentEm);
-            }else {
+            } else if (uri.equals(mEmUri3)){
+                Intent intentEm = new Intent(context, SubBatTestActivity.class);
+                intentEm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Log.e(TAG, "onReceive, Before start SubBatTest activity");
+                context.startActivity(intentEm);
+            } else {
                 Log.e(TAG, "onReceive, Not matched URI");
             }
         }else {
